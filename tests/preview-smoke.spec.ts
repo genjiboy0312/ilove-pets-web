@@ -75,8 +75,8 @@ function getContrastRatio(foreground: RgbColor, background: RgbColor): number {
 }
 
 for (const viewportWidth of viewportWidths) {
-  test(`renders Stage 3 shell at ${viewportWidth.toString()}px`, async ({ page }) => {
-    // Given: a production preview viewport for the Stage 3 app shell.
+  test(`renders Stage 4 shell at ${viewportWidth.toString()}px`, async ({ page }) => {
+    // Given: a production preview viewport for the Stage 4 app shell.
     await page.setViewportSize({ width: viewportWidth, height: 812 })
     await seedStorage(page, { key: i18nextStorageKey, value: "ko-KR" })
 
@@ -119,7 +119,7 @@ for (const viewportWidth of viewportWidths) {
     expect(productionText).not.toMatch(/react-grab|react-scan/i)
 
     await page.screenshot({
-      path: `test-results/stage3-${viewportWidth.toString()}.png`,
+      path: `test-results/stage4-${viewportWidth.toString()}.png`,
       fullPage: true,
     })
   })
