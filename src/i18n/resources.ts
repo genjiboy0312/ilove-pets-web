@@ -37,6 +37,37 @@ export const resources = {
           body: "The my route is connected and ready for the next profile surface.",
         },
       },
+      home: {
+        heading: "Home",
+        categoryLabel: "Pet categories",
+        feedLabel: "Pet feed",
+        empty: "No posts in this category yet.",
+        categories: {
+          all: "All",
+          dog: "Dogs",
+          cat: "Cats",
+          reptile: "Reptiles",
+          bird: "Birds",
+          smallAnimal: "Small animals",
+          etc: "Other",
+        },
+        actions: {
+          like: "Like",
+          comment: "Comment",
+          share: "Share",
+        },
+        metrics: {
+          likeCount: "{{count}} likes",
+          commentCount: "{{count}} comments",
+        },
+        time: {
+          postedAt: "Posted {{time}}",
+        },
+        alt: {
+          petAvatar: "{{petName}} profile photo",
+          postImage: "{{petName}} post image",
+        },
+      },
       setup: {
         label: "Frontend foundation ready",
         bodyLead:
@@ -101,6 +132,37 @@ export const resources = {
           body: "マイルートは接続済みで、次のプロフィール画面を追加できます。",
         },
       },
+      home: {
+        heading: "ホーム",
+        categoryLabel: "ペットカテゴリー",
+        feedLabel: "ペットフィード",
+        empty: "このカテゴリーにはまだ投稿がありません。",
+        categories: {
+          all: "すべて",
+          dog: "犬",
+          cat: "猫",
+          reptile: "爬虫類",
+          bird: "鳥",
+          smallAnimal: "小動物",
+          etc: "その他",
+        },
+        actions: {
+          like: "いいね",
+          comment: "コメント",
+          share: "共有",
+        },
+        metrics: {
+          likeCount: "いいね {{count}}件",
+          commentCount: "コメント {{count}}件",
+        },
+        time: {
+          postedAt: "{{time}} 投稿",
+        },
+        alt: {
+          petAvatar: "{{petName}} のプロフィール写真",
+          postImage: "{{petName}} の投稿画像",
+        },
+      },
       setup: {
         label: "フロントエンド基盤の準備が完了しました",
         bodyLead: "あたたかなモバイルアプリシェルが整い、次のペットコミュニティ画面を安定して",
@@ -162,6 +224,37 @@ export const resources = {
         my: {
           title: "마이",
           body: "마이 라우트가 연결되어 다음 프로필 화면을 붙일 수 있습니다.",
+        },
+      },
+      home: {
+        heading: "홈",
+        categoryLabel: "반려동물 카테고리",
+        feedLabel: "반려동물 피드",
+        empty: "이 카테고리에는 아직 게시물이 없습니다.",
+        categories: {
+          all: "전체",
+          dog: "강아지",
+          cat: "고양이",
+          reptile: "파충류",
+          bird: "조류",
+          smallAnimal: "소동물",
+          etc: "기타",
+        },
+        actions: {
+          like: "좋아요",
+          comment: "댓글",
+          share: "공유",
+        },
+        metrics: {
+          likeCount: "좋아요 {{count}}개",
+          commentCount: "댓글 {{count}}개",
+        },
+        time: {
+          postedAt: "{{time}} 게시",
+        },
+        alt: {
+          petAvatar: "{{petName}} 프로필 사진",
+          postImage: "{{petName}} 게시물 이미지",
         },
       },
       setup: {
