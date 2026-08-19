@@ -1,0 +1,12 @@
+{
+  "id": "T-39f8aee6-d992-4090-a94b-349ed2eeb131",
+  "subject": "Validate OpenCode defaults",
+  "description": "Verify the revised configuration files and OpenCode model availability.",
+  "status": "completed",
+  "activeForm": "Validated OpenCode defaults",
+  "blocks": [],
+  "blockedBy": [
+    "T-6c865c5f-2b16-4ffd-8fbc-f26d11446144"
+  ],
+  "threadID": "ses_fe86f9fd0ffed8XO3oQfWTzH30"
+}
