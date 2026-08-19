@@ -29,7 +29,7 @@
 - [x] `constants`, `types`, `mocks` 폴더와 Stage 2 데이터 기반이 준비되어 있다.
 - [x] system/light/dark theme 상태, ko/ja/en i18n, 모바일 앱 shell이 구성되어 있다.
 - [x] React Router와 하단 Bottom Navigation 구성이 완료되어 있다.
-- [ ] 다음 작업은 Home, 카테고리 swipe, mock feed 구현이다.
+- [x] Home, 카테고리 swipe, mock feed 구현을 완료했다.
 
 ## 프론트엔드 MVP 작업 단계
 
@@ -37,8 +37,8 @@
 2. [x] 폴더 구조, 도메인 타입, 상수, mock data 준비
 3. [x] theme, i18n, 모바일 앱 shell 구성
 4. [x] React Router와 하단 Bottom Navigation 구성
-5. [>] Home, 카테고리 swipe, mock feed 구현
-6. [ ] Explore, Create, Activity, My, Settings 화면 구현
+5. [x] Home, 카테고리 swipe, mock feed 구현
+6. [>] Explore, Create, Activity, My, Settings 화면 구현
 7. [ ] theme 전환, 언어 전환, 수동 확인, TypeScript, ESLint, build 검증
 
 ## 다음 액션 큐
@@ -50,7 +50,8 @@
 5. [x] 카테고리 상수와 정규화된 mock data를 타입 안전하게 준비했다.
 6. [x] Stage 3 theme 상태, i18n 구조, 모바일 앱 shell을 구성했다.
 7. [x] Stage 4에서 React Router와 하단 Bottom Navigation을 구성했다.
-8. [>] Stage 5에서 Home 카테고리 swipe와 mock feed를 구현한다.
+8. [x] Stage 5에서 Home 카테고리 swipe와 mock feed를 구현했다.
+9. [>] Stage 6에서 Explore, Create, Activity, My, Settings 화면을 구현한다.
 
 ## 결정 필요와 차단 요소
 
@@ -89,6 +90,10 @@
 - [x] Stage 4 Vitest 32개, production Playwright 15개, TypeScript, ESLint, Prettier, build가 통과했다.
 - [x] Stage 4 React Doctor 100점, 독립 design/CJK visual QA 두 패스 PASS를 확인했다.
 - [x] 일본어 375px Bottom Navigation은 `通知` 라벨로 어색한 CJK 분할 없이 표시됨을 확인했다.
+- [x] Stage 5 Home 카테고리 swipe, mock feed 카드, 이미지 fallback, ko/ja/en i18n을 구현했다.
+- [x] Stage 5 Vitest 47개, production Playwright 23개, TypeScript, ESLint, Prettier, build가 통과했다.
+- [x] Stage 5 React Doctor 100점을 확인했다.
+- [x] Stage 5 Home 스크린샷을 viewport 캡처로 재생성하고 한국어/일본어 표시를 확인했다.
 
 ## 업데이트 규칙
 
