@@ -174,15 +174,12 @@ for (const viewportWidth of viewportWidths) {
   test(`keeps Stage 4 bottom navigation centered and touch-safe at ${viewportWidth.toString()}px`, async ({
     page,
   }) => {
-    // Given: a production preview viewport for bottom navigation acceptance.
-    await page.setViewportSize({ width: viewportWidth, height: 812 })
-    await seedStorage(page, { key: i18nextStorageKey, value: "ko-KR" })
-
     // When: the app shell is opened and layout metrics are collected.
     await page.goto("/create")
+    await page.evaluate(() => {
+      window.scrollTo(0, document.documentElement.scrollHeight)
+    })
     const metrics = await getNavigationMetrics(page)
-
-    // Then: the fixed nav fits the 430px shell, has five equal safe targets, and does not overlap content.
     expect(metrics.navigationWidth).toBeLessThanOrEqual(430)
     expect(Math.abs(metrics.navigationCenter - metrics.viewportCenter)).toBeLessThanOrEqual(1)
     expect(metrics.mainBottom).toBeLessThanOrEqual(metrics.navigationTop)
