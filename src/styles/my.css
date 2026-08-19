@@ -1,0 +1,257 @@
+.my-screen {
+  display: grid;
+  width: 100%;
+  min-width: var(--space-0);
+  gap: var(--space-5);
+  color: var(--color-text-primary);
+  animation: app-canvas-enter var(--duration-slow) var(--ease-standard) both;
+}
+
+.my-screen__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: var(--space-0);
+}
+
+.my-screen__heading-group {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.my-screen__eyebrow,
+.my-screen__title,
+.my-profile__name,
+.my-profile__username,
+.my-profile__bio,
+.my-stats__item,
+.my-section__title,
+.my-section__empty,
+.my-pet-card__name,
+.my-pet-card__breed {
+  margin: var(--space-0);
+}
+
+.my-screen__eyebrow {
+  color: var(--color-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+.my-screen__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.my-screen__settings-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: var(--space-1);
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-subtle);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  text-decoration: none;
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.my-screen__settings-icon {
+  color: var(--color-text-secondary);
+}
+
+.my-screen__settings-link:active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  transform: translateY(var(--space-1));
+}
+
+.my-profile {
+  display: grid;
+  grid-template-columns: auto minmax(var(--space-0), 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  min-width: var(--space-0);
+  padding: var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-status);
+}
+
+.my-profile__avatar {
+  width: calc(var(--size-touch-min) + var(--space-8));
+  height: calc(var(--size-touch-min) + var(--space-8));
+  border-radius: var(--radius-pill);
+}
+
+.my-profile__identity {
+  display: grid;
+  min-width: var(--space-0);
+  gap: var(--space-1);
+}
+
+.my-profile__name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  overflow-wrap: anywhere;
+}
+
+.my-profile__username {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+}
+
+.my-profile__bio {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.my-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(var(--space-0), 1fr));
+  gap: var(--space-2);
+  min-width: var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
+}
+
+.my-stats__item {
+  display: grid;
+  min-height: var(--size-touch-min);
+  place-items: center;
+  padding: var(--space-2);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  text-align: center;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.my-section {
+  display: grid;
+  min-width: var(--space-0);
+  gap: var(--space-3);
+}
+
+.my-section__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.my-section__empty {
+  padding: var(--space-6);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.my-pet-list {
+  display: grid;
+  min-width: var(--space-0);
+  gap: var(--space-2);
+  padding: var(--space-0);
+  list-style: none;
+}
+
+.my-pet-card {
+  display: grid;
+  grid-template-columns: auto minmax(var(--space-0), 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  min-width: var(--space-0);
+  padding: var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface-elevated);
+}
+
+.my-pet-card__avatar {
+  width: calc(var(--size-touch-min) + var(--space-1));
+  height: calc(var(--size-touch-min) + var(--space-1));
+  border-radius: var(--radius-pill);
+}
+
+.my-pet-card__identity {
+  min-width: var(--space-0);
+}
+
+.my-pet-card__name {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  overflow-wrap: anywhere;
+}
+
+.my-pet-card__breed {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  overflow-wrap: anywhere;
+}
+
+.my-post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(var(--space-0), 1fr));
+  gap: var(--space-2);
+  min-width: var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
+}
+
+.my-post-grid__item {
+  min-width: var(--space-0);
+}
+
+.my-post-grid__image {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-medium);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .my-screen {
+    animation-duration: var(--duration-fast);
+  }
+
+  .my-screen__settings-link {
+    transition-duration: var(--duration-fast);
+  }
+
+  .my-screen__settings-link:active {
+    transform: none;
+  }
+}
