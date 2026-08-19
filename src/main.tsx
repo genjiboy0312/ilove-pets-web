@@ -2,6 +2,7 @@ import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
 import { App } from "./App"
+import { initializeI18n } from "./i18n/i18n"
 import "./styles/theme.css"
 import "./styles/base.css"
 
@@ -21,6 +22,8 @@ const rootElement = document.getElementById("root")
 if (rootElement === null) {
   throw new RootElementMissingError()
 }
+
+await initializeI18n()
 
 createRoot(rootElement).render(
   <StrictMode>
