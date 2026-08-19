@@ -49,6 +49,7 @@
   --space-12: 3rem;
   --size-app-max: 430px;
   --size-touch-min: 44px;
+  --size-bottom-nav: 4.5rem;
   --gutter-mobile: var(--space-4);
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);

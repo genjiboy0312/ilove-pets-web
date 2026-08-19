@@ -38,11 +38,12 @@ select {
 
 .app-canvas {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   width: min(100%, var(--size-app-max));
   min-height: 100dvh;
   margin-inline: auto;
-  padding-block: calc(var(--space-4) + var(--safe-top)) calc(var(--space-8) + var(--safe-bottom));
+  padding-block: calc(var(--space-4) + var(--safe-top))
+    calc(var(--size-bottom-nav) + var(--space-4) + var(--safe-bottom));
   padding-inline: calc(var(--gutter-mobile) + var(--safe-left))
     calc(var(--gutter-mobile) + var(--safe-right));
   gap: var(--space-6);

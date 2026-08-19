@@ -1,10 +1,12 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
+import { BrowserRouter } from "react-router"
 
 import { App } from "./App"
 import { initializeI18n } from "./i18n/i18n"
 import "./styles/theme.css"
 import "./styles/base.css"
+import "./styles/navigation.css"
 
 export class RootElementMissingError extends Error {
   constructor() {
@@ -27,6 +29,8 @@ await initializeI18n()
 
 createRoot(rootElement).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>,
 )

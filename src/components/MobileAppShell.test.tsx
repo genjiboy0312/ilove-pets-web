@@ -43,4 +43,26 @@ describe("MobileAppShell", () => {
     expect(main).not.toContainElement(controls)
     expect(screen.queryByRole("navigation")).not.toBeInTheDocument()
   })
+
+  it("renders optional bottom navigation outside the main content", () => {
+    // Given: the shell receives a bottom navigation landmark.
+    render(
+      <MobileAppShell
+        bannerLabel="앱 준비 상태"
+        bottomNavigation={<nav aria-label="주요 탐색">탐색</nav>}
+        mainLabel="iLove Pets 앱 셸"
+      >
+        <section aria-label="준비 카드">준비 완료</section>
+      </MobileAppShell>,
+    )
+
+    // When: primary content and bottom navigation are queried separately.
+    const main = screen.getByRole("main", { name: "iLove Pets 앱 셸" })
+    const navigation = screen.getByRole("navigation", { name: "주요 탐색" })
+
+    // Then: navigation is outside the main while the shell preserves one main landmark.
+    expect(main).not.toContainElement(navigation)
+    expect(navigation.closest("div")).toHaveClass("app-canvas")
+    expect(screen.getAllByRole("main")).toHaveLength(1)
+  })
 })

@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 
 interface MobileAppShellProps {
   readonly bannerLabel: string
+  readonly bottomNavigation?: ReactNode
   readonly children: ReactNode
   readonly headerControls?: ReactNode
   readonly mainLabel: string
@@ -9,6 +10,7 @@ interface MobileAppShellProps {
 
 export function MobileAppShell({
   bannerLabel,
+  bottomNavigation,
   children,
   headerControls,
   mainLabel,
@@ -21,6 +23,7 @@ export function MobileAppShell({
       <main className="app-shell__main" aria-label={mainLabel}>
         {children}
       </main>
+      {bottomNavigation}
     </div>
   )
 }
