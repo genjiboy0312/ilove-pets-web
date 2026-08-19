@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Build and test output
+dist/
+coverage/
+test-results/
+playwright-report/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Tool caches
+.vite/
+.eslintcache
+*.tsbuildinfo
+.npm-cache/
+.tmp/
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local codegraph state
+.codegraph/*
+!.codegraph/.gitignore
+
+# Local agent state
+.omo/tasks/
+.omo/run-continuation/
+.omo/migration-backup-*/
+.omo/*.bak.*
+.sisyphus/tasks/
