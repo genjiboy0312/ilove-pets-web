@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.codegraph/
+.omo/
+.opencode/
+.sisyphus/
+MyAIAgent/
+AGENTS.md
+opencode.json
+package-lock.json
