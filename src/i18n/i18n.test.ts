@@ -104,4 +104,76 @@ describe("i18n bundled resources", () => {
     expect(localStorage.getItem("i18nextLng")).toBe("en")
     expect(i18n.options.react?.useSuspense).toBe(false)
   })
+  it("translates Stage 6 screen labels in Korean, Japanese, and English", async () => {
+    const expectedScreenLabels = {
+      en: {
+        explore: "Explore",
+        exploreSearch: "Search pets, posts, and tags",
+        create: "Create",
+        createPet: "Choose a pet",
+        activity: "Activity",
+        activityList: "Notifications",
+        my: "My",
+        myPets: "Registered pets",
+        settings: "Settings",
+        settingsTheme: "Theme",
+      },
+      ja: {
+        explore: "探す",
+        exploreSearch: "ペット、投稿、タグを検索",
+        create: "作成",
+        createPet: "ペットを選択",
+        activity: "通知",
+        activityList: "通知",
+        my: "マイ",
+        myPets: "登録ペット",
+        settings: "設定",
+        settingsTheme: "テーマ",
+      },
+      ko: {
+        explore: "탐색",
+        exploreSearch: "반려동물, 게시물, 태그 검색",
+        create: "작성",
+        createPet: "펫 선택",
+        activity: "활동",
+        activityList: "알림",
+        my: "마이",
+        myPets: "등록 펫",
+        settings: "설정",
+        settingsTheme: "테마",
+      },
+    } as const
+
+    for (const [language, screenLabels] of Object.entries(expectedScreenLabels)) {
+      await i18n.changeLanguage(language)
+
+      expect(i18n.t(($) => $.explore.heading)).toBe(screenLabels.explore)
+      expect(i18n.t(($) => $.explore.searchPlaceholder)).toBe(screenLabels.exploreSearch)
+      expect(i18n.t(($) => $.create.heading)).toBe(screenLabels.create)
+      expect(i18n.t(($) => $.create.petPlaceholder)).toBe(screenLabels.createPet)
+      expect(i18n.t(($) => $.activity.heading)).toBe(screenLabels.activity)
+      expect(i18n.t(($) => $.activity.listLabel)).toBe(screenLabels.activityList)
+      expect(i18n.t(($) => $.my.heading)).toBe(screenLabels.my)
+      expect(i18n.t(($) => $.my.petsLabel)).toBe(screenLabels.myPets)
+      expect(i18n.t(($) => $.settings.heading)).toBe(screenLabels.settings)
+      expect(i18n.t(($) => $.settings.theme)).toBe(screenLabels.settingsTheme)
+    }
+  })
+
+  it("interpolates Stage 6 activity and profile messages", async () => {
+    await i18n.changeLanguage("ko")
+
+    expect(i18n.t(($) => $.activity.like, { actor: "Arden" })).toBe(
+      "Arden님이 회원님의 게시물을 좋아합니다.",
+    )
+    expect(i18n.t(($) => $.activity.comment, { actor: "Solana" })).toBe(
+      "Solana님이 회원님의 게시물에 댓글을 남겼습니다.",
+    )
+    expect(i18n.t(($) => $.activity.follow, { actor: "Arden" })).toBe(
+      "Arden님이 팔로우하기 시작했습니다.",
+    )
+    expect(i18n.t(($) => $.my.posts, { count: 2 })).toBe("게시물 2개")
+    expect(i18n.t(($) => $.my.followers, { count: 128 })).toBe("팔로워 128명")
+    expect(i18n.t(($) => $.my.following, { count: 46 })).toBe("팔로잉 46명")
+  })
 })
