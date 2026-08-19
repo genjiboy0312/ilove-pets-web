@@ -1,0 +1,83 @@
+# iLove Pets 진행 현황 보드
+
+마지막 업데이트: 2026-08-19  
+출처 계획: [MyAIAgent/ilove-pets-planning.md](./ilove-pets-planning.md)
+
+## 마커
+
+- `[ ]` 대기
+- `[>]` 진행 중
+- `[x]` 완료
+- `[!]` 차단
+- `[?]` 결정 필요
+- `[-]` 보류/범위 밖
+
+## 현재 마일스톤
+
+현재 마일스톤은 frontend-only mobile web MVP다. React, TypeScript, Vite 기반의 모바일 웹 앱을 현재 루트 안에 직접 구성한다. 백엔드, 실제 API, 데이터베이스 연결은 이번 마일스톤에 넣지 않는다.
+
+## 현재 저장소 상태
+
+- [x] 저장소와 루트 상태를 점검했다.
+- [x] 계획 문서가 있고 검토했다.
+- [x] 루트 `.gitignore`가 생성되어 있다.
+- [x] 이 진행 현황 보드를 생성했다.
+- [x] npm 기반 React, TypeScript, Vite 앱 스캐폴드가 준비되어 있다.
+- [x] ESLint, Prettier, Vitest, Playwright 품질 도구가 구성되어 있다.
+- [x] Stage 1 앱 셸, 디자인 토큰, light/dark theme 기반이 구현되어 있다.
+- [x] production build와 3개 viewport 브라우저 smoke가 통과한다.
+- [ ] 다음 작업은 폴더 구조, 도메인 타입, 상수, mock data 준비다.
+
+## 프론트엔드 MVP 작업 단계
+
+1. [x] React, TypeScript, Vite 스캐폴드와 품질 도구 구성
+2. [ ] 폴더 구조, 도메인 타입, 상수, mock data 준비
+3. [ ] theme, i18n, 모바일 앱 shell 구성
+4. [ ] React Router와 하단 Bottom Navigation 구성
+5. [ ] Home, 카테고리 swipe, mock feed 구현
+6. [ ] Explore, Create, Activity, My, Settings 화면 구현
+7. [ ] theme 전환, 언어 전환, 수동 확인, TypeScript, ESLint, build 검증
+
+## 다음 액션 큐
+
+1. [x] 패키지 매니저는 npm으로 확정했다.
+2. [x] Vitest와 React Testing Library를 초기 테스트 기반으로 확정했다.
+3. [x] Stage 1 스캐폴드, strict 설정, 앱 진입점, production 검증을 완료했다.
+4. [ ] Stage 2에 필요한 폴더 경계와 도메인 타입을 정의한다.
+5. [ ] 상수와 mock data를 타입 안전하게 준비한다.
+
+## 결정 필요와 차단 요소
+
+- [x] 패키지 매니저: npm.
+- [x] 테스트 설정: Vitest, React Testing Library, Playwright.
+- [x] 아이콘 라이브러리: 실제 아이콘 UI를 구현하는 단계에서 `lucide-react`를 추가한다.
+- [x] 현재 Stage 2 작업을 막는 스캐폴드 차단 요소가 없다.
+
+## 보류 또는 범위 밖
+
+- [-] Supabase
+- [-] Database
+- [-] Authentication Backend
+- [-] 실제 API
+- [-] Docker
+- [-] PC-specific responsive mode
+
+## 검증 근거
+
+- [x] 루트와 계획 문서 기준으로 현재 상태를 요약했다.
+- [x] 완료 항목은 저장소 점검, 계획 문서 확인, 루트 `.gitignore` 및 이 진행 보드 생성으로만 제한했다.
+- [x] 앱 기능은 아직 구현됐다고 표시하지 않았다.
+- [x] 상세 요구사항은 출처 계획 문서로 연결하고, 이 보드는 요약 수준으로 유지했다.
+- [x] `npm run format:check`, `npm run typecheck`, `npm run lint`가 통과했다.
+- [x] Vitest 단위 테스트 4개와 production Playwright smoke 3개가 통과했다.
+- [x] React Doctor 100점, 진단 0건을 확인했다.
+- [x] 375px, 768px, 1280px에서 독립 visual QA 두 패스가 모두 PASS했다.
+- [x] 체크리스트 텍스트 대비 4.5:1 이상과 한국어 의미 단위 줄바꿈을 회귀 검사했다.
+
+## 업데이트 규칙
+
+- 의미 있는 작업 단위가 끝날 때마다 이 보드를 갱신한다.
+- 완료된 항목만 `[x]`로 바꾼다.
+- 진행 중인 항목은 하나의 주 작업만 `[>]`로 표시한다.
+- 결정이 필요한 항목은 `[?]`, 작업을 막는 항목은 `[!]`로 분리한다.
+- 자세한 기능 요구사항은 이 문서에 복사하지 말고 출처 계획 문서를 참조한다.
