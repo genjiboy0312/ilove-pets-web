@@ -7,6 +7,7 @@ import type { resources } from "../../i18n/resources"
 export interface CategoryTabsProps {
   readonly selectedFilter: PetCategoryFilter
   readonly onSelectFilter: (filter: PetCategoryFilter) => void
+  readonly ariaLabel?: string
 }
 
 const categoryLabelKeys = {
@@ -27,11 +28,14 @@ function getCategoryButtonClassName(isSelected: boolean): string {
     : "home-category-strip__button"
 }
 
-export function CategoryTabs({ selectedFilter, onSelectFilter }: CategoryTabsProps) {
+export function CategoryTabs({ ariaLabel, selectedFilter, onSelectFilter }: CategoryTabsProps) {
   const { t } = useTranslation()
 
   return (
-    <section className="home-category-strip" aria-label={t(($) => $.home.categoryLabel)}>
+    <section
+      className="home-category-strip"
+      aria-label={ariaLabel ?? t(($) => $.home.categoryLabel)}
+    >
       <div className="home-category-strip__scroller">
         {PET_FILTER_IDS.map((filterId) => {
           const isSelected = selectedFilter === filterId

@@ -205,4 +205,41 @@ select {
       transform: none;
     }
   }
+  .thumb-frame::before {
+    transition-duration: var(--duration-fast);
+  }
+}
+
+.thumb-frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--color-surface-subtle);
+}
+
+.thumb-frame::before {
+  position: absolute;
+  inset: var(--space-0);
+  background: var(--color-primary-soft);
+  content: "";
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.thumb-frame[data-image-state="failed"]::before {
+  opacity: 1;
+}
+
+.thumb-frame__image {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  object-fit: cover;
+}
+
+.thumb-frame[data-image-state="failed"] .thumb-frame__image {
+  opacity: 0;
 }
