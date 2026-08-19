@@ -157,6 +157,15 @@ export const mockActivitiesById = {
   },
 } as const satisfies Record<ActivityId, Activity>
 
+export const mockPetIds = [
+  "pet_bori",
+  "pet_miso",
+  "pet_nori",
+  "pet_kiki",
+  "pet_tofu",
+  "pet_pebble",
+] as const satisfies readonly PetId[]
+
 export const mockPostIds = [
   "post_bori_hike",
   "post_miso_sun",
