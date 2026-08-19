@@ -1,7 +1,11 @@
 import { expect, test } from "@playwright/test"
+import type { Page } from "@playwright/test"
+
+import { themePreferenceStorageKey } from "../src/theme/themePreference"
 
 const viewportWidths = [375, 768, 1280]
 const minimumTextContrastRatio = 4.5
+const i18nextStorageKey = "i18nextLng"
 
 interface RgbColor {
   readonly red: number
@@ -12,6 +16,17 @@ interface RgbColor {
 interface SetupListColors {
   readonly color: string
   readonly backgroundColor: string
+}
+
+interface StorageSeed {
+  readonly key: string
+  readonly value: string
+}
+
+async function seedStorage(page: Page, seed: StorageSeed): Promise<void> {
+  await page.addInitScript((storageSeed) => {
+    window.localStorage.setItem(storageSeed.key, storageSeed.value)
+  }, seed)
 }
 
 function parseRgbColor(color: string): RgbColor {
@@ -60,9 +75,10 @@ function getContrastRatio(foreground: RgbColor, background: RgbColor): number {
 }
 
 for (const viewportWidth of viewportWidths) {
-  test(`renders Stage 1 shell at ${viewportWidth.toString()}px`, async ({ page }) => {
-    // Given: a production preview viewport for the Stage 1 app shell.
+  test(`renders Stage 3 shell at ${viewportWidth.toString()}px`, async ({ page }) => {
+    // Given: a production preview viewport for the Stage 3 app shell.
     await page.setViewportSize({ width: viewportWidth, height: 812 })
+    await seedStorage(page, { key: i18nextStorageKey, value: "ko-KR" })
 
     // When: the app is opened from the Vite preview server.
     await page.goto("/")
@@ -103,8 +119,56 @@ for (const viewportWidth of viewportWidths) {
     expect(productionText).not.toMatch(/react-grab|react-scan/i)
 
     await page.screenshot({
-      path: `test-results/stage1-${viewportWidth.toString()}.png`,
+      path: `test-results/stage3-${viewportWidth.toString()}.png`,
       fullPage: true,
     })
   })
 }
+
+test("applies persisted dark theme to the production root", async ({ page }) => {
+  // Given: the browser has a stored dark theme preference before app boot.
+  await seedStorage(page, { key: themePreferenceStorageKey, value: "dark" })
+
+  // When: the production preview app starts.
+  await page.goto("/")
+
+  // Then: the root theme and browser color scheme are dark.
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark")
+  await expect(page.locator("html")).toHaveCSS("color-scheme", "dark")
+})
+
+test("applies persisted light theme to the production root", async ({ page }) => {
+  // Given: the browser has a stored light theme preference before app boot.
+  await seedStorage(page, { key: themePreferenceStorageKey, value: "light" })
+
+  // When: the production preview app starts.
+  await page.goto("/")
+
+  // Then: the root theme and browser color scheme are light.
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light")
+  await expect(page.locator("html")).toHaveCSS("color-scheme", "light")
+})
+
+test("renders Japanese copy from the detected stored language", async ({ page }) => {
+  // Given: the detector cache contains Japanese before app boot.
+  await seedStorage(page, { key: i18nextStorageKey, value: "ja-JP" })
+
+  // When: the production preview app starts.
+  await page.goto("/")
+
+  // Then: Japanese bundled copy is rendered without adding screenshot coverage.
+  await expect(page.getByRole("status")).toContainText("フロントエンド基盤の準備が完了しました")
+  await expect(page.getByRole("button", { name: "システム" })).toBeVisible()
+})
+
+test("falls back to English for unsupported stored language", async ({ page }) => {
+  // Given: the detector cache contains an unsupported language before app boot.
+  await seedStorage(page, { key: i18nextStorageKey, value: "fr-FR" })
+
+  // When: the production preview app starts.
+  await page.goto("/")
+
+  // Then: English fallback copy is rendered.
+  await expect(page.getByRole("status")).toContainText("Frontend foundation ready")
+  await expect(page.getByRole("button", { name: "System" })).toBeVisible()
+})
