@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { BottomNavigation } from "./components/BottomNavigation"
 import { MobileAppShell } from "./components/MobileAppShell"
+import { HomeRoute } from "./features/home/HomeRoute"
 import type { ThemePreference } from "./theme/themePreference"
 import { useThemePreference } from "./theme/useThemePreference"
 
@@ -28,45 +29,6 @@ function ThemePreferenceControls() {
         </button>
       ))}
     </div>
-  )
-}
-
-function HomeRoute() {
-  const { t } = useTranslation()
-
-  return (
-    <section className="setup-status" role="status" aria-live="polite" aria-atomic="true">
-      <p className="setup-status__label">{t(($) => $.setup.label)}</p>
-      <h1 className="setup-status__title" id="app-title">
-        {t(($) => $.app.title)}
-      </h1>
-      <p className="setup-status__body">
-        {t(($) => $.setup.bodyLead)}{" "}
-        <span className="setup-status__body-nowrap">{t(($) => $.setup.bodyNowrap)}</span>
-      </p>
-      <ul className="setup-status__list">
-        <li>
-          <span className="setup-status__item-label">
-            {t(($) => $.setup.checklist.reactViteLabel)}
-          </span>
-          {t(($) => $.setup.checklist.reactViteText)}
-        </li>
-        <li>
-          <span className="setup-status__item-label">{t(($) => $.setup.checklist.themeLabel)}</span>
-          {t(($) => $.setup.checklist.themeText)}
-        </li>
-        <li>
-          <span className="setup-status__item-label">{t(($) => $.setup.checklist.i18nLabel)}</span>
-          {t(($) => $.setup.checklist.i18nText)}
-        </li>
-        <li>
-          <span className="setup-status__item-label">
-            {t(($) => $.setup.checklist.routingLabel)}
-          </span>
-          {t(($) => $.setup.checklist.routingText)}
-        </li>
-      </ul>
-    </section>
   )
 }
 

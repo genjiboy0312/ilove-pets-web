@@ -30,7 +30,7 @@ function renderAppAt(route = "/") {
   )
 }
 
-describe("App Stage 4 runtime shell", () => {
+describe("App Stage 5 runtime shell", () => {
   beforeEach(async () => {
     // Given: each App test starts from Korean copy, clean storage, and a clean root theme.
     localStorage.clear()
@@ -56,30 +56,31 @@ describe("App Stage 4 runtime shell", () => {
     expect(mainLandmarks).toHaveLength(1)
   })
 
-  it("names the app with a level-one heading", () => {
-    // Given: the Stage 4 home route is rendered.
+  it("names the home route with a level-one heading", () => {
+    // Given: the Stage 5 home route is rendered.
     renderAppAt()
 
     // When: the primary heading is queried by accessible name.
     const heading = screen.getByRole("heading", {
       level: 1,
-      name: "iLove Pets",
+      name: "홈",
     })
 
-    // Then: the app identity is exposed as the page title.
+    // Then: the home route title is exposed as the page title.
     expect(heading).toBeInTheDocument()
   })
 
-  it("announces scaffold readiness through a polite status region", () => {
-    // Given: the Stage 4 home route is rendered.
+  it("renders the home feed without the Stage 4 readiness status", () => {
+    // Given: the Stage 5 home route is rendered.
     renderAppAt()
 
-    // When: status content is discovered by semantic role.
-    const status = screen.getByRole("status")
+    // When: the home feed is discovered by semantic role.
+    const feed = screen.getByRole("feed", { name: "반려동물 피드" })
 
-    // Then: the readiness message is available in a polite live region.
-    expect(status).toHaveAttribute("aria-live", "polite")
-    expect(status).toHaveTextContent("프론트엔드 기반 준비 완료")
+    // Then: the real feed replaces the readiness message.
+    expect(feed).toBeInTheDocument()
+    expect(screen.queryByRole("status")).not.toBeInTheDocument()
+    expect(screen.queryByText("프론트엔드 기반 준비 완료")).not.toBeInTheDocument()
   })
 
   it("renders accessible Korean theme preference controls", () => {
@@ -125,25 +126,18 @@ describe("App Stage 4 runtime shell", () => {
     expect(screen.getByRole("button", { name: "시스템" })).toHaveAttribute("aria-pressed", "true")
   })
 
-  it("lists the foundation areas covered by the scaffold", () => {
-    // Given: the Stage 4 home route is rendered.
+  it("lists the default home feed posts", () => {
+    // Given: the Stage 5 home route is rendered.
     renderAppAt()
 
-    // When: scaffold areas are read from the semantic list.
-    const list = screen.getByRole("list")
-    const itemText = within(list)
-      .getAllByRole("listitem")
-      .map((item) => item.textContent)
+    // When: feed articles are read from the semantic feed.
+    const feed = screen.getByRole("feed", { name: "반려동물 피드" })
+    const articles = within(feed).getAllByRole("article")
 
-    // Then: the list communicates the implementation foundations, not mock data.
-    expect(itemText).toEqual(
-      expect.arrayContaining([
-        expect.stringMatching(/React\/Vite/i),
-        expect.stringMatching(/theme tokens/i),
-        expect.stringMatching(/i18n readiness/i),
-        expect.stringMatching(/routing readiness/i),
-      ]),
-    )
+    // Then: mock feed content is visible through the app shell.
+    expect(articles).toHaveLength(4)
+    expect(within(feed).getByText("Bori")).toBeInTheDocument()
+    expect(within(feed).getByText("Miso")).toBeInTheDocument()
   })
 
   it("renders the fixed five-item bottom navigation in translated order", () => {
@@ -205,7 +199,7 @@ describe("App Stage 4 runtime shell", () => {
     const homeLink = screen.getByRole("link", { name: "홈" })
 
     // Then: the user lands on home and the home navigation item is active.
-    expect(screen.getByRole("status")).toHaveTextContent("프론트엔드 기반 준비 완료")
+    expect(screen.getByRole("heading", { level: 1, name: "홈" })).toBeInTheDocument()
     expect(homeLink).toHaveAttribute("aria-current", "page")
   })
 })

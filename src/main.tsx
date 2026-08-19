@@ -7,6 +7,7 @@ import { initializeI18n } from "./i18n/i18n"
 import "./styles/theme.css"
 import "./styles/base.css"
 import "./styles/navigation.css"
+import "./styles/home.css"
 
 export class RootElementMissingError extends Error {
   constructor() {
