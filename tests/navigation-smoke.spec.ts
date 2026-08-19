@@ -129,7 +129,7 @@ test("clicking bottom navigation routes updates URL, heading, and active state",
     { heading: "작성", label: "작성", path: "/create" },
     { heading: "활동", label: "활동", path: "/activity" },
     { heading: "마이", label: "마이", path: "/my" },
-    { heading: "iLove Pets", label: "홈", path: "/" },
+    { heading: "홈", label: "홈", path: "/" },
   ] as const
 
   for (const routeCheck of routeChecks) {
@@ -244,5 +244,5 @@ test("redirects unknown production routes to home", async ({ page }) => {
 
   // Then: the app replaces the unknown route with home.
   await expect(page).toHaveURL("/")
-  await expect(page.getByRole("heading", { level: 1, name: "iLove Pets" })).toBeVisible()
+  await expect(page.getByRole("heading", { level: 1, name: "홈" })).toBeVisible()
 })

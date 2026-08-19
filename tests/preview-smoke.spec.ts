@@ -13,7 +13,7 @@ interface RgbColor {
   readonly blue: number
 }
 
-interface SetupListColors {
+interface HomeCategoryColors {
   readonly color: string
   readonly backgroundColor: string
 }
@@ -92,8 +92,8 @@ for (const viewportWidth of viewportWidths) {
 
       return `${document.documentElement.textContent} ${scriptText}`
     })
-    const setupListColors: SetupListColors = await page
-      .locator(".setup-status__list")
+    const selectedCategoryColors: HomeCategoryColors = await page
+      .getByRole("button", { exact: true, name: "전체" })
       .evaluate((element) => {
         const style = window.getComputedStyle(element)
 
@@ -102,20 +102,20 @@ for (const viewportWidth of viewportWidths) {
           backgroundColor: style.backgroundColor,
         }
       })
-    const setupListContrastRatio = getContrastRatio(
-      parseRgbColor(setupListColors.color),
-      parseRgbColor(setupListColors.backgroundColor),
+    const selectedCategoryContrastRatio = getContrastRatio(
+      parseRgbColor(selectedCategoryColors.color),
+      parseRgbColor(selectedCategoryColors.backgroundColor),
     )
 
-    await expect(page.getByRole("heading", { level: 1, name: "iLove Pets" })).toBeVisible()
-    await expect(page.getByRole("status")).toContainText("프론트엔드 기반 준비 완료")
+    await expect(page.getByRole("heading", { level: 1, name: "홈" })).toBeVisible()
+    await expect(page.getByRole("feed", { name: "반려동물 피드" })).toBeVisible()
     await expect(page.getByRole("main")).toHaveCount(1)
     await expect(
       page.evaluate(
         () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
       ),
     ).resolves.toBe(true)
-    expect(setupListContrastRatio).toBeGreaterThanOrEqual(minimumTextContrastRatio)
+    expect(selectedCategoryContrastRatio).toBeGreaterThanOrEqual(minimumTextContrastRatio)
     expect(productionText).not.toMatch(/react-grab|react-scan/i)
 
     await page.screenshot({
@@ -157,7 +157,8 @@ test("renders Japanese copy from the detected stored language", async ({ page })
   await page.goto("/")
 
   // Then: Japanese bundled copy is rendered without adding screenshot coverage.
-  await expect(page.getByRole("status")).toContainText("フロントエンド基盤の準備が完了しました")
+  await expect(page.getByRole("heading", { level: 1, name: "ホーム" })).toBeVisible()
+  await expect(page.getByRole("region", { name: "ペットカテゴリー" })).toBeVisible()
   await expect(page.getByRole("button", { name: "システム" })).toBeVisible()
 })
 
@@ -169,6 +170,7 @@ test("falls back to English for unsupported stored language", async ({ page }) =
   await page.goto("/")
 
   // Then: English fallback copy is rendered.
-  await expect(page.getByRole("status")).toContainText("Frontend foundation ready")
+  await expect(page.getByRole("heading", { level: 1, name: "Home" })).toBeVisible()
+  await expect(page.getByRole("region", { name: "Pet categories" })).toBeVisible()
   await expect(page.getByRole("button", { name: "System" })).toBeVisible()
 })
