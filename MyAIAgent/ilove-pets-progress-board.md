@@ -26,12 +26,13 @@
 - [x] ESLint, Prettier, Vitest, Playwright 품질 도구가 구성되어 있다.
 - [x] Stage 1 앱 셸, 디자인 토큰, light/dark theme 기반이 구현되어 있다.
 - [x] production build와 3개 viewport 브라우저 smoke가 통과한다.
-- [ ] 다음 작업은 폴더 구조, 도메인 타입, 상수, mock data 준비다.
+- [x] `constants`, `types`, `mocks` 폴더와 Stage 2 데이터 기반이 준비되어 있다.
+- [ ] 다음 작업은 theme, i18n, 모바일 앱 shell 구성이다.
 
 ## 프론트엔드 MVP 작업 단계
 
 1. [x] React, TypeScript, Vite 스캐폴드와 품질 도구 구성
-2. [ ] 폴더 구조, 도메인 타입, 상수, mock data 준비
+2. [x] 폴더 구조, 도메인 타입, 상수, mock data 준비
 3. [ ] theme, i18n, 모바일 앱 shell 구성
 4. [ ] React Router와 하단 Bottom Navigation 구성
 5. [ ] Home, 카테고리 swipe, mock feed 구현
@@ -43,8 +44,9 @@
 1. [x] 패키지 매니저는 npm으로 확정했다.
 2. [x] Vitest와 React Testing Library를 초기 테스트 기반으로 확정했다.
 3. [x] Stage 1 스캐폴드, strict 설정, 앱 진입점, production 검증을 완료했다.
-4. [ ] Stage 2에 필요한 폴더 경계와 도메인 타입을 정의한다.
-5. [ ] 상수와 mock data를 타입 안전하게 준비한다.
+4. [x] Stage 2 폴더 경계와 readonly 도메인 타입을 정의했다.
+5. [x] 카테고리 상수와 정규화된 mock data를 타입 안전하게 준비했다.
+6. [ ] Stage 3에서 theme 상태, i18n 구조, 모바일 앱 shell을 구성한다.
 
 ## 결정 필요와 차단 요소
 
@@ -73,6 +75,9 @@
 - [x] React Doctor 100점, 진단 0건을 확인했다.
 - [x] 375px, 768px, 1280px에서 독립 visual QA 두 패스가 모두 PASS했다.
 - [x] 체크리스트 텍스트 대비 4.5:1 이상과 한국어 의미 단위 줄바꿈을 회귀 검사했다.
+- [x] Stage 2 카테고리, 도메인, mock data 불변식 테스트 8개를 추가했다.
+- [x] 전체 Vitest 12개, TypeScript, ESLint, Prettier, production build가 통과했다.
+- [x] Pet owner, Post pet, Activity actor/target 참조에 orphan data가 없음을 확인했다.
 
 ## 업데이트 규칙
 
