@@ -1,6 +1,6 @@
 # iLove Pets 진행 현황 보드
 
-마지막 업데이트: 2026-08-19  
+마지막 업데이트: 2026-08-20
 출처 계획: [MyAIAgent/ilove-pets-planning.md](./ilove-pets-planning.md)
 
 ## 마커
@@ -38,8 +38,8 @@
 3. [x] theme, i18n, 모바일 앱 shell 구성
 4. [x] React Router와 하단 Bottom Navigation 구성
 5. [x] Home, 카테고리 swipe, mock feed 구현
-6. [>] Explore, Create, Activity, My, Settings 화면 구현
-7. [ ] theme 전환, 언어 전환, 수동 확인, TypeScript, ESLint, build 검증
+6. [x] Explore, Create, Activity, My, Settings 화면 구현
+7. [x] theme 전환, 언어 전환, 수동 확인, TypeScript, ESLint, build 검증
 
 ## 다음 액션 큐
 
@@ -51,7 +51,7 @@
 6. [x] Stage 3 theme 상태, i18n 구조, 모바일 앱 shell을 구성했다.
 7. [x] Stage 4에서 React Router와 하단 Bottom Navigation을 구성했다.
 8. [x] Stage 5에서 Home 카테고리 swipe와 mock feed를 구현했다.
-9. [>] Stage 6에서 Explore, Create, Activity, My, Settings 화면을 구현한다.
+9. [x] Stage 6에서 Explore, Create, Activity, My, Settings 화면을 구현했다.
 
 ## 결정 필요와 차단 요소
 
@@ -94,6 +94,9 @@
 - [x] Stage 5 Vitest 47개, production Playwright 23개, TypeScript, ESLint, Prettier, build가 통과했다.
 - [x] Stage 5 React Doctor 100점을 확인했다.
 - [x] Stage 5 Home 스크린샷을 viewport 캡처로 재생성하고 한국어/일본어 표시를 확인했다.
+- [x] Stage 6 Explore, Create, Activity, My, Settings 화면을 구현하고 라우트를 연결했다.
+- [x] Stage 6 Vitest 89개, production Playwright 31개, TypeScript, ESLint, Prettier, build가 통과했다.
+- [x] Stage 6 React Doctor 100점을 확인했다.
 
 ## 업데이트 규칙
 
