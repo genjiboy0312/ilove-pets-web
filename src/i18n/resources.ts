@@ -18,12 +18,6 @@ export const resources = {
           my: "My",
         },
       },
-      routes: {
-        explore: "Explore",
-        create: "Create",
-        activity: "Activity",
-        my: "My",
-      },
       explore: {
         heading: "Explore",
         searchLabel: "Search",
@@ -170,12 +164,6 @@ export const resources = {
           my: "マイ",
         },
       },
-      routes: {
-        explore: "探す",
-        create: "作成",
-        activity: "通知",
-        my: "マイ",
-      },
       explore: {
         heading: "探す",
         searchLabel: "検索",
@@ -320,12 +308,6 @@ export const resources = {
           activity: "활동",
           my: "마이",
         },
-      },
-      routes: {
-        explore: "탐색",
-        create: "작성",
-        activity: "활동",
-        my: "마이",
       },
       explore: {
         heading: "탐색",

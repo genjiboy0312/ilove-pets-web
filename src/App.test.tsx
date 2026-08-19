@@ -171,20 +171,21 @@ describe("App Stage 5 runtime shell", () => {
     expect(createLink).toHaveClass("bottom-navigation__link--active")
   })
 
-  it("renders minimal translated placeholders for non-home routes", () => {
-    // Given: each non-home Stage 4 route is opened directly.
+  it("renders the real stage 6 screens for every non-home route", () => {
+    // Given: each non-home Stage 6 route is opened directly.
     const routes = [
       { path: "/explore", heading: "탐색" },
       { path: "/create", heading: "작성" },
       { path: "/activity", heading: "활동" },
       { path: "/my", heading: "마이" },
+      { path: "/settings", heading: "설정" },
     ] as const
 
     for (const route of routes) {
       // When: the route is rendered.
       const { unmount } = renderAppAt(route.path)
 
-      // Then: the placeholder heading is translated and no home status region is duplicated.
+      // Then: the real route heading is translated and no home status region is duplicated.
       expect(screen.getByRole("heading", { level: 1, name: route.heading })).toBeInTheDocument()
       expect(screen.queryByRole("status")).not.toBeInTheDocument()
       unmount()

@@ -8,6 +8,11 @@ import "./styles/theme.css"
 import "./styles/base.css"
 import "./styles/navigation.css"
 import "./styles/home.css"
+import "./styles/explore.css"
+import "./styles/create.css"
+import "./styles/activity.css"
+import "./styles/my.css"
+import "./styles/settings.css"
 
 export class RootElementMissingError extends Error {
   constructor() {

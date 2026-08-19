@@ -3,52 +3,13 @@ import { useTranslation } from "react-i18next"
 
 import { BottomNavigation } from "./components/BottomNavigation"
 import { MobileAppShell } from "./components/MobileAppShell"
+import { ThemePreferenceControls } from "./components/ThemePreferenceControls"
+import { ActivityRoute } from "./features/activity/ActivityRoute"
+import { CreateRoute } from "./features/create/CreateRoute"
+import { ExploreRoute } from "./features/explore/ExploreRoute"
 import { HomeRoute } from "./features/home/HomeRoute"
-import type { ThemePreference } from "./theme/themePreference"
-import { useThemePreference } from "./theme/useThemePreference"
-
-const themeOptions = ["system", "light", "dark"] as const satisfies readonly ThemePreference[]
-
-function ThemePreferenceControls() {
-  const { t } = useTranslation()
-  const { preference, setPreference } = useThemePreference()
-
-  return (
-    <div className="theme-control" role="group" aria-label={t(($) => $.theme.legend)}>
-      {themeOptions.map((themeOption) => (
-        <button
-          aria-pressed={preference === themeOption}
-          className="theme-control__button"
-          key={themeOption}
-          onClick={() => {
-            setPreference(themeOption)
-          }}
-          type="button"
-        >
-          {t(($) => $.theme.options[themeOption])}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-interface PlaceholderRouteProps {
-  readonly routeKey: "explore" | "create" | "activity" | "my"
-}
-
-function PlaceholderRoute({ routeKey }: PlaceholderRouteProps) {
-  const { t } = useTranslation()
-
-  return (
-    <section className="route-placeholder" aria-labelledby={`${routeKey}-route-title`}>
-      <p className="route-placeholder__label">{t(($) => $.routes.placeholderLabel)}</p>
-      <h1 className="route-placeholder__title" id={`${routeKey}-route-title`}>
-        {t(($) => $.routes[routeKey].title)}
-      </h1>
-      <p className="route-placeholder__body">{t(($) => $.routes[routeKey].body)}</p>
-    </section>
-  )
-}
+import { MyRoute } from "./features/my/MyRoute"
+import { SettingsRoute } from "./features/settings/SettingsRoute"
 
 export function App() {
   const { t } = useTranslation()
@@ -62,10 +23,11 @@ export function App() {
     >
       <Routes>
         <Route index element={<HomeRoute />} />
-        <Route path="explore" element={<PlaceholderRoute routeKey="explore" />} />
-        <Route path="create" element={<PlaceholderRoute routeKey="create" />} />
-        <Route path="activity" element={<PlaceholderRoute routeKey="activity" />} />
-        <Route path="my" element={<PlaceholderRoute routeKey="my" />} />
+        <Route path="explore" element={<ExploreRoute />} />
+        <Route path="create" element={<CreateRoute />} />
+        <Route path="activity" element={<ActivityRoute />} />
+        <Route path="my" element={<MyRoute />} />
+        <Route path="settings" element={<SettingsRoute />} />
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </MobileAppShell>
