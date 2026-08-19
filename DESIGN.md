@@ -153,6 +153,7 @@ Base spacing is 4px. Every layout value must use this scale or a named layout va
 --space-12: 3rem; /* 48px */
 --size-app-max: 430px;
 --size-touch-min: 44px;
+--size-bottom-nav: 4.5rem;
 --gutter-mobile: var(--space-4);
 --safe-top: env(safe-area-inset-top, 0px);
 --safe-right: env(safe-area-inset-right, 0px);
@@ -163,15 +164,15 @@ Base spacing is 4px. Every layout value must use this scale or a named layout va
 Layout rules:
 
 - Mobile uses full viewport width with 16px gutters.
-- Larger viewports center the app canvas at `--size-app-max`; no desktop-specific UI in Stage 1.
+- Larger viewports center the app canvas and fixed bottom navigation at `--size-app-max`; no desktop-specific UI is introduced for Stage 4 routing.
 - The app canvas must respect safe areas: top and bottom padding add `--safe-top` and `--safe-bottom` where content could collide with browser chrome.
 - Minimum interactive target is `--size-touch-min` in both dimensions.
 - Stage 1 status content sits in a single vertical flow: app identity, scaffold state, next-step note. No nested card stacks.
-- Future bottom navigation must reserve bottom safe-area space, but its primitive is not defined in this contract.
+- Stage 4 bottom navigation reserves content space with `--size-bottom-nav` plus `--safe-bottom`, remains fixed to the bottom of the centered max-430px shell, and keeps route content from sitting beneath it.
 
 ## 5. Components
 
-Only Stage 1 primitives are defined here. Later agents must not invent feed, navigation, post, profile, category, or route primitives from this document; those require a future design extension.
+Stage 1 scaffold primitives remain defined here, and Stage 4 adds only the fixed `BottomNavigation` route primitive. Later agents must not invent feed, post, profile, category, or product route primitives from this document; those require a future design extension.
 
 ### AppCanvas
 
@@ -237,6 +238,43 @@ Layout:
 - Single elevated surface with internal padding `--space-5` or `--space-6`.
 - Gap between label, heading, body, and checklist uses `--space-2` to `--space-4`.
 - Max text measure stays within the mobile canvas gutters.
+
+### BottomNavigation
+
+Purpose: Stage 4 fixed mobile route navigation for the five implemented app destinations.
+
+Structure:
+
+- One `nav` landmark labelled through translated resources.
+- Exactly five `NavLink` links in order Home, Explore, Create, Activity, My.
+- Every link combines one decorative Lucide icon with a visible translated text label; labels provide the accessible names.
+- Icons must use `aria-hidden="true"`; icon-only navigation is not allowed.
+
+Layout:
+
+- Fixed to the viewport bottom and centered with `transform: translateX(-50%)`.
+- Width is constrained to `min(100%, var(--size-app-max))`, preserving the 430px mobile shell at all viewport widths.
+- The item row uses five equal columns and no desktop-specific layout variant.
+- The app canvas reserves bottom content space with `--size-bottom-nav` plus `--safe-bottom` so route content does not overlap the fixed bar.
+- The navigation surface pads its bottom edge with `--safe-bottom` for browser and device chrome.
+
+States:
+
+- Active route state comes from `NavLink` and must expose `aria-current="page"`.
+- Active state is not color-only: pair `--color-text-primary` text with `--color-primary-soft` background and a stronger border.
+- Default state uses subdued text color on the elevated surface so future photos can remain the highest-salience content.
+- Focus uses the global `:focus-visible` `--color-focus` outline and must remain visible.
+
+Accessibility:
+
+- Each link must meet the `--size-touch-min` 44px minimum target in both dimensions.
+- Text labels must remain visible in Korean, Japanese, and English.
+- The bottom navigation sits outside `main`; the shell still exposes exactly one primary `main` landmark.
+
+Motion:
+
+- No decorative motion, shimmer, bounce, or looping animation.
+- Press feedback may use only the existing restrained transform pattern and must be removed under reduced motion.
 
 ## 6. Motion & Interaction
 
