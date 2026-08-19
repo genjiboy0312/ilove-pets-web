@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react"
+import { MemoryRouter } from "react-router"
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { App } from "./App"
@@ -21,7 +22,15 @@ class ControllableMediaQueryList extends EventTarget implements MediaQueryList {
   }
 }
 
-describe("App Stage 3 runtime shell", () => {
+function renderAppAt(route = "/") {
+  return render(
+    <MemoryRouter initialEntries={[route]}>
+      <App />
+    </MemoryRouter>,
+  )
+}
+
+describe("App Stage 4 runtime shell", () => {
   beforeEach(async () => {
     // Given: each App test starts from Korean copy, clean storage, and a clean root theme.
     localStorage.clear()
@@ -37,8 +46,8 @@ describe("App Stage 3 runtime shell", () => {
   })
 
   it("exposes one primary main landmark", () => {
-    // Given: the Stage 3 app shell is rendered.
-    render(<App />)
+    // Given: the Stage 4 app shell is rendered inside a router.
+    renderAppAt()
 
     // When: assistive technology discovers page landmarks.
     const mainLandmarks = screen.getAllByRole("main", { name: "iLove Pets 앱 셸" })
@@ -48,8 +57,8 @@ describe("App Stage 3 runtime shell", () => {
   })
 
   it("names the app with a level-one heading", () => {
-    // Given: the Stage 3 app shell is rendered.
-    render(<App />)
+    // Given: the Stage 4 home route is rendered.
+    renderAppAt()
 
     // When: the primary heading is queried by accessible name.
     const heading = screen.getByRole("heading", {
@@ -62,8 +71,8 @@ describe("App Stage 3 runtime shell", () => {
   })
 
   it("announces scaffold readiness through a polite status region", () => {
-    // Given: the Stage 3 app shell is rendered.
-    render(<App />)
+    // Given: the Stage 4 home route is rendered.
+    renderAppAt()
 
     // When: status content is discovered by semantic role.
     const status = screen.getByRole("status")
@@ -74,8 +83,8 @@ describe("App Stage 3 runtime shell", () => {
   })
 
   it("renders accessible Korean theme preference controls", () => {
-    // Given: the Stage 3 translated app shell is rendered.
-    render(<App />)
+    // Given: the Stage 4 translated app shell is rendered.
+    renderAppAt()
 
     // When: theme preference controls are discovered by their labelled group.
     const themeGroup = screen.getByRole("group", { name: "테마 설정" })
@@ -90,8 +99,8 @@ describe("App Stage 3 runtime shell", () => {
   })
 
   it("persists dark preference and applies the dark root theme", () => {
-    // Given: the Stage 3 app is rendered with default system preference.
-    render(<App />)
+    // Given: the Stage 4 app is rendered with default system preference.
+    renderAppAt()
 
     // When: the user chooses dark mode.
     fireEvent.click(screen.getByRole("button", { name: "다크" }))
@@ -105,7 +114,7 @@ describe("App Stage 3 runtime shell", () => {
 
   it("persists system preference when returning from an explicit theme", () => {
     // Given: the user has already selected dark mode in the rendered app.
-    render(<App />)
+    renderAppAt()
     fireEvent.click(screen.getByRole("button", { name: "다크" }))
 
     // When: the user returns to system mode.
@@ -117,8 +126,8 @@ describe("App Stage 3 runtime shell", () => {
   })
 
   it("lists the foundation areas covered by the scaffold", () => {
-    // Given: the Stage 3 app shell is rendered.
-    render(<App />)
+    // Given: the Stage 4 home route is rendered.
+    renderAppAt()
 
     // When: scaffold areas are read from the semantic list.
     const list = screen.getByRole("list")
@@ -135,5 +144,68 @@ describe("App Stage 3 runtime shell", () => {
         expect.stringMatching(/routing readiness/i),
       ]),
     )
+  })
+
+  it("renders the fixed five-item bottom navigation in translated order", () => {
+    // Given: the Stage 4 app is rendered in Korean.
+    renderAppAt()
+
+    // When: the bottom navigation is discovered by its landmark label.
+    const navigation = screen.getByRole("navigation", { name: "주요 탐색" })
+    const links = within(navigation).getAllByRole("link")
+
+    // Then: exactly five accessible route links are exposed in product order.
+    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "활동", "마이"])
+    expect(links.map((link) => link.getAttribute("href"))).toEqual([
+      "/",
+      "/explore",
+      "/create",
+      "/activity",
+      "/my",
+    ])
+  })
+
+  it("marks the active route without relying on color alone", () => {
+    // Given: the create route is active.
+    renderAppAt("/create")
+
+    // When: the create navigation item is queried by visible label.
+    const createLink = screen.getByRole("link", { name: "작성" })
+
+    // Then: React Router exposes the active page state for assistive technology and styling.
+    expect(createLink).toHaveAttribute("aria-current", "page")
+    expect(createLink).toHaveClass("bottom-navigation__link--active")
+  })
+
+  it("renders minimal translated placeholders for non-home routes", () => {
+    // Given: each non-home Stage 4 route is opened directly.
+    const routes = [
+      { path: "/explore", heading: "탐색" },
+      { path: "/create", heading: "작성" },
+      { path: "/activity", heading: "활동" },
+      { path: "/my", heading: "마이" },
+    ] as const
+
+    for (const route of routes) {
+      // When: the route is rendered.
+      const { unmount } = renderAppAt(route.path)
+
+      // Then: the placeholder heading is translated and no home status region is duplicated.
+      expect(screen.getByRole("heading", { level: 1, name: route.heading })).toBeInTheDocument()
+      expect(screen.queryByRole("status")).not.toBeInTheDocument()
+      unmount()
+    }
+  })
+
+  it("redirects unknown routes to the home route", () => {
+    // Given: an unknown route is opened inside memory history.
+    renderAppAt("/missing-route")
+
+    // When: React Router resolves the route tree.
+    const homeLink = screen.getByRole("link", { name: "홈" })
+
+    // Then: the user lands on home and the home navigation item is active.
+    expect(screen.getByRole("status")).toHaveTextContent("프론트엔드 기반 준비 완료")
+    expect(homeLink).toHaveAttribute("aria-current", "page")
   })
 })

@@ -8,6 +8,35 @@ export const resources = {
         bannerLabel: "App readiness",
         mainLabel: "iLove Pets app shell",
       },
+      navigation: {
+        ariaLabel: "Primary navigation",
+        items: {
+          home: "Home",
+          explore: "Explore",
+          create: "Create",
+          activity: "Activity",
+          my: "My",
+        },
+      },
+      routes: {
+        placeholderLabel: "Route ready",
+        explore: {
+          title: "Explore",
+          body: "The explore route is connected and ready for the next pet discovery surface.",
+        },
+        create: {
+          title: "Create",
+          body: "The create route is connected and ready for the next posting surface.",
+        },
+        activity: {
+          title: "Activity",
+          body: "The activity route is connected and ready for the next notification surface.",
+        },
+        my: {
+          title: "My",
+          body: "The my route is connected and ready for the next profile surface.",
+        },
+      },
       setup: {
         label: "Frontend foundation ready",
         bodyLead:
@@ -43,6 +72,35 @@ export const resources = {
         bannerLabel: "アプリ準備状況",
         mainLabel: "iLove Pets アプリシェル",
       },
+      navigation: {
+        ariaLabel: "主要ナビゲーション",
+        items: {
+          home: "ホーム",
+          explore: "探す",
+          create: "作成",
+          activity: "通知",
+          my: "マイ",
+        },
+      },
+      routes: {
+        placeholderLabel: "ルート準備完了",
+        explore: {
+          title: "探す",
+          body: "探すルートは接続済みで、次のペット発見画面を追加できます。",
+        },
+        create: {
+          title: "作成",
+          body: "作成ルートは接続済みで、次の投稿画面を追加できます。",
+        },
+        activity: {
+          title: "アクティビティ",
+          body: "アクティビティルートは接続済みで、次の通知画面を追加できます。",
+        },
+        my: {
+          title: "マイ",
+          body: "マイルートは接続済みで、次のプロフィール画面を追加できます。",
+        },
+      },
       setup: {
         label: "フロントエンド基盤の準備が完了しました",
         bodyLead: "あたたかなモバイルアプリシェルが整い、次のペットコミュニティ画面を安定して",
@@ -76,6 +134,35 @@ export const resources = {
       shell: {
         bannerLabel: "앱 준비 상태",
         mainLabel: "iLove Pets 앱 셸",
+      },
+      navigation: {
+        ariaLabel: "주요 탐색",
+        items: {
+          home: "홈",
+          explore: "탐색",
+          create: "작성",
+          activity: "활동",
+          my: "마이",
+        },
+      },
+      routes: {
+        placeholderLabel: "라우트 준비 완료",
+        explore: {
+          title: "탐색",
+          body: "탐색 라우트가 연결되어 다음 반려동물 발견 화면을 붙일 수 있습니다.",
+        },
+        create: {
+          title: "작성",
+          body: "작성 라우트가 연결되어 다음 게시 화면을 붙일 수 있습니다.",
+        },
+        activity: {
+          title: "활동",
+          body: "활동 라우트가 연결되어 다음 알림 화면을 붙일 수 있습니다.",
+        },
+        my: {
+          title: "마이",
+          body: "마이 라우트가 연결되어 다음 프로필 화면을 붙일 수 있습니다.",
+        },
       },
       setup: {
         label: "프론트엔드 기반 준비 완료",
