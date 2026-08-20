@@ -30,15 +30,16 @@
 
 .activity-screen__title {
   font-family: var(--font-display);
-  font-size: var(--font-size-heading);
+  font-size: var(--font-size-title);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
+  letter-spacing: -0.01em;
 }
 
 .activity-screen__empty {
   padding: var(--space-6);
   border: var(--border-hairline) solid var(--color-border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius-medium);
   background: var(--color-surface-elevated);
   color: var(--color-text-secondary);
   font-size: var(--font-size-body);
@@ -63,9 +64,9 @@
   min-width: var(--space-0);
   padding: var(--space-4);
   border: var(--border-hairline) solid var(--color-border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius-medium);
   background: var(--color-surface-elevated);
-  box-shadow: var(--shadow-status);
+  background: var(--color-surface-elevated);
 }
 
 .activity-item__avatar {
@@ -90,7 +91,7 @@
 
 .activity-item__preview {
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-small);
   background: var(--color-surface-subtle);
   color: var(--color-text-secondary);
   font-size: var(--font-size-small);

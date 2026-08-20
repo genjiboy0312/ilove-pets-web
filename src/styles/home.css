@@ -146,9 +146,9 @@
   min-width: var(--space-0);
   overflow: hidden;
   border: var(--border-hairline) solid var(--color-border);
-  border-radius: var(--radius-large);
+  border-radius: var(--radius-medium);
   background: var(--color-surface-elevated);
-  box-shadow: var(--shadow-status);
+  background: var(--color-surface-elevated);
 }
 
 .post-card__header {

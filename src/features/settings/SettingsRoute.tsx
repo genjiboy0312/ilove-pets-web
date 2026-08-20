@@ -42,30 +42,32 @@ export function SettingsRoute() {
         <h2 className="settings-section__title" id="settings-appearance-title">
           {t(($) => $.settings.appearance)}
         </h2>
-        <div className="settings-control">
-          <p className="settings-control__label">{t(($) => $.settings.theme)}</p>
-          <ThemePreferenceControls />
-        </div>
-        <div className="settings-control">
-          <p className="settings-control__label">{t(($) => $.settings.language)}</p>
-          <div
-            className="settings-language"
-            role="group"
-            aria-label={t(($) => $.settings.language)}
-          >
-            {languageOptions.map((language) => (
-              <button
-                aria-pressed={i18n.resolvedLanguage === language}
-                className="settings-language__button"
-                key={language}
-                onClick={() => {
-                  void i18n.changeLanguage(language)
-                }}
-                type="button"
-              >
-                {t(($) => $.settings.languages[language])}
-              </button>
-            ))}
+        <div className="settings-card">
+          <div className="settings-control">
+            <p className="settings-control__label">{t(($) => $.settings.theme)}</p>
+            <ThemePreferenceControls />
+          </div>
+          <div className="settings-control">
+            <p className="settings-control__label">{t(($) => $.settings.language)}</p>
+            <div
+              className="settings-language"
+              role="group"
+              aria-label={t(($) => $.settings.language)}
+            >
+              {languageOptions.map((language) => (
+                <button
+                  aria-pressed={i18n.resolvedLanguage === language}
+                  className="settings-language__button"
+                  key={language}
+                  onClick={() => {
+                    void i18n.changeLanguage(language)
+                  }}
+                  type="button"
+                >
+                  {t(($) => $.settings.languages[language])}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
