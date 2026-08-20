@@ -86,6 +86,15 @@ export const resources = {
         logout: "Logout",
         deleteAccount: "Delete Account",
         uiOnly: "UI only for now.",
+        switchOn: "On",
+        switchOff: "Off",
+        close: "Close",
+        termsBody:
+          "These terms of service govern your use of the iLove Pets community app. By using the service, you agree to treat other members and their pets with respect, to share only content you own, and to follow applicable laws. We may update these terms to reflect new features or legal requirements.",
+        privacyPolicyBody:
+          "This privacy policy explains how iLove Pets collects and uses information. We store your profile, pets, posts, and preferences locally to power the demo experience, and we do not sell your data to third parties. You can clear your data at any time from your device settings.",
+        aboutBody:
+          "iLove Pets is a warm community for pet lovers to share daily moments with their companions. This demo shows a mobile-first experience built with React, TypeScript, and Vite across Korean, Japanese, and English.",
       },
       home: {
         heading: "Home",
@@ -245,6 +254,15 @@ export const resources = {
         logout: "ログアウト",
         deleteAccount: "アカウント削除",
         uiOnly: "現在はUIのみです。",
+        switchOn: "オン",
+        switchOff: "オフ",
+        close: "閉じる",
+        termsBody:
+          "本利用規約は、iLove Petsコミュニティアプリのご利用に適用されます。サービスを利用することで、他のメンバーとペットを尊重し、所有するコンテンツのみを共有し、適用される法律を遵守することに同意したものとみなされます。新機能や法的要件に合わせて本規約を更新することがあります。",
+        privacyPolicyBody:
+          "本プライバシーポリシーは、iLove Petsが情報をどのように収集・利用するかを説明します。プロフィール、ペット、投稿、設定はデモ体験のために端末にローカル保存され、第三者にデータを販売することはありません。デバイス設定からいつでもデータを削除できます。",
+        aboutBody:
+          "iLove Petsは、ペットとの日常を共有する愛好家のための温かいコミュニティです。このデモは、React、TypeScript、Viteで構築されたモバイルファーストの体験を韓国語・日本語・英語で提供します。",
       },
       home: {
         heading: "ホーム",
@@ -403,6 +421,15 @@ export const resources = {
         logout: "로그아웃",
         deleteAccount: "계정 삭제",
         uiOnly: "지금은 UI만 제공됩니다.",
+        switchOn: "켜짐",
+        switchOff: "꺼짐",
+        close: "닫기",
+        termsBody:
+          "본 이용약관은 iLove Pets 커뮤니티 앱 이용에 적용됩니다. 서비스를 이용함으로써 다른 회원과 반려동물을 존중하고, 소유한 콘텐츠만 공유하며, 관련 법령을 준수하는 데 동의하게 됩니다. 새로운 기능이나 법적 요구사항에 맞춰 본 약관을 업데이트할 수 있습니다.",
+        privacyPolicyBody:
+          "본 개인정보 처리방침은 iLove Pets가 정보를 수집하고 사용하는 방법을 설명합니다. 프로필, 반려동물, 게시물, 설정은 데모 경험을 위해 기기에 로컬로 저장되며, 제3자에게 데이터를 판매하지 않습니다. 기기 설정에서 언제든지 데이터를 삭제할 수 있습니다.",
+        aboutBody:
+          "iLove Pets는 반려동물과의 일상을 나누는 반려인을 위한 따뜻한 커뮤니티입니다. 이 데모는 React, TypeScript, Vite로 구축된 모바일 우선 경험을 한국어·일본어·영어로 제공합니다.",
       },
       home: {
         heading: "홈",

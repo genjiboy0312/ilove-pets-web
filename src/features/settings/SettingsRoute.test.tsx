@@ -123,4 +123,75 @@ describe("SettingsRoute", () => {
     expect(screen.getByRole("button", { name: "계정 삭제" })).toBeInTheDocument()
     expect(screen.getByText("지금은 UI만 제공됩니다.")).toBeInTheDocument()
   })
+
+  it("toggles notification preferences and persists them to storage", () => {
+    render(
+      <MemoryRouter>
+        <SettingsRoute />
+      </MemoryRouter>,
+    )
+
+    // Given: notification switches start enabled by default.
+    const likesSwitch = screen.getByRole("switch", { name: "좋아요 켜짐" })
+
+    expect(likesSwitch).toHaveAttribute("aria-checked", "true")
+
+    // When: the user turns off the likes notification.
+    fireEvent.click(likesSwitch)
+
+    // Then: the switch reflects the new state and the preference is persisted.
+    expect(screen.getByRole("switch", { name: "좋아요 꺼짐" })).toHaveAttribute(
+      "aria-checked",
+      "false",
+    )
+    expect(localStorage.getItem("ilove-pets-web:notification-preferences")).toContain(
+      '"likes":false',
+    )
+  })
+
+  it("opens the privacy policy sheet from the privacy section", () => {
+    render(
+      <MemoryRouter>
+        <SettingsRoute />
+      </MemoryRouter>,
+    )
+
+    // When: the user activates the privacy policy item from the privacy section.
+    const privacySection = screen.getByRole("region", { name: "개인정보 및 보안" })
+
+    fireEvent.click(within(privacySection).getByRole("button", { name: "개인정보 처리방침" }))
+
+    // Then: a dialog opens with the policy content and a close control.
+    const dialog = screen.getByRole("dialog", { name: "개인정보 처리방침" })
+
+    expect(dialog).toBeInTheDocument()
+    expect(within(dialog).getByText(/개인정보 처리방침은/)).toBeInTheDocument()
+  })
+
+  it("opens the terms and about sheets from the service section", () => {
+    render(
+      <MemoryRouter>
+        <SettingsRoute />
+      </MemoryRouter>,
+    )
+
+    // When: the user activates the terms item.
+    fireEvent.click(screen.getByRole("button", { name: "이용약관" }))
+
+    // Then: the terms dialog opens with its body content.
+    const termsDialog = screen.getByRole("dialog", { name: "이용약관" })
+
+    expect(termsDialog).toBeInTheDocument()
+    expect(within(termsDialog).getByText(/본 이용약관은/)).toBeInTheDocument()
+
+    // When: the dialog is closed and the about item is activated.
+    fireEvent.click(within(termsDialog).getByRole("button", { name: "닫기" }))
+    fireEvent.click(screen.getByRole("button", { name: "정보" }))
+
+    // Then: the about dialog opens with its body content.
+    const aboutDialog = screen.getByRole("dialog", { name: "정보" })
+
+    expect(aboutDialog).toBeInTheDocument()
+    expect(within(aboutDialog).getByText(/iLove Pets는/)).toBeInTheDocument()
+  })
 })

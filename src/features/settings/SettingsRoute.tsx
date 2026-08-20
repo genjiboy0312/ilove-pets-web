@@ -1,14 +1,30 @@
 import { ArrowLeft, Check } from "lucide-react"
+import { useState } from "react"
 import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
 
 import { ThemePreferenceControls } from "../../components/ThemePreferenceControls"
 import { i18n } from "../../i18n/i18n"
+import { NotificationPreferenceControls } from "./NotificationPreferenceControls"
+import { SettingsSheet } from "./SettingsSheet"
 
 const languageOptions = ["ko", "ja", "en"] as const
 
+type InfoSheetKey = "terms" | "privacyPolicy" | "about"
+
 export function SettingsRoute() {
   const { t } = useTranslation()
+  const [openSheet, setOpenSheet] = useState<InfoSheetKey | null>(null)
+
+  const infoSheetContent: Record<InfoSheetKey, { readonly title: string; readonly body: string }> =
+    {
+      terms: { title: t(($) => $.settings.terms), body: t(($) => $.settings.termsBody) },
+      privacyPolicy: {
+        title: t(($) => $.settings.privacyPolicy),
+        body: t(($) => $.settings.privacyPolicyBody),
+      },
+      about: { title: t(($) => $.settings.about), body: t(($) => $.settings.aboutBody) },
+    }
 
   return (
     <section className="settings-screen" aria-labelledby="settings-route-title">
@@ -82,19 +98,25 @@ export function SettingsRoute() {
         <h2 className="settings-section__title" id="settings-notifications-title">
           {t(($) => $.settings.notifications)}
         </h2>
-        <ul className="settings-list">
-          <li className="settings-list__item">{t(($) => $.settings.likes)}</li>
-          <li className="settings-list__item">{t(($) => $.settings.comments)}</li>
-          <li className="settings-list__item">{t(($) => $.settings.follow)}</li>
-        </ul>
+        <NotificationPreferenceControls />
       </section>
 
       <section className="settings-section" aria-labelledby="settings-privacy-title">
         <h2 className="settings-section__title" id="settings-privacy-title">
           {t(($) => $.settings.privacy)}
         </h2>
-        <ul className="settings-list">
-          <li className="settings-list__item">{t(($) => $.settings.privacyPolicy)}</li>
+        <ul className="settings-list settings-list--buttons">
+          <li className="settings-list__item">
+            <button
+              className="settings-list__button"
+              onClick={() => {
+                setOpenSheet("privacyPolicy")
+              }}
+              type="button"
+            >
+              {t(($) => $.settings.privacyPolicy)}
+            </button>
+          </li>
         </ul>
       </section>
 
@@ -102,10 +124,40 @@ export function SettingsRoute() {
         <h2 className="settings-section__title" id="settings-service-title">
           {t(($) => $.settings.service)}
         </h2>
-        <ul className="settings-list">
-          <li className="settings-list__item">{t(($) => $.settings.terms)}</li>
-          <li className="settings-list__item">{t(($) => $.settings.privacyPolicy)}</li>
-          <li className="settings-list__item">{t(($) => $.settings.about)}</li>
+        <ul className="settings-list settings-list--buttons">
+          <li className="settings-list__item">
+            <button
+              className="settings-list__button"
+              onClick={() => {
+                setOpenSheet("terms")
+              }}
+              type="button"
+            >
+              {t(($) => $.settings.terms)}
+            </button>
+          </li>
+          <li className="settings-list__item">
+            <button
+              className="settings-list__button"
+              onClick={() => {
+                setOpenSheet("privacyPolicy")
+              }}
+              type="button"
+            >
+              {t(($) => $.settings.privacyPolicy)}
+            </button>
+          </li>
+          <li className="settings-list__item">
+            <button
+              className="settings-list__button"
+              onClick={() => {
+                setOpenSheet("about")
+              }}
+              type="button"
+            >
+              {t(($) => $.settings.about)}
+            </button>
+          </li>
         </ul>
       </section>
 
@@ -118,6 +170,17 @@ export function SettingsRoute() {
         </button>
         <p className="settings-actions__hint">{t(($) => $.settings.uiOnly)}</p>
       </div>
+
+      {openSheet === null ? null : (
+        <SettingsSheet
+          onClose={() => {
+            setOpenSheet(null)
+          }}
+          title={infoSheetContent[openSheet].title}
+        >
+          <p className="settings-sheet__paragraph">{infoSheetContent[openSheet].body}</p>
+        </SettingsSheet>
+      )}
     </section>
   )
 }

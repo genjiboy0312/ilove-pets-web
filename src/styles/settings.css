@@ -101,6 +101,104 @@
   border-block-start: var(--border-hairline) solid var(--color-border);
 }
 
+.settings-list--buttons .settings-list__item {
+  padding: var(--space-0);
+}
+
+.settings-list__button {
+  display: block;
+  width: 100%;
+  min-height: var(--size-touch-min);
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  text-align: start;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.settings-list__button:active {
+  background: var(--color-primary-soft);
+  color: var(--color-text-primary);
+}
+
+.settings-switch-list {
+  display: grid;
+  min-width: var(--space-0);
+  margin: var(--space-0);
+  padding: var(--space-0);
+  overflow: hidden;
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+  list-style: none;
+}
+
+.settings-switch-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-4);
+}
+
+.settings-switch-list__item + .settings-switch-list__item {
+  border-block-start: var(--border-hairline) solid var(--color-border);
+}
+
+.settings-switch-list__label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.settings-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 1.75rem;
+  padding: var(--space-0);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-subtle);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.settings-switch__thumb {
+  position: absolute;
+  top: var(--space-1);
+  inset-inline-start: var(--space-1);
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-inverse);
+  box-shadow: var(--shadow-none);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.settings-switch[aria-checked="true"] {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.settings-switch[aria-checked="true"] .settings-switch__thumb {
+  background: var(--color-text-inverse);
+  transform: translateX(calc(3rem - 1.75rem));
+}
+
 .settings-control {
   display: grid;
   min-width: var(--space-0);
@@ -117,13 +215,7 @@
 .settings-language {
   display: grid;
   min-width: var(--space-0);
-  margin: var(--space-0);
-  padding: var(--space-0);
-  overflow: hidden;
-  border: var(--border-hairline) solid var(--color-border);
-  border-radius: var(--radius-medium);
-  background: var(--color-surface-elevated);
-  list-style: none;
+  gap: var(--space-2);
 }
 
 .settings-language__button {
@@ -134,8 +226,9 @@
   width: 100%;
   min-height: var(--size-touch-min);
   padding: var(--space-2) var(--space-4);
-  border: var(--border-hairline) solid transparent;
-  background: transparent;
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-elevated);
   color: var(--color-text-primary);
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-medium);
@@ -147,11 +240,8 @@
     color var(--duration-fast) var(--ease-standard);
 }
 
-.settings-language__button + .settings-language__button {
-  border-block-start: var(--border-hairline) solid var(--color-border);
-}
-
 .settings-language__button[aria-pressed="true"] {
+  border-color: var(--color-border-strong);
   background: var(--color-primary-soft);
   color: var(--color-text-primary);
 }
