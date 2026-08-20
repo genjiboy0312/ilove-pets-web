@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Check } from "lucide-react"
 import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
 
@@ -42,32 +42,38 @@ export function SettingsRoute() {
         <h2 className="settings-section__title" id="settings-appearance-title">
           {t(($) => $.settings.appearance)}
         </h2>
-        <div className="settings-card">
-          <div className="settings-control">
-            <p className="settings-control__label">{t(($) => $.settings.theme)}</p>
-            <ThemePreferenceControls />
-          </div>
-          <div className="settings-control">
-            <p className="settings-control__label">{t(($) => $.settings.language)}</p>
-            <div
-              className="settings-language"
-              role="group"
-              aria-label={t(($) => $.settings.language)}
-            >
-              {languageOptions.map((language) => (
-                <button
-                  aria-pressed={i18n.resolvedLanguage === language}
-                  className="settings-language__button"
-                  key={language}
-                  onClick={() => {
-                    void i18n.changeLanguage(language)
-                  }}
-                  type="button"
-                >
+        <div className="settings-control">
+          <p className="settings-control__label">{t(($) => $.settings.theme)}</p>
+          <ThemePreferenceControls />
+        </div>
+        <div className="settings-control">
+          <p className="settings-control__label">{t(($) => $.settings.language)}</p>
+          <div
+            className="settings-language"
+            role="group"
+            aria-label={t(($) => $.settings.language)}
+          >
+            {languageOptions.map((language) => (
+              <button
+                aria-pressed={i18n.resolvedLanguage === language}
+                className="settings-language__button"
+                key={language}
+                onClick={() => {
+                  void i18n.changeLanguage(language)
+                }}
+                type="button"
+              >
+                <span className="settings-language__label">
                   {t(($) => $.settings.languages[language])}
-                </button>
-              ))}
-            </div>
+                </span>
+                <Check
+                  aria-hidden="true"
+                  className="settings-language__check"
+                  size={16}
+                  strokeWidth={2.5}
+                />
+              </button>
+            ))}
           </div>
         </div>
       </section>

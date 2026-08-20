@@ -58,40 +58,61 @@ select {
 }
 
 .theme-control {
-  display: inline-flex;
-  gap: var(--space-1);
-  padding: var(--space-1);
+  display: grid;
+  min-width: var(--space-0);
+  margin: var(--space-0);
+  padding: var(--space-0);
+  overflow: hidden;
   border: var(--border-hairline) solid var(--color-border);
-  border-radius: var(--radius-small);
-  background: var(--color-surface-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+  list-style: none;
 }
 
 .theme-control__button {
-  min-width: var(--space-0);
-  min-height: calc(var(--size-touch-min) * 0.85);
-  padding: var(--space-1) var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-4);
   border: var(--border-hairline) solid transparent;
-  border-radius: var(--radius-small);
   background: transparent;
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-small);
-  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
+  text-align: start;
   transition:
-    transform var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
     background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
 }
 
+.theme-control__button + .theme-control__button {
+  border-block-start: var(--border-hairline) solid var(--color-border);
+}
+
 .theme-control__button[aria-pressed="true"] {
-  border-color: var(--color-border-strong);
-  background: var(--color-surface-elevated);
+  background: var(--color-primary-soft);
   color: var(--color-text-primary);
 }
 
-.theme-control__button:active {
-  transform: translateY(var(--space-1));
+.theme-control__label {
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.theme-control__check {
+  flex: 0 0 auto;
+  color: var(--color-primary);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.theme-control__button[aria-pressed="true"] .theme-control__check {
+  opacity: 1;
 }
 
 .setup-status {

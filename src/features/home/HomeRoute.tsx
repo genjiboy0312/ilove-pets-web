@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { PET_FILTER_ALL } from "../../constants/petCategories"
@@ -10,7 +10,7 @@ import { PostCard } from "./PostCard"
 export function HomeRoute() {
   const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState<PetCategoryFilter>(PET_FILTER_ALL)
-  const posts = getHomeFeedPosts(selectedFilter)
+  const posts = useMemo(() => getHomeFeedPosts(selectedFilter), [selectedFilter])
 
   return (
     <section className="home-screen" aria-labelledby="home-route-title">

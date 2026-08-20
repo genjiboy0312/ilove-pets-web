@@ -1,6 +1,6 @@
 import { Heart, MessageCircle, Send } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { useMemo, useState } from "react"
+import { memo, useMemo, useState } from "react"
 import type { MouseEventHandler, ReactEventHandler } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -20,7 +20,7 @@ interface PostAction {
   readonly onActivate?: MouseEventHandler<HTMLButtonElement>
 }
 
-export function PostCard({ post }: PostCardProps) {
+export const PostCard = memo(function PostCard({ post }: PostCardProps) {
   const { i18n, t } = useTranslation()
   const [avatarLoadState, setAvatarLoadState] = useState<"loaded" | "failed">("loaded")
   const [imageLoadState, setImageLoadState] = useState<"loaded" | "failed">("loaded")
@@ -42,10 +42,14 @@ export function PostCard({ post }: PostCardProps) {
   )
   const postedTime = dateTimeFormatter.format(new Date(post.createdAt))
 
-  const metrics = {
-    likeCount: t(($) => $.home.metrics.likeCount, { count: likeCount }),
-    commentCount: t(($) => $.home.metrics.commentCount, { count: commentCount }),
-  } as const
+  const metrics = useMemo(
+    () =>
+      ({
+        likeCount: t(($) => $.home.metrics.likeCount, { count: likeCount }),
+        commentCount: t(($) => $.home.metrics.commentCount, { count: commentCount }),
+      }) as const,
+    [commentCount, likeCount, t],
+  )
   const handleAvatarError: ReactEventHandler<HTMLImageElement> = () => {
     setAvatarLoadState("failed")
   }
@@ -95,7 +99,9 @@ export function PostCard({ post }: PostCardProps) {
           <img
             alt={t(($) => $.home.alt.petAvatar, { petName: post.petName })}
             className="post-card__avatar"
+            decoding="async"
             height="48"
+            loading="lazy"
             onError={handleAvatarError}
             src={post.petAvatarUrl}
             width="48"
@@ -114,6 +120,8 @@ export function PostCard({ post }: PostCardProps) {
         <img
           alt={t(($) => $.home.alt.postImage, { petName: post.petName })}
           className="post-card__image"
+          decoding="async"
+          loading="lazy"
           onError={handleImageError}
           src={post.imageUrl}
         />
@@ -193,4 +201,4 @@ export function PostCard({ post }: PostCardProps) {
       ) : null}
     </article>
   )
-}
+})
