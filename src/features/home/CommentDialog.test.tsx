@@ -5,6 +5,9 @@ import { i18n, initializeI18n } from "../../i18n/i18n"
 import { getPostCommentCount, getPostComments } from "./postCommentsData"
 import { CommentDialog } from "./CommentDialog"
 
+const POST_ID = "post_bori_hike"
+const POST_IMAGE_URL = "https://example.com/bori-hike.jpg"
+
 describe("CommentDialog", () => {
   beforeEach(async () => {
     localStorage.clear()
@@ -12,19 +15,29 @@ describe("CommentDialog", () => {
     await i18n.changeLanguage("ko")
   })
 
-  it("renders the post comments with their authors", () => {
+  it("renders the post image alongside the post comments with their authors", () => {
     // Given: a post from mock data with comments in the data layer.
-    const postId = "post_bori_hike"
     const onClose = vi.fn()
     const onCommentAdded = vi.fn()
 
     // When: the comment dialog opens for that post.
-    render(<CommentDialog onClose={onClose} onCommentAdded={onCommentAdded} postId={postId} />)
+    render(
+      <CommentDialog
+        onClose={onClose}
+        onCommentAdded={onCommentAdded}
+        postId={POST_ID}
+        postImageUrl={POST_IMAGE_URL}
+      />,
+    )
 
-    // Then: the dialog lists every comment from the data layer.
+    // Then: the dialog shows the post image on one side and every comment on the other.
     const dialog = screen.getByRole("dialog", { name: "댓글" })
-    const comments = getPostComments(postId)
+    const comments = getPostComments(POST_ID)
 
+    expect(dialog.querySelector(".comment-dialog__media img")).toHaveAttribute(
+      "src",
+      POST_IMAGE_URL,
+    )
     expect(within(dialog).getAllByRole("listitem")).toHaveLength(comments.length)
     for (const comment of comments) {
       expect(within(dialog).getByText(comment.authorName)).toBeInTheDocument()
@@ -34,11 +47,17 @@ describe("CommentDialog", () => {
 
   it("adds the drafted comment to the list and notifies the parent", () => {
     // Given: an open comment dialog with a real post.
-    const postId = "post_bori_hike"
     const onClose = vi.fn()
     const onCommentAdded = vi.fn()
 
-    render(<CommentDialog onClose={onClose} onCommentAdded={onCommentAdded} postId={postId} />)
+    render(
+      <CommentDialog
+        onClose={onClose}
+        onCommentAdded={onCommentAdded}
+        postId={POST_ID}
+        postImageUrl={POST_IMAGE_URL}
+      />,
+    )
 
     // When: the user types a comment and submits it.
     const dialog = screen.getByRole("dialog")
@@ -50,7 +69,7 @@ describe("CommentDialog", () => {
 
     // Then: the new comment appears and the parent learns about it.
     expect(within(dialog).getByText("너무 귀여워요!")).toBeInTheDocument()
-    expect(within(dialog).getAllByRole("listitem")).toHaveLength(getPostCommentCount(postId) + 1)
+    expect(within(dialog).getAllByRole("listitem")).toHaveLength(getPostCommentCount(POST_ID) + 1)
     expect(onCommentAdded).toHaveBeenCalledTimes(1)
     expect(input).toHaveValue("")
   })
@@ -61,7 +80,12 @@ describe("CommentDialog", () => {
     const onCommentAdded = vi.fn()
 
     render(
-      <CommentDialog onClose={onClose} onCommentAdded={onCommentAdded} postId="post_bori_hike" />,
+      <CommentDialog
+        onClose={onClose}
+        onCommentAdded={onCommentAdded}
+        postId={POST_ID}
+        postImageUrl={POST_IMAGE_URL}
+      />,
     )
 
     // Then: whitespace-only drafts cannot be submitted.
@@ -86,7 +110,12 @@ describe("CommentDialog", () => {
     const onCommentAdded = vi.fn()
 
     render(
-      <CommentDialog onClose={onClose} onCommentAdded={onCommentAdded} postId="post_bori_hike" />,
+      <CommentDialog
+        onClose={onClose}
+        onCommentAdded={onCommentAdded}
+        postId={POST_ID}
+        postImageUrl={POST_IMAGE_URL}
+      />,
     )
 
     // When: the user activates the close button.

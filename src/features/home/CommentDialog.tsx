@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from "react"
 import type { SyntheticEvent } from "react"
 import { useTranslation } from "react-i18next"
 
-import type { IsoDateTimeString, PostId } from "../../types/domain"
+import type { HttpsUrl, IsoDateTimeString, PostId } from "../../types/domain"
 import { getCurrentCommenter, getPostComments } from "./postCommentsData"
 import type { PostCommentView } from "./postCommentsData"
 
@@ -12,15 +12,22 @@ function toIsoDateTimeString(date: Date): IsoDateTimeString {
 
 interface CommentDialogProps {
   readonly postId: PostId
+  readonly postImageUrl: HttpsUrl
   readonly onClose: () => void
   readonly onCommentAdded: () => void
 }
 
-export function CommentDialog({ onClose, onCommentAdded, postId }: CommentDialogProps) {
+export function CommentDialog({
+  onClose,
+  onCommentAdded,
+  postId,
+  postImageUrl,
+}: CommentDialogProps) {
   const { t } = useTranslation()
   const titleId = useId()
   const [draft, setDraft] = useState("")
   const [avatarLoadStates, setAvatarLoadStates] = useState<ReadonlySet<string>>(() => new Set())
+  const [mediaLoadState, setMediaLoadState] = useState<"loaded" | "failed">("loaded")
   const [comments, setComments] = useState<readonly PostCommentView[]>(() =>
     getPostComments(postId),
   )
@@ -86,42 +93,60 @@ export function CommentDialog({ onClose, onCommentAdded, postId }: CommentDialog
           </button>
         </header>
 
-        <div
-          className="comment-dialog__list"
-          role="list"
-          aria-label={t(($) => $.home.comments.heading)}
-        >
-          {comments.length === 0 ? (
-            <p className="comment-dialog__empty">{t(($) => $.home.comments.empty)}</p>
-          ) : (
-            comments.map((comment) => {
-              const isAvatarFailed = avatarLoadStates.has(comment.commentId)
+        <div className="comment-dialog__split">
+          <div
+            className="comment-dialog__media"
+            data-image-state={mediaLoadState}
+            data-testid="comment-dialog-media"
+          >
+            <img
+              alt=""
+              className="comment-dialog__media-image"
+              decoding="async"
+              onError={() => {
+                setMediaLoadState("failed")
+              }}
+              src={postImageUrl}
+            />
+          </div>
 
-              return (
-                <article className="comment-dialog__item" key={comment.commentId} role="listitem">
-                  <span
-                    className="comment-dialog__avatar-frame"
-                    data-image-state={isAvatarFailed ? "failed" : "loaded"}
-                  >
-                    <img
-                      alt=""
-                      className="comment-dialog__avatar"
-                      height="32"
-                      onError={() => {
-                        setAvatarLoadStates((current) => new Set(current).add(comment.commentId))
-                      }}
-                      src={comment.authorAvatarUrl}
-                      width="32"
-                    />
-                  </span>
-                  <div className="comment-dialog__body">
-                    <p className="comment-dialog__author">{comment.authorName}</p>
-                    <p className="comment-dialog__content">{comment.content}</p>
-                  </div>
-                </article>
-              )
-            })
-          )}
+          <div
+            className="comment-dialog__list"
+            role="list"
+            aria-label={t(($) => $.home.comments.heading)}
+          >
+            {comments.length === 0 ? (
+              <p className="comment-dialog__empty">{t(($) => $.home.comments.empty)}</p>
+            ) : (
+              comments.map((comment) => {
+                const isAvatarFailed = avatarLoadStates.has(comment.commentId)
+
+                return (
+                  <article className="comment-dialog__item" key={comment.commentId} role="listitem">
+                    <span
+                      className="comment-dialog__avatar-frame"
+                      data-image-state={isAvatarFailed ? "failed" : "loaded"}
+                    >
+                      <img
+                        alt=""
+                        className="comment-dialog__avatar"
+                        height="32"
+                        onError={() => {
+                          setAvatarLoadStates((current) => new Set(current).add(comment.commentId))
+                        }}
+                        src={comment.authorAvatarUrl}
+                        width="32"
+                      />
+                    </span>
+                    <div className="comment-dialog__body">
+                      <p className="comment-dialog__author">{comment.authorName}</p>
+                      <p className="comment-dialog__content">{comment.content}</p>
+                    </div>
+                  </article>
+                )
+              })
+            )}
+          </div>
         </div>
 
         <form className="comment-dialog__form" onSubmit={handleSubmit}>

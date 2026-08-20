@@ -177,6 +177,7 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
             setCommentCount((currentCount) => currentCount + 1)
           }}
           postId={post.postId}
+          postImageUrl={post.imageUrl}
         />
       ) : null}
 
