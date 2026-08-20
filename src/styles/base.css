@@ -196,6 +196,16 @@ select {
   }
 }
 
+@keyframes sheet-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(var(--space-0));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .theme-control__button {
     transition-duration: var(--duration-fast);

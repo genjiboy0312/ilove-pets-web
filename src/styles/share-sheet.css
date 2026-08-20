@@ -4,30 +4,42 @@
   z-index: 20;
   display: grid;
   place-items: end center;
-  padding: var(--space-3);
   background: rgb(0 0 0 / 0.5);
   animation: app-canvas-enter var(--duration-fast) var(--ease-standard) both;
 }
 
 .share-sheet {
+  position: relative;
   display: grid;
   grid-template-rows: auto auto;
-  width: min(100%, 26rem);
+  width: 100%;
+  max-width: var(--size-app-max);
   overflow: hidden;
   border: var(--border-hairline) solid var(--color-border);
-  border-radius: var(--radius-large);
+  border-block-end: none;
+  border-radius: var(--radius-large) var(--radius-large) 0 0;
   background: var(--color-surface-elevated);
-  box-shadow: var(--shadow-status);
   color: var(--color-text-primary);
-  animation: app-canvas-enter var(--duration-slow) var(--ease-standard) both;
+  animation: sheet-slide-up var(--duration-slow) var(--ease-standard) both;
+}
+
+.share-sheet::before {
+  position: absolute;
+  top: var(--space-2);
+  left: 50%;
+  width: 2.5rem;
+  height: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+  content: "";
+  transform: translateX(-50%);
 }
 
 .share-sheet__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4) var(--space-4) var(--space-3);
   border-block-end: var(--border-hairline) solid var(--color-border);
 }
 
@@ -40,6 +52,9 @@
 }
 
 .share-sheet__close {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--space-2);
   display: grid;
   min-width: var(--space-0);
   min-height: var(--size-touch-min);
@@ -50,6 +65,7 @@
   background: transparent;
   color: var(--color-text-secondary);
   font-size: var(--font-size-body);
+  transform: translateY(-50%);
   transition:
     background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard),
@@ -57,20 +73,21 @@
 }
 
 .share-sheet__close:active {
-  transform: translateY(var(--space-1));
+  background: var(--color-surface-subtle);
+  transform: translateY(calc(-50% + var(--space-1)));
 }
 
 .share-sheet__body {
   display: grid;
   gap: var(--space-2);
-  padding: var(--space-3) var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4) calc(var(--space-5) + var(--safe-bottom));
 }
 
 .share-sheet__action {
   min-height: var(--size-touch-min);
   padding: var(--space-2) var(--space-4);
   border: var(--border-hairline) solid var(--color-border);
-  border-radius: var(--radius-medium);
+  border-radius: var(--radius-small);
   background: var(--color-surface-subtle);
   color: var(--color-text-primary);
   font-size: var(--font-size-body);
@@ -106,5 +123,9 @@
   .share-sheet__close:active,
   .share-sheet__action:active:not(:disabled) {
     transform: none;
+  }
+
+  .share-sheet__close:active {
+    background: transparent;
   }
 }
