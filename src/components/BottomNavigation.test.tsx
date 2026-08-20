@@ -30,7 +30,7 @@ describe("BottomNavigation", () => {
     const links = within(navigation).getAllByRole("link")
 
     // Then: route labels are visible text in the required order.
-    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "활동", "마이"])
+    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "활동", "내 계정"])
   })
 
   it("keeps icons decorative and labels available as accessible names", () => {

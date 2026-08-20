@@ -73,53 +73,55 @@ export function CategoryTabs({ ariaLabel, selectedFilter, onSelectFilter }: Cate
       className="home-category-strip"
       aria-label={ariaLabel ?? t(($) => $.home.categoryLabel)}
     >
-      <button
-        aria-label={t(($) => $.home.categoryPrevious)}
-        className="home-category-strip__arrow"
-        disabled={!canScrollLeft}
-        onClick={() => {
-          scrollByAmount("left")
-        }}
-        type="button"
-      >
-        <ChevronLeft aria-hidden="true" size={18} strokeWidth={2.1} />
-      </button>
-      <div
-        aria-label={t(($) => $.home.categoryLabel)}
-        className="home-category-strip__scroller"
-        onScroll={updateScrollState}
-        ref={scrollerRef}
-        role="group"
-      >
-        {PET_FILTER_IDS.map((filterId) => {
-          const isSelected = selectedFilter === filterId
+      <div className="home-category-strip__container">
+        <button
+          aria-label={t(($) => $.home.categoryPrevious)}
+          className="home-category-strip__arrow"
+          disabled={!canScrollLeft}
+          onClick={() => {
+            scrollByAmount("left")
+          }}
+          type="button"
+        >
+          <ChevronLeft aria-hidden="true" size={18} strokeWidth={2.1} />
+        </button>
+        <div
+          aria-label={t(($) => $.home.categoryLabel)}
+          className="home-category-strip__scroller"
+          onScroll={updateScrollState}
+          ref={scrollerRef}
+          role="group"
+        >
+          {PET_FILTER_IDS.map((filterId) => {
+            const isSelected = selectedFilter === filterId
 
-          return (
-            <button
-              aria-pressed={isSelected}
-              className={getCategoryButtonClassName(isSelected)}
-              key={filterId}
-              onClick={() => {
-                onSelectFilter(filterId)
-              }}
-              type="button"
-            >
-              {t(($) => $.home.categories[categoryLabelKeys[filterId]])}
-            </button>
-          )
-        })}
+            return (
+              <button
+                aria-pressed={isSelected}
+                className={getCategoryButtonClassName(isSelected)}
+                key={filterId}
+                onClick={() => {
+                  onSelectFilter(filterId)
+                }}
+                type="button"
+              >
+                {t(($) => $.home.categories[categoryLabelKeys[filterId]])}
+              </button>
+            )
+          })}
+        </div>
+        <button
+          aria-label={t(($) => $.home.categoryNext)}
+          className="home-category-strip__arrow"
+          disabled={!canScrollRight}
+          onClick={() => {
+            scrollByAmount("right")
+          }}
+          type="button"
+        >
+          <ChevronRight aria-hidden="true" size={18} strokeWidth={2.1} />
+        </button>
       </div>
-      <button
-        aria-label={t(($) => $.home.categoryNext)}
-        className="home-category-strip__arrow"
-        disabled={!canScrollRight}
-        onClick={() => {
-          scrollByAmount("right")
-        }}
-        type="button"
-      >
-        <ChevronRight aria-hidden="true" size={18} strokeWidth={2.1} />
-      </button>
     </section>
   )
 }

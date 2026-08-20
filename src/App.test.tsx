@@ -84,8 +84,8 @@ describe("App Stage 5 runtime shell", () => {
   })
 
   it("renders accessible Korean theme preference controls", () => {
-    // Given: the Stage 4 translated app shell is rendered.
-    renderAppAt()
+    // Given: the settings route renders the theme preference controls.
+    renderAppAt("/settings")
 
     // When: theme preference controls are discovered by their labelled group.
     const themeGroup = screen.getByRole("group", { name: "테마 설정" })
@@ -100,8 +100,8 @@ describe("App Stage 5 runtime shell", () => {
   })
 
   it("persists dark preference and applies the dark root theme", () => {
-    // Given: the Stage 4 app is rendered with default system preference.
-    renderAppAt()
+    // Given: the settings route renders the theme preference controls.
+    renderAppAt("/settings")
 
     // When: the user chooses dark mode.
     fireEvent.click(screen.getByRole("button", { name: "다크" }))
@@ -114,8 +114,8 @@ describe("App Stage 5 runtime shell", () => {
   })
 
   it("persists system preference when returning from an explicit theme", () => {
-    // Given: the user has already selected dark mode in the rendered app.
-    renderAppAt()
+    // Given: the settings route renders the theme preference controls.
+    renderAppAt("/settings")
     fireEvent.click(screen.getByRole("button", { name: "다크" }))
 
     // When: the user returns to system mode.
@@ -149,13 +149,13 @@ describe("App Stage 5 runtime shell", () => {
     const links = within(navigation).getAllByRole("link")
 
     // Then: exactly five accessible route links are exposed in product order.
-    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "활동", "마이"])
+    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "활동", "내 계정"])
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
       "/",
       "/explore",
       "/create",
       "/activity",
-      "/my",
+      "/myaccount",
     ])
   })
 
@@ -177,7 +177,7 @@ describe("App Stage 5 runtime shell", () => {
       { path: "/explore", heading: "탐색" },
       { path: "/create", heading: "작성" },
       { path: "/activity", heading: "활동" },
-      { path: "/my", heading: "마이" },
+      { path: "/myaccount", heading: "내 계정" },
       { path: "/settings", heading: "설정" },
     ] as const
 

@@ -128,7 +128,7 @@ test("clicking bottom navigation routes updates URL, heading, and active state",
     { heading: "탐색", label: "탐색", path: "/explore" },
     { heading: "작성", label: "작성", path: "/create" },
     { heading: "활동", label: "활동", path: "/activity" },
-    { heading: "마이", label: "마이", path: "/my" },
+    { heading: "내 계정", label: "내 계정", path: "/myaccount" },
     { heading: "홈", label: "홈", path: "/" },
   ] as const
 

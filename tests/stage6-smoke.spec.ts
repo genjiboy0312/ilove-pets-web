@@ -121,10 +121,10 @@ test("renders Korean My screen acceptance at 375px", async ({ page }) => {
   await seedStorage(page, { key: i18nextStorageKey, value: "ko-KR" })
 
   // When: the My route is opened.
-  await page.goto("/my")
+  await page.goto("/myaccount")
 
   // Then: profile, stats, registered pets, post grid, and settings link are observable.
-  await expect(page.getByRole("heading", { level: 1, name: "마이" })).toBeVisible()
+  await expect(page.getByRole("heading", { level: 1, name: "내 계정" })).toBeVisible()
   await expect(page.getByRole("link", { name: "설정" })).toHaveAttribute("href", "/settings")
   await expect(page.getByRole("heading", { name: "Mira Han" })).toBeVisible()
   await expect(page.getByText("게시물 2개")).toBeVisible()
@@ -145,7 +145,7 @@ test("renders Korean Settings screen acceptance at 375px", async ({ page }) => {
 
   // Then: back link, sections, controls, and account actions are observable.
   const settingsRegion = page.getByRole("region", { name: "설정" })
-  await expect(page.getByRole("link", { name: "뒤로" })).toHaveAttribute("href", "/my")
+  await expect(page.getByRole("link", { name: "뒤로" })).toHaveAttribute("href", "/myaccount")
   await expect(page.getByRole("heading", { level: 1, name: "설정" })).toBeVisible()
   await expect(settingsRegion.getByRole("heading", { name: "계정" })).toBeVisible()
   await expect(settingsRegion.getByRole("heading", { name: "화면 및 언어" })).toBeVisible()
@@ -169,7 +169,7 @@ for (const viewportWidth of viewportWidths) {
     await seedStorage(page, { key: i18nextStorageKey, value: "ko-KR" })
 
     // When: every Stage 6 route is opened.
-    for (const path of ["/explore", "/create", "/activity", "/my", "/settings"]) {
+    for (const path of ["/explore", "/create", "/activity", "/myaccount", "/settings"]) {
       await page.goto(path)
       await scrollToBottom(page)
 

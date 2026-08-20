@@ -19,7 +19,7 @@ describe("MyRoute", () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole("heading", { level: 1, name: "마이" })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { level: 1, name: "내 계정" })).toBeInTheDocument()
   })
 
   it("links to the settings route from the header", () => {

@@ -124,18 +124,21 @@ describe("PostCard", () => {
     expect(within(dialog).getAllByRole("listitem")).toHaveLength(getPostCommentCount(post.postId))
   })
 
-  it("copies the post link and shows a toast when the share button is activated", async () => {
+  it("copies the post link and shows a toast via the share sheet", async () => {
     // Given: a browser without the native share sheet and a stubbed clipboard.
     const post = getFirstHomeFeedPost()
     const clipboardWriteText = vi.fn().mockResolvedValue(undefined)
 
     Object.assign(navigator, { share: undefined, clipboard: { writeText: clipboardWriteText } })
 
-    // When: the user activates the share button.
+    // When: the user activates the share button and confirms in the sheet.
     render(<PostCard post={post} />)
     const card = screen.getByRole("article")
 
     fireEvent.click(within(card).getByRole("button", { name: "공유" }))
+
+    const sheet = await screen.findByRole("dialog", { name: "공유" })
+    fireEvent.click(within(sheet).getByRole("button", { name: "링크 복사" }))
 
     // Then: the post URL is copied and the toast communicates the result.
     await screen.findByText("링크가 복사되었습니다.")

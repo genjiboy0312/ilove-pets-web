@@ -4,8 +4,8 @@
   z-index: 20;
   display: grid;
   place-items: end center;
-  padding: var(--space-4);
-  background: rgb(0 0 0 / 0.45);
+  padding: var(--space-3);
+  background: rgb(0 0 0 / 0.55);
   animation: app-canvas-enter var(--duration-fast) var(--ease-standard) both;
 }
 
@@ -13,7 +13,7 @@
   display: grid;
   grid-template-rows: auto minmax(var(--space-0), 1fr) auto;
   width: min(100%, 26rem);
-  max-height: min(75dvh, 32rem);
+  max-height: min(80dvh, 34rem);
   overflow: hidden;
   border: var(--border-hairline) solid var(--color-border);
   border-radius: var(--radius-large);
@@ -86,12 +86,40 @@
   gap: var(--space-3);
 }
 
-.comment-dialog__avatar {
+.comment-dialog__avatar-frame {
+  position: relative;
+  display: block;
   width: var(--space-8);
   height: var(--space-8);
+  overflow: hidden;
   border-radius: var(--radius-pill);
   background: var(--color-surface-subtle);
+}
+
+.comment-dialog__avatar-frame::before {
+  position: absolute;
+  inset: var(--space-0);
+  background: var(--color-primary-soft);
+  content: "";
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.comment-dialog__avatar-frame[data-image-state="failed"]::before {
+  opacity: 1;
+}
+
+.comment-dialog__avatar {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
   object-fit: cover;
+}
+
+.comment-dialog__avatar-frame[data-image-state="failed"] .comment-dialog__avatar {
+  opacity: 0;
 }
 
 .comment-dialog__body {
@@ -102,7 +130,7 @@
   margin: var(--space-0);
   color: var(--color-text-primary);
   font-size: var(--font-size-caption);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
   line-height: var(--line-height-normal);
 }
 

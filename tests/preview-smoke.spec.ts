@@ -157,9 +157,9 @@ test("renders Japanese copy from the detected stored language", async ({ page })
   await page.goto("/")
 
   // Then: Japanese bundled copy is rendered without adding screenshot coverage.
+  // Then: Japanese bundled copy is rendered without adding screenshot coverage.
   await expect(page.getByRole("heading", { level: 1, name: "ホーム" })).toBeVisible()
   await expect(page.getByRole("region", { name: "ペットカテゴリー" })).toBeVisible()
-  await expect(page.getByRole("button", { name: "システム" })).toBeVisible()
 })
 
 test("falls back to English for unsupported stored language", async ({ page }) => {
@@ -172,5 +172,4 @@ test("falls back to English for unsupported stored language", async ({ page }) =
   // Then: English fallback copy is rendered.
   await expect(page.getByRole("heading", { level: 1, name: "Home" })).toBeVisible()
   await expect(page.getByRole("region", { name: "Pet categories" })).toBeVisible()
-  await expect(page.getByRole("button", { name: "System" })).toBeVisible()
 })

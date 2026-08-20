@@ -7,7 +7,7 @@ interface NavigationItem {
   readonly end: boolean
   readonly Icon: LucideIcon
   readonly labelKey: "home" | "explore" | "create" | "activity" | "my"
-  readonly to: "/" | "/explore" | "/create" | "/activity" | "/my"
+  readonly to: "/" | "/explore" | "/create" | "/activity" | "/myaccount"
 }
 
 const navigationItems = [
@@ -15,7 +15,7 @@ const navigationItems = [
   { to: "/explore", labelKey: "explore", Icon: Compass, end: true },
   { to: "/create", labelKey: "create", Icon: CirclePlus, end: true },
   { to: "/activity", labelKey: "activity", Icon: Bell, end: true },
-  { to: "/my", labelKey: "my", Icon: UserRound, end: true },
+  { to: "/myaccount", labelKey: "my", Icon: UserRound, end: true },
 ] as const satisfies readonly NavigationItem[]
 
 function getNavigationClassName(isActive: boolean): string {

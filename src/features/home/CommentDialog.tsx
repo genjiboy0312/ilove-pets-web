@@ -20,6 +20,7 @@ export function CommentDialog({ onClose, onCommentAdded, postId }: CommentDialog
   const { t } = useTranslation()
   const titleId = useId()
   const [draft, setDraft] = useState("")
+  const [avatarLoadStates, setAvatarLoadStates] = useState<ReadonlySet<string>>(() => new Set())
   const [comments, setComments] = useState<readonly PostCommentView[]>(() =>
     getPostComments(postId),
   )
@@ -93,21 +94,33 @@ export function CommentDialog({ onClose, onCommentAdded, postId }: CommentDialog
           {comments.length === 0 ? (
             <p className="comment-dialog__empty">{t(($) => $.home.comments.empty)}</p>
           ) : (
-            comments.map((comment) => (
-              <article className="comment-dialog__item" key={comment.commentId} role="listitem">
-                <img
-                  alt=""
-                  className="comment-dialog__avatar"
-                  height="32"
-                  src={comment.authorAvatarUrl}
-                  width="32"
-                />
-                <div className="comment-dialog__body">
-                  <p className="comment-dialog__author">{comment.authorName}</p>
-                  <p className="comment-dialog__content">{comment.content}</p>
-                </div>
-              </article>
-            ))
+            comments.map((comment) => {
+              const isAvatarFailed = avatarLoadStates.has(comment.commentId)
+
+              return (
+                <article className="comment-dialog__item" key={comment.commentId} role="listitem">
+                  <span
+                    className="comment-dialog__avatar-frame"
+                    data-image-state={isAvatarFailed ? "failed" : "loaded"}
+                  >
+                    <img
+                      alt=""
+                      className="comment-dialog__avatar"
+                      height="32"
+                      onError={() => {
+                        setAvatarLoadStates((current) => new Set(current).add(comment.commentId))
+                      }}
+                      src={comment.authorAvatarUrl}
+                      width="32"
+                    />
+                  </span>
+                  <div className="comment-dialog__body">
+                    <p className="comment-dialog__author">{comment.authorName}</p>
+                    <p className="comment-dialog__content">{comment.content}</p>
+                  </div>
+                </article>
+              )
+            })
           )}
         </div>
 

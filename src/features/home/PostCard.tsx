@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 
 import type { HomeFeedPost } from "./homeFeedData"
 import { CommentDialog } from "./CommentDialog"
+import { ShareSheet } from "./ShareSheet"
 
 interface PostCardProps {
   readonly post: HomeFeedPost
@@ -27,6 +28,7 @@ export function PostCard({ post }: PostCardProps) {
   const [likeCount, setLikeCount] = useState(post.likeCount)
   const [commentCount, setCommentCount] = useState(post.commentCount)
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false)
+  const [isShareSheetOpen, setIsShareSheetOpen] = useState(false)
   const [isShareToastVisible, setIsShareToastVisible] = useState(false)
   const dateTimeFormatter = useMemo(
     () =>
@@ -61,34 +63,6 @@ export function PostCard({ post }: PostCardProps) {
     })
   }
 
-  async function handleShare() {
-    const shareData = {
-      title: post.petName,
-      text: post.content,
-      url: window.location.href,
-    }
-
-    if (typeof navigator.share === "function") {
-      try {
-        await navigator.share(shareData)
-      } catch {
-        // The user dismissed the native share sheet.
-      }
-
-      return
-    }
-
-    try {
-      await navigator.clipboard.writeText(shareData.url)
-      setIsShareToastVisible(true)
-      window.setTimeout(() => {
-        setIsShareToastVisible(false)
-      }, 2000)
-    } catch {
-      // Clipboard access is not available in this browser context.
-    }
-  }
-
   const postActions: readonly PostAction[] = [
     {
       labelKey: "like",
@@ -109,7 +83,7 @@ export function PostCard({ post }: PostCardProps) {
       labelKey: "share",
       Icon: Send,
       onActivate: () => {
-        void handleShare()
+        setIsShareSheetOpen(true)
       },
     },
   ]
@@ -195,6 +169,20 @@ export function PostCard({ post }: PostCardProps) {
             setCommentCount((currentCount) => currentCount + 1)
           }}
           postId={post.postId}
+        />
+      ) : null}
+
+      {isShareSheetOpen ? (
+        <ShareSheet
+          onClose={() => {
+            setIsShareSheetOpen(false)
+          }}
+          onCopied={() => {
+            setIsShareToastVisible(true)
+            window.setTimeout(() => {
+              setIsShareToastVisible(false)
+            }, 2000)
+          }}
         />
       ) : null}
 

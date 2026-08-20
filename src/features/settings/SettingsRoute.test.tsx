@@ -44,7 +44,7 @@ describe("SettingsRoute", () => {
     )
 
     expect(screen.getByRole("heading", { level: 1, name: "설정" })).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: "뒤로" })).toHaveAttribute("href", "/my")
+    expect(screen.getByRole("link", { name: "뒤로" })).toHaveAttribute("href", "/myaccount")
   })
 
   it("renders the account, notifications, privacy, and service sections", () => {

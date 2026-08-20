@@ -5,7 +5,6 @@ export const resources = {
         title: "iLove Pets",
       },
       shell: {
-        bannerLabel: "App readiness",
         mainLabel: "iLove Pets app shell",
       },
       navigation: {
@@ -15,7 +14,7 @@ export const resources = {
           explore: "Explore",
           create: "Create",
           activity: "Activity",
-          my: "My",
+          my: "My Account",
         },
       },
       explore: {
@@ -51,7 +50,7 @@ export const resources = {
         postedAt: "{{time}}",
       },
       my: {
-        heading: "My",
+        heading: "My Account",
         settings: "Settings",
         posts: "{{count}} posts",
         followers: "{{count}} followers",
@@ -128,6 +127,8 @@ export const resources = {
           empty: "No comments yet.",
         },
         share: {
+          heading: "Share",
+          copyLink: "Copy link",
           copied: "Link copied.",
         },
       },
@@ -163,7 +164,6 @@ export const resources = {
         title: "iLove Pets",
       },
       shell: {
-        bannerLabel: "アプリ準備状況",
         mainLabel: "iLove Pets アプリシェル",
       },
       navigation: {
@@ -173,7 +173,7 @@ export const resources = {
           explore: "探す",
           create: "作成",
           activity: "通知",
-          my: "マイ",
+          my: "マイアカウント",
         },
       },
       explore: {
@@ -209,7 +209,7 @@ export const resources = {
         postedAt: "{{time}}",
       },
       my: {
-        heading: "マイ",
+        heading: "マイアカウント",
         settings: "設定",
         posts: "投稿 {{count}}件",
         followers: "フォロワー {{count}}人",
@@ -286,6 +286,8 @@ export const resources = {
           empty: "まだコメントはありません。",
         },
         share: {
+          heading: "シェア",
+          copyLink: "リンクをコピー",
           copied: "リンクをコピーしました。",
         },
       },
@@ -320,7 +322,6 @@ export const resources = {
         title: "iLove Pets",
       },
       shell: {
-        bannerLabel: "앱 준비 상태",
         mainLabel: "iLove Pets 앱 셸",
       },
       navigation: {
@@ -330,7 +331,7 @@ export const resources = {
           explore: "탐색",
           create: "작성",
           activity: "활동",
-          my: "마이",
+          my: "내 계정",
         },
       },
       explore: {
@@ -366,7 +367,7 @@ export const resources = {
         postedAt: "{{time}}",
       },
       my: {
-        heading: "마이",
+        heading: "내 계정",
         settings: "설정",
         posts: "게시물 {{count}}개",
         followers: "팔로워 {{count}}명",
@@ -443,6 +444,8 @@ export const resources = {
           empty: "아직 댓글이 없습니다.",
         },
         share: {
+          heading: "공유",
+          copyLink: "링크 복사",
           copied: "링크가 복사되었습니다.",
         },
       },

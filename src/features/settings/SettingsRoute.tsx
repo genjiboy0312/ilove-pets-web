@@ -13,7 +13,7 @@ export function SettingsRoute() {
   return (
     <section className="settings-screen" aria-labelledby="settings-route-title">
       <header className="settings-screen__header">
-        <Link className="settings-screen__back" to="/my">
+        <Link className="settings-screen__back" to="/myaccount">
           <ArrowLeft
             aria-hidden="true"
             className="settings-screen__back-icon"
