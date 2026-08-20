@@ -18,6 +18,7 @@ const boriPost = {
   likeCount: 2,
   commentCount: 3,
   petCategory: "DOG",
+  isLikedByMe: false,
 } satisfies HomeFeedPost
 
 describe("getHomeFeedPosts", () => {

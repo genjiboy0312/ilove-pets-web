@@ -1,4 +1,15 @@
-import type { Activity, ActivityId, Pet, PetId, Post, PostId, User, UserId } from "../types/domain"
+import type {
+  Activity,
+  ActivityId,
+  CommentId,
+  Pet,
+  PetId,
+  Post,
+  PostComment,
+  PostId,
+  User,
+  UserId,
+} from "../types/domain"
 
 export const CURRENT_USER_ID = "user_current"
 
@@ -156,6 +167,92 @@ export const mockActivitiesById = {
     createdAt: "2026-08-18T13:25:00.000Z",
   },
 } as const satisfies Record<ActivityId, Activity>
+
+export const mockCommentsById = {
+  comment_bori_hike_1: {
+    id: "comment_bori_hike_1",
+    postId: "post_bori_hike",
+    authorId: "user_arden",
+    content: "Bori really earned that ridge view.",
+    createdAt: "2026-08-18T09:30:00.000Z",
+  },
+  comment_bori_hike_2: {
+    id: "comment_bori_hike_2",
+    postId: "post_bori_hike",
+    authorId: "user_solana",
+    content: "That trail looks perfect for a weekend.",
+    createdAt: "2026-08-18T09:45:00.000Z",
+  },
+  comment_bori_hike_3: {
+    id: "comment_bori_hike_3",
+    postId: "post_bori_hike",
+    authorId: "user_current",
+    content: "Next time we bring snacks.",
+    createdAt: "2026-08-18T10:00:00.000Z",
+  },
+  comment_miso_sun_1: {
+    id: "comment_miso_sun_1",
+    postId: "post_miso_sun",
+    authorId: "user_solana",
+    content: "That color is perfect.",
+    createdAt: "2026-08-18T12:10:00.000Z",
+  },
+  comment_kiki_song_1: {
+    id: "comment_kiki_song_1",
+    postId: "post_kiki_song",
+    authorId: "user_current",
+    content: "Breakfast melody is officially catchy.",
+    createdAt: "2026-08-17T22:30:00.000Z",
+  },
+  comment_kiki_song_2: {
+    id: "comment_kiki_song_2",
+    postId: "post_kiki_song",
+    authorId: "user_arden",
+    content: "Kiki has perfect pitch.",
+    createdAt: "2026-08-17T22:45:00.000Z",
+  },
+  comment_tofu_tunnel_1: {
+    id: "comment_tofu_tunnel_1",
+    postId: "post_tofu_tunnel",
+    authorId: "user_current",
+    content: "Tofu is the chief inspector now.",
+    createdAt: "2026-08-16T15:00:00.000Z",
+  },
+  comment_tofu_tunnel_2: {
+    id: "comment_tofu_tunnel_2",
+    postId: "post_tofu_tunnel",
+    authorId: "user_arden",
+    content: "Cardboard budget approved.",
+    createdAt: "2026-08-16T15:20:00.000Z",
+  },
+  comment_tofu_tunnel_3: {
+    id: "comment_tofu_tunnel_3",
+    postId: "post_tofu_tunnel",
+    authorId: "user_solana",
+    content: "Tunnel system looks professionally done.",
+    createdAt: "2026-08-16T15:40:00.000Z",
+  },
+  comment_tofu_tunnel_4: {
+    id: "comment_tofu_tunnel_4",
+    postId: "post_tofu_tunnel",
+    authorId: "user_current",
+    content: "More tunnels coming this weekend.",
+    createdAt: "2026-08-16T16:00:00.000Z",
+  },
+} as const satisfies Record<CommentId, PostComment>
+
+export const mockCommentIds = [
+  "comment_bori_hike_1",
+  "comment_bori_hike_2",
+  "comment_bori_hike_3",
+  "comment_miso_sun_1",
+  "comment_kiki_song_1",
+  "comment_kiki_song_2",
+  "comment_tofu_tunnel_1",
+  "comment_tofu_tunnel_2",
+  "comment_tofu_tunnel_3",
+  "comment_tofu_tunnel_4",
+] as const satisfies readonly CommentId[]
 
 export const mockPetIds = [
   "pet_bori",

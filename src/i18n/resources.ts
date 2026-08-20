@@ -118,6 +118,18 @@ export const resources = {
           petAvatar: "{{petName}} profile photo",
           postImage: "{{petName}} post image",
         },
+        categoryPrevious: "Previous categories",
+        categoryNext: "Next categories",
+        comments: {
+          heading: "Comments",
+          close: "Close",
+          placeholder: "Write a comment",
+          submit: "Post",
+          empty: "No comments yet.",
+        },
+        share: {
+          copied: "Link copied.",
+        },
       },
       setup: {
         label: "Frontend foundation ready",
@@ -264,6 +276,18 @@ export const resources = {
           petAvatar: "{{petName}} のプロフィール写真",
           postImage: "{{petName}} の投稿画像",
         },
+        categoryPrevious: "前のカテゴリー",
+        categoryNext: "次のカテゴリー",
+        comments: {
+          heading: "コメント",
+          close: "閉じる",
+          placeholder: "コメントを入力",
+          submit: "投稿",
+          empty: "まだコメントはありません。",
+        },
+        share: {
+          copied: "リンクをコピーしました。",
+        },
       },
       setup: {
         label: "フロントエンド基盤の準備が完了しました",
@@ -408,6 +432,18 @@ export const resources = {
         alt: {
           petAvatar: "{{petName}} 프로필 사진",
           postImage: "{{petName}} 게시물 이미지",
+        },
+        categoryPrevious: "이전 카테고리",
+        categoryNext: "다음 카테고리",
+        comments: {
+          heading: "댓글",
+          close: "닫기",
+          placeholder: "댓글을 입력하세요",
+          submit: "등록",
+          empty: "아직 댓글이 없습니다.",
+        },
+        share: {
+          copied: "링크가 복사되었습니다.",
         },
       },
       setup: {

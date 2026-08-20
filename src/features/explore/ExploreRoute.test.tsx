@@ -33,7 +33,8 @@ describe("ExploreRoute", () => {
     render(<ExploreRoute />)
 
     const categorySection = screen.getByRole("region", { name: "동물 카테고리" })
-    expect(within(categorySection).getAllByRole("button")).toHaveLength(7)
+    const scroller = within(categorySection).getByRole("group")
+    expect(within(scroller).getAllByRole("button")).toHaveLength(7)
   })
 
   it("lists popular posts with translated like metrics", () => {

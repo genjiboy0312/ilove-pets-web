@@ -1,7 +1,13 @@
 import { PET_FILTER_ALL } from "../../constants/petCategories"
 import type { PetCategory, PetCategoryFilter } from "../../constants/petCategories"
-import { mockPetsById, mockPostIds, mockPostsById, mockUsersById } from "../../mocks/mockData"
-import type { HttpsUrl, IsoDateTimeString, PostId } from "../../types/domain"
+import {
+  CURRENT_USER_ID,
+  mockPetsById,
+  mockPostIds,
+  mockPostsById,
+  mockUsersById,
+} from "../../mocks/mockData"
+import type { HttpsUrl, IsoDateTimeString, Post, PostId } from "../../types/domain"
 
 export interface HomeFeedPost {
   readonly postId: PostId
@@ -15,6 +21,7 @@ export interface HomeFeedPost {
   readonly likeCount: number
   readonly commentCount: number
   readonly petCategory: PetCategory
+  readonly isLikedByMe: boolean
 }
 
 export function getHomeFeedPosts(filter: PetCategoryFilter): readonly HomeFeedPost[] {
@@ -39,9 +46,16 @@ export function getHomeFeedPosts(filter: PetCategoryFilter): readonly HomeFeedPo
         likeCount: post.likedByUserIds.length,
         commentCount: post.commentCount,
         petCategory: pet.category,
+        isLikedByMe: isLikedByCurrentUser(post),
       })
     }
   }
 
   return homeFeedPosts
+}
+
+function isLikedByCurrentUser(post: Post): boolean {
+  const likedByUserIds: readonly string[] = post.likedByUserIds
+
+  return likedByUserIds.includes(CURRENT_USER_ID)
 }

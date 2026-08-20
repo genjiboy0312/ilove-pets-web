@@ -67,9 +67,8 @@ test("renders Korean Explore screen acceptance at 375px", async ({ page }) => {
   // Then: search, category strip, and popular sections are observable and touch-safe.
   await expect(page.getByRole("heading", { level: 1, name: "탐색" })).toBeVisible()
   await expect(page.getByRole("search", { name: "검색" })).toBeVisible()
-  await expect(page.getByRole("region", { name: "동물 카테고리" }).getByRole("button")).toHaveCount(
-    7,
-  )
+  const categoryScroller = page.getByRole("region", { name: "동물 카테고리" }).getByRole("group")
+  await expect(categoryScroller.getByRole("button")).toHaveCount(7)
   await expect(page.getByRole("heading", { name: "인기 게시물" })).toBeVisible()
   await expect(page.getByRole("heading", { name: "인기 펫" })).toBeVisible()
   await expect(page.getByRole("heading", { name: "Bori" })).toBeVisible()

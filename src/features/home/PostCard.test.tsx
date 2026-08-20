@@ -1,10 +1,11 @@
 import { fireEvent, render, screen, within } from "@testing-library/react"
-import { beforeEach, describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { PET_FILTER_ALL } from "../../constants/petCategories"
 import { i18n, initializeI18n } from "../../i18n/i18n"
 import { getHomeFeedPosts } from "./homeFeedData"
 import type { HomeFeedPost } from "./homeFeedData"
+import { getPostCommentCount } from "./postCommentsData"
 import { PostCard } from "./PostCard"
 
 function getFirstHomeFeedPost(): HomeFeedPost {
@@ -80,5 +81,64 @@ describe("PostCard", () => {
     expect(image).toHaveAttribute("src", post.imageUrl)
     expect(avatar.closest(".post-card__avatar-frame")).toHaveAttribute("data-image-state", "failed")
     expect(image.closest(".post-card__image-frame")).toHaveAttribute("data-image-state", "failed")
+  })
+
+  it("toggles the like state and count when the like button is activated", () => {
+    // Given: a real normalized home feed post that is not liked by the current user.
+    const post = getFirstHomeFeedPost()
+
+    // When: the user activates the like button twice.
+    render(<PostCard post={post} />)
+    const card = screen.getByRole("article")
+    const likeButton = within(card).getByRole("button", { name: "좋아요" })
+
+    fireEvent.click(likeButton)
+
+    // Then: the like state fills and the count increments.
+    expect(likeButton).toHaveAttribute("aria-pressed", "true")
+    expect(
+      within(card).getByText(`좋아요 ${(post.likeCount + 1).toString()}개`),
+    ).toBeInTheDocument()
+
+    fireEvent.click(likeButton)
+
+    // And: activating again returns both the state and count to the original values.
+    expect(likeButton).toHaveAttribute("aria-pressed", "false")
+    expect(within(card).getByText(`좋아요 ${post.likeCount.toString()}개`)).toBeInTheDocument()
+  })
+
+  it("opens the comment dialog with the post comments when the comment button is activated", () => {
+    // Given: a real normalized home feed post with comments in the mock data.
+    const post = getFirstHomeFeedPost()
+
+    // When: the user activates the comment button.
+    render(<PostCard post={post} />)
+    const card = screen.getByRole("article")
+
+    fireEvent.click(within(card).getByRole("button", { name: "댓글" }))
+
+    // Then: the dialog exposes the comments heading and every comment for the post.
+    const dialog = screen.getByRole("dialog", { name: "댓글" })
+
+    expect(within(dialog).getByText("댓글", { selector: "h2" })).toBeInTheDocument()
+    expect(within(dialog).getAllByRole("listitem")).toHaveLength(getPostCommentCount(post.postId))
+  })
+
+  it("copies the post link and shows a toast when the share button is activated", async () => {
+    // Given: a browser without the native share sheet and a stubbed clipboard.
+    const post = getFirstHomeFeedPost()
+    const clipboardWriteText = vi.fn().mockResolvedValue(undefined)
+
+    Object.assign(navigator, { share: undefined, clipboard: { writeText: clipboardWriteText } })
+
+    // When: the user activates the share button.
+    render(<PostCard post={post} />)
+    const card = screen.getByRole("article")
+
+    fireEvent.click(within(card).getByRole("button", { name: "공유" }))
+
+    // Then: the post URL is copied and the toast communicates the result.
+    await screen.findByText("링크가 복사되었습니다.")
+    expect(clipboardWriteText).toHaveBeenCalledWith(window.location.href)
   })
 })

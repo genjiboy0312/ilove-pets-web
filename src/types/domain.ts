@@ -7,6 +7,7 @@ export type PetId = `pet_${string}`
 export type PostId = `post_${string}`
 
 export type ActivityId = `activity_${string}`
+export type CommentId = `comment_${string}`
 export type IsoDateTimeString = `${number}-${number}-${number}T${string}Z`
 export type HttpsUrl = `https://${string}`
 
@@ -38,6 +39,14 @@ export interface Post {
   readonly tags: readonly string[]
   readonly likedByUserIds: readonly UserId[]
   readonly commentCount: number
+  readonly createdAt: IsoDateTimeString
+}
+
+export interface PostComment {
+  readonly id: CommentId
+  readonly postId: PostId
+  readonly authorId: UserId
+  readonly content: string
   readonly createdAt: IsoDateTimeString
 }
 

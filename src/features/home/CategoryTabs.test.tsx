@@ -17,7 +17,8 @@ describe("CategoryTabs", () => {
     render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
 
     const categorySection = screen.getByRole("region", { name: "반려동물 카테고리" })
-    const buttons = within(categorySection).getAllByRole("button")
+    const scroller = within(categorySection).getByRole("group")
+    const buttons = within(scroller).getAllByRole("button")
 
     expect(buttons.map((button) => button.textContent)).toEqual([
       "전체",
@@ -61,8 +62,51 @@ describe("CategoryTabs", () => {
     render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
 
     const categorySection = screen.getByRole("region", { name: "반려동물 카테고리" })
+    const scroller = within(categorySection).getByRole("group")
 
-    expect(within(categorySection).getAllByRole("button")).toHaveLength(7)
-    expect(within(categorySection).queryAllByRole("link")).toHaveLength(0)
+    expect(within(scroller).getAllByRole("button")).toHaveLength(7)
+    expect(within(scroller).queryAllByRole("link")).toHaveLength(0)
+  })
+
+  it("renders previous and next scroll arrows with Korean labels", () => {
+    const onSelectFilter = vi.fn()
+
+    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
+
+    expect(screen.getByRole("button", { name: "이전 카테고리" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "다음 카테고리" })).toBeInTheDocument()
+  })
+
+  it("disables both arrows while the scroller has nothing to scroll", () => {
+    const onSelectFilter = vi.fn()
+
+    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
+
+    expect(screen.getByRole("button", { name: "이전 카테고리" })).toBeDisabled()
+    expect(screen.getByRole("button", { name: "다음 카테고리" })).toBeDisabled()
+  })
+
+  it("scrolls the scroller forward when the next arrow is clicked", () => {
+    const onSelectFilter = vi.fn()
+
+    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
+
+    const categorySection = screen.getByRole("region", { name: "반려동물 카테고리" })
+    const scroller = within(categorySection).getByRole("group")
+    const scrollByMock = vi.fn()
+
+    scroller.scrollBy = scrollByMock
+    Object.defineProperty(scroller, "scrollWidth", { configurable: true, value: 400 })
+    Object.defineProperty(scroller, "clientWidth", { configurable: true, value: 200 })
+    Object.defineProperty(scroller, "scrollLeft", { configurable: true, value: 0 })
+
+    fireEvent.scroll(scroller)
+
+    const nextArrow = screen.getByRole("button", { name: "다음 카테고리" })
+    expect(nextArrow).toBeEnabled()
+
+    fireEvent.click(nextArrow)
+
+    expect(scrollByMock).toHaveBeenCalledWith({ behavior: "smooth", left: 120 })
   })
 })

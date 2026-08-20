@@ -99,7 +99,8 @@ test("renders Korean Stage 5 home feed acceptance at 375px", async ({ page }) =>
 
   // Then: the feed, categories, first post, and active Home nav are observable and touch-safe.
   await expect(page.getByRole("heading", { level: 1, name: "홈" })).toBeVisible()
-  await expect(categoryRegion.getByRole("button")).toHaveCount(7)
+  const categoryScroller = categoryRegion.getByRole("group")
+  await expect(categoryScroller.getByRole("button")).toHaveCount(7)
   await expect(feed.getByRole("article")).toHaveCount(4)
   await expectVisibleBoriCard(page)
   await expect(page.getByRole("link", { name: "홈" })).toHaveAttribute("aria-current", "page")

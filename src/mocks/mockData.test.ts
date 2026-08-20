@@ -5,6 +5,7 @@ import {
   CURRENT_USER_ID,
   mockActivitiesById,
   mockActivityIds,
+  mockCommentsById,
   mockPetsById,
   mockPostIds,
   mockPostsById,
@@ -150,5 +151,29 @@ describe("normalized mock data invariants", () => {
     // Then: every image URL and timestamp matches the typed data contract.
     expect(allImagesUseHttps).toBe(true)
     expect(allTimesUseIsoZulu).toBe(true)
+  })
+
+  it("connects every comment to an existing post author and post", () => {
+    // Given: normalized comments with author and post references.
+    const comments = Object.values(mockCommentsById)
+    const commentPostIds = new Set(comments.map((comment) => comment.postId))
+
+    // When: comment references are resolved against normalized records.
+    const everyPostExists = comments.every((comment) =>
+      Object.hasOwn(mockPostsById, comment.postId),
+    )
+    const everyAuthorExists = comments.every((comment) =>
+      Object.hasOwn(mockUsersById, comment.authorId),
+    )
+    const commentCountMatchesPosts = [...commentPostIds].every((postId) => {
+      const expectedCount = mockPostsById[postId].commentCount
+
+      return comments.filter((comment) => comment.postId === postId).length === expectedCount
+    })
+
+    // Then: each comment resolves through an existing post and author, matching post counts.
+    expect(everyPostExists).toBe(true)
+    expect(everyAuthorExists).toBe(true)
+    expect(commentCountMatchesPosts).toBe(true)
   })
 })
