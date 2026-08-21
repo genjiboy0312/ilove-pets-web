@@ -88,6 +88,28 @@ describe("ExploreRoute", () => {
     expect(within(popularSection).getAllByRole("listitem")).toHaveLength(18)
   })
 
+  it("opens the comment dialog from an explore tile", () => {
+    render(<ExploreRoute />)
+
+    // When: the user activates the first grid tile.
+    const popularSection = screen.getByRole("region", { name: "인기 게시물" })
+    const firstTile = within(popularSection).getAllByRole("button")[0]
+
+    if (firstTile === undefined) {
+      throw new Error("Expected at least one explore tile.")
+    }
+
+    fireEvent.click(firstTile)
+
+    // Then: the comment dialog for that post opens.
+    expect(screen.getByRole("dialog", { name: "댓글" })).toBeInTheDocument()
+
+    // When: the dialog is closed.
+    fireEvent.click(screen.getByRole("button", { name: "닫기" }))
+
+    // Then: the dialog is removed again.
+    expect(screen.queryByRole("dialog", { name: "댓글" })).not.toBeInTheDocument()
+  })
   it("filters popular pets by the selected category", () => {
     render(<ExploreRoute />)
 

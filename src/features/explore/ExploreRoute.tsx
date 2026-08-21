@@ -4,16 +4,23 @@ import { useTranslation } from "react-i18next"
 import { ThumbImage } from "../../components/ThumbImage"
 import { PET_FILTER_ALL } from "../../constants/petCategories"
 import type { PetCategoryFilter } from "../../constants/petCategories"
+import type { HttpsUrl, PostId } from "../../types/domain"
 import { CategoryTabs } from "../home/CategoryTabs"
+import { CommentDialog } from "../home/CommentDialog"
 import { getExplorePets, getPopularPosts } from "./exploreData"
 import type { ExplorePost } from "./exploreData"
 
 const EXPLORE_PAGE_SIZE = 9
+
 export function ExploreRoute() {
   const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState<PetCategoryFilter>(PET_FILTER_ALL)
   const [pageCount, setPageCount] = useState(1)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
+  const [activePost, setActivePost] = useState<{
+    readonly imageUrl: HttpsUrl
+    readonly postId: PostId
+  } | null>(null)
   const explorePets = getExplorePets(selectedFilter)
   const popularPosts = getPopularPosts()
 
@@ -127,16 +134,36 @@ export function ExploreRoute() {
         <ul className="explore-grid">
           {gridItems.map((item) => (
             <li className="explore-grid__item" key={item.itemKey}>
-              <ThumbImage
-                alt={item.petName}
-                className="explore-grid__image"
-                src={item.imageUrl}
-              />
+              <button
+                aria-label={item.petName}
+                className="explore-grid__tile"
+                onClick={() => {
+                  setActivePost({ postId: item.postId, imageUrl: item.imageUrl })
+                }}
+                type="button"
+              >
+                <ThumbImage
+                  alt={item.petName}
+                  className="explore-grid__image"
+                  src={item.imageUrl}
+                />
+              </button>
             </li>
           ))}
         </ul>
         <div aria-hidden="true" className="explore-grid__sentinel" ref={sentinelRef} />
       </section>
+
+      {activePost === null ? null : (
+        <CommentDialog
+          onClose={() => {
+            setActivePost(null)
+          }}
+          onCommentAdded={() => {}}
+          postId={activePost.postId}
+          postImageUrl={activePost.imageUrl}
+        />
+      )}
     </section>
   )
 }
