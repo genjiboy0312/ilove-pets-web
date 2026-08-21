@@ -1,6 +1,6 @@
 # iLove Pets 진행 현황 보드
 
-마지막 업데이트: 2026-08-20
+마지막 업데이트: 2026-08-22
 출처 계획: [MyAIAgent/ilove-pets-planning.md](./ilove-pets-planning.md)
 
 ## 마커
@@ -30,7 +30,7 @@
 - [x] system/light/dark theme 상태, ko/ja/en i18n, 모바일 앱 shell이 구성되어 있다.
 - [x] React Router와 하단 Bottom Navigation 구성이 완료되어 있다.
 - [x] Home, 카테고리 swipe, mock feed 구현을 완료했다.
-
+- [x] 댓글, 공유, 설정 정보 시트를 body 포털 기반 뷰포트 중앙 모달로 통일했다.
 ## 프론트엔드 MVP 작업 단계
 
 1. [x] React, TypeScript, Vite 스캐폴드와 품질 도구 구성
@@ -41,6 +41,14 @@
 6. [x] Explore, Create, Activity, My, Settings 화면 구현
 7. [x] theme 전환, 언어 전환, 수동 확인, TypeScript, ESLint, build 검증
 
+## 팝업 UX 개선 (2026-08-22)
+
+1. [x] 댓글 팝업이 스크롤 위치와 무관하게 뷰포트 정중앙에 표시되도록 수정 (키프레임 잔여 transform 제거 + body 포털)
+2. [x] 댓글 팝업 크기를 댓글 수와 무관하게 고정하고 이미지 영역 비율을 2배로 확대했다.
+3. [x] 공유 시트에 카카오톡/인스타그램/X/페이스북 대상 버튼을 추가했다.
+4. [x] X·페이스북은 공유 인텐트로 연결하고, 카카오톡·인스타그램은 링크 복사 폴백으로 동작하게 했다.
+5. [x] 설정의 개인정보·서비스 하위 항목 시트를 동일한 중앙 모달로 전환했다.
+6. [x] 설정 테마/언어를 현재값 표시 행 + 리스트박스 선택 시트로 전환했다.
 ## 다음 액션 큐
 
 1. [x] 패키지 매니저는 npm으로 확정했다.
@@ -94,9 +102,10 @@
 - [x] Stage 5 Vitest 47개, production Playwright 23개, TypeScript, ESLint, Prettier, build가 통과했다.
 - [x] Stage 5 React Doctor 100점을 확인했다.
 - [x] Stage 5 Home 스크린샷을 viewport 캡처로 재생성하고 한국어/일본어 표시를 확인했다.
-- [x] Stage 6 Explore, Create, Activity, My, Settings 화면을 구현하고 라우트를 연결했다.
-- [x] Stage 6 Vitest 89개, production Playwright 31개, TypeScript, ESLint, Prettier, build가 통과했다.
 - [x] Stage 6 React Doctor 100점을 확인했다.
+- [x] 댓글/공유/설정 시트가 백드포스=뷰포트, 중앙 정렬 조건을 Playwright 실측으로 통과했다.
+- [x] 테마/언어 리스트박스에서 선택 즉시 적용, 시트 닫힘, 행 값 갱신을 Playwright로 확인했다.
+- [x] 팝업 UX 개선 후 Vitest 102개, TypeScript, production build가 통과했다.
 
 ## 업데이트 규칙
 
