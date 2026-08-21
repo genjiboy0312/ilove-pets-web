@@ -1,20 +1,31 @@
-import { ArrowLeft, Check } from "lucide-react"
+import { ArrowLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
 import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
 
-import { ThemePreferenceControls } from "../../components/ThemePreferenceControls"
+import type { ThemePreference } from "../../theme/themePreference"
 import { i18n } from "../../i18n/i18n"
+import { useThemePreference } from "../../theme/useThemePreference"
 import { NotificationPreferenceControls } from "./NotificationPreferenceControls"
 import { SettingsSheet } from "./SettingsSheet"
 
 const languageOptions = ["ko", "ja", "en"] as const
 
+const themeOptions = ["system", "light", "dark"] as const satisfies readonly ThemePreference[]
 type InfoSheetKey = "terms" | "privacyPolicy" | "about"
+
+type SheetKey = InfoSheetKey | "theme" | "language"
 
 export function SettingsRoute() {
   const { t } = useTranslation()
-  const [openSheet, setOpenSheet] = useState<InfoSheetKey | null>(null)
+  const { preference, setPreference } = useThemePreference()
+  const [openSheet, setOpenSheet] = useState<SheetKey | null>(null)
+  const currentLanguage =
+    languageOptions.find((language) => language === i18n.resolvedLanguage) ?? "ko"
+
+  function closeSheet() {
+    setOpenSheet(null)
+  }
 
   const infoSheetContent: Record<InfoSheetKey, { readonly title: string; readonly body: string }> =
     {
@@ -58,40 +69,46 @@ export function SettingsRoute() {
         <h2 className="settings-section__title" id="settings-appearance-title">
           {t(($) => $.settings.appearance)}
         </h2>
-        <div className="settings-control">
-          <p className="settings-control__label">{t(($) => $.settings.theme)}</p>
-          <ThemePreferenceControls />
-        </div>
-        <div className="settings-control">
-          <p className="settings-control__label">{t(($) => $.settings.language)}</p>
-          <div
-            className="settings-language"
-            role="group"
-            aria-label={t(($) => $.settings.language)}
-          >
-            {languageOptions.map((language) => (
-              <button
-                aria-pressed={i18n.resolvedLanguage === language}
-                className="settings-language__button"
-                key={language}
-                onClick={() => {
-                  void i18n.changeLanguage(language)
-                }}
-                type="button"
-              >
-                <span className="settings-language__label">
-                  {t(($) => $.settings.languages[language])}
-                </span>
-                <Check
-                  aria-hidden="true"
-                  className="settings-language__check"
-                  size={16}
-                  strokeWidth={2.5}
-                />
-              </button>
-            ))}
-          </div>
-        </div>
+        <ul className="settings-list settings-list--buttons">
+          <li className="settings-list__item">
+            <button
+              className="settings-list__button settings-list__button--value"
+              onClick={() => {
+                setOpenSheet("theme")
+              }}
+              type="button"
+            >
+              <span className="settings-list__button-label">{t(($) => $.settings.theme)}</span>
+              <span className="settings-list__value">{t(($) => $.theme.options[preference])}</span>
+              <ChevronRight
+                aria-hidden="true"
+                className="settings-list__chevron"
+                size={16}
+                strokeWidth={2.1}
+              />
+            </button>
+          </li>
+          <li className="settings-list__item">
+            <button
+              className="settings-list__button settings-list__button--value"
+              onClick={() => {
+                setOpenSheet("language")
+              }}
+              type="button"
+            >
+              <span className="settings-list__button-label">{t(($) => $.settings.language)}</span>
+              <span className="settings-list__value">
+                {t(($) => $.settings.languages[currentLanguage])}
+              </span>
+              <ChevronRight
+                aria-hidden="true"
+                className="settings-list__chevron"
+                size={16}
+                strokeWidth={2.1}
+              />
+            </button>
+          </li>
+        </ul>
       </section>
 
       <section className="settings-section" aria-labelledby="settings-notifications-title">
@@ -171,13 +188,56 @@ export function SettingsRoute() {
         <p className="settings-actions__hint">{t(($) => $.settings.uiOnly)}</p>
       </div>
 
-      {openSheet === null ? null : (
-        <SettingsSheet
-          onClose={() => {
-            setOpenSheet(null)
-          }}
-          title={infoSheetContent[openSheet].title}
-        >
+      {openSheet === null ? null : openSheet === "theme" ? (
+        <SettingsSheet onClose={closeSheet} title={t(($) => $.settings.theme)}>
+          <div
+            aria-label={t(($) => $.settings.theme)}
+            className="settings-option-list"
+            role="listbox"
+          >
+            {themeOptions.map((themeOption) => (
+              <button
+                aria-selected={preference === themeOption}
+                className="settings-option"
+                key={themeOption}
+                onClick={() => {
+                  setPreference(themeOption)
+                  closeSheet()
+                }}
+                role="option"
+                type="button"
+              >
+                {t(($) => $.theme.options[themeOption])}
+              </button>
+            ))}
+          </div>
+        </SettingsSheet>
+      ) : openSheet === "language" ? (
+        <SettingsSheet onClose={closeSheet} title={t(($) => $.settings.language)}>
+          <div
+            aria-label={t(($) => $.settings.language)}
+            className="settings-option-list"
+            role="listbox"
+          >
+            {languageOptions.map((language) => (
+              <button
+                aria-selected={i18n.resolvedLanguage === language}
+                className="settings-option"
+                key={language}
+                onClick={() => {
+                  void i18n.changeLanguage(language)
+                  closeSheet()
+                }}
+                role="option"
+                type="button"
+              >
+                {t(($) => $.settings.languages[language])}
+              </button>
+            ))}
+          </div>
+        </SettingsSheet>
+      ) : (
+        <SettingsSheet onClose={closeSheet} title={infoSheetContent[openSheet].title}>
           <p className="settings-sheet__paragraph">{infoSheetContent[openSheet].body}</p>
         </SettingsSheet>
       )}

@@ -84,46 +84,55 @@ describe("App Stage 5 runtime shell", () => {
   })
 
   it("renders accessible Korean theme preference controls", () => {
-    // Given: the settings route renders the theme preference controls.
+    // Given: the settings route renders the theme preference row.
     renderAppAt("/settings")
 
-    // When: theme preference controls are discovered by their labelled group.
-    const themeGroup = screen.getByRole("group", { name: "테마 설정" })
-    const buttons = within(themeGroup).getAllByRole("button")
+    // When: the user opens the theme selection sheet.
+    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
 
-    // Then: all preferences are visible real buttons with the system option selected by default.
-    expect(buttons.map((button) => button.textContent)).toEqual(["시스템", "라이트", "다크"])
-    expect(within(themeGroup).getByRole("button", { name: "시스템" })).toHaveAttribute(
-      "aria-pressed",
+    // Then: the sheet presents a listbox with the system option selected by default.
+    const themeDialog = screen.getByRole("dialog", { name: "테마" })
+    const listbox = within(themeDialog).getByRole("listbox", { name: "테마" })
+    const options = within(listbox).getAllByRole("option")
+
+    expect(options.map((option) => option.textContent)).toEqual(["시스템", "라이트", "다크"])
+    expect(within(listbox).getByRole("option", { name: "시스템" })).toHaveAttribute(
+      "aria-selected",
       "true",
     )
   })
 
   it("persists dark preference and applies the dark root theme", () => {
-    // Given: the settings route renders the theme preference controls.
+    // Given: the settings route renders the theme preference row.
     renderAppAt("/settings")
 
-    // When: the user chooses dark mode.
-    fireEvent.click(screen.getByRole("button", { name: "다크" }))
+    // When: the user opens the theme sheet and chooses dark mode.
+    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
+    const themeDialog = screen.getByRole("dialog", { name: "테마" })
+    fireEvent.click(within(themeDialog).getByRole("option", { name: "다크" }))
 
     // Then: the selected preference is stored and exposed on the document root.
     expect(localStorage.getItem(themePreferenceStorageKey)).toBe("dark")
     expect(document.documentElement.dataset["theme"]).toBe("dark")
     expect(document.documentElement.style.colorScheme).toBe("dark")
-    expect(screen.getByRole("button", { name: "다크" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: "테마다크" })).toBeInTheDocument()
   })
 
   it("persists system preference when returning from an explicit theme", () => {
-    // Given: the settings route renders the theme preference controls.
+    // Given: the settings route renders the theme preference row.
     renderAppAt("/settings")
-    fireEvent.click(screen.getByRole("button", { name: "다크" }))
+    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
+    const themeDialog = screen.getByRole("dialog", { name: "테마" })
+    fireEvent.click(within(themeDialog).getByRole("option", { name: "다크" }))
 
-    // When: the user returns to system mode.
-    fireEvent.click(screen.getByRole("button", { name: "시스템" }))
+    // When: the user reopens the sheet and returns to system mode.
+    fireEvent.click(screen.getByRole("button", { name: "테마다크" }))
+    const reopenedDialog = screen.getByRole("dialog", { name: "테마" })
+    fireEvent.click(within(reopenedDialog).getByRole("option", { name: "시스템" }))
 
     // Then: system mode is persisted and announced as selected.
     expect(localStorage.getItem(themePreferenceStorageKey)).toBe("system")
-    expect(screen.getByRole("button", { name: "시스템" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: "테마시스템" })).toBeInTheDocument()
   })
 
   it("lists the default home feed posts", () => {

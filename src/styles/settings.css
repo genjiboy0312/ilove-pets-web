@@ -127,6 +127,65 @@
   color: var(--color-text-primary);
 }
 
+.settings-list__button--value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.settings-list__button-label {
+  flex: 1 1 auto;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.settings-list__value {
+  flex: 0 0 auto;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+}
+
+.settings-list__chevron {
+  flex: 0 0 auto;
+  color: var(--color-text-secondary);
+}
+
+.settings-option-list {
+  display: grid;
+  overflow: hidden;
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-elevated);
+}
+
+.settings-option {
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  text-align: start;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.settings-option + .settings-option {
+  border-block-start: var(--border-hairline) solid var(--color-border);
+}
+
+.settings-option[aria-selected="true"] {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.settings-option:active:not([aria-selected="true"]) {
+  background: var(--color-primary-soft);
+}
+
 .settings-switch-list {
   display: grid;
   min-width: var(--space-0);

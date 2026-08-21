@@ -67,17 +67,22 @@ describe("SettingsRoute", () => {
       </MemoryRouter>,
     )
 
-    const themeGroup = screen.getByRole("group", { name: "테마 설정" })
-    const buttons = within(themeGroup).getAllByRole("button")
+    // When: the user opens the theme selection sheet.
+    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
 
-    expect(buttons.map((button) => button.textContent)).toEqual(["시스템", "라이트", "다크"])
-    expect(within(themeGroup).getByRole("button", { name: "시스템" })).toHaveAttribute(
-      "aria-pressed",
+    // Then: the theme options are presented as a listbox with the system option selected.
+    const themeDialog = screen.getByRole("dialog", { name: "테마" })
+    const listbox = within(themeDialog).getByRole("listbox", { name: "테마" })
+    const options = within(listbox).getAllByRole("option")
+
+    expect(options.map((option) => option.textContent)).toEqual(["시스템", "라이트", "다크"])
+    expect(within(listbox).getByRole("option", { name: "시스템" })).toHaveAttribute(
+      "aria-selected",
       "true",
     )
   })
 
-  it("switches the active language via the language buttons", () => {
+  it("switches the active language via the language sheet", () => {
     render(
       <MemoryRouter>
         <SettingsRoute />
@@ -85,14 +90,16 @@ describe("SettingsRoute", () => {
     )
 
     // Given: the app starts in Korean.
-    expect(screen.getByRole("button", { name: "한국어" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: "언어한국어" })).toBeInTheDocument()
 
-    // When: the Japanese language is selected.
-    fireEvent.click(screen.getByRole("button", { name: "日本語" }))
+    // When: the user opens the language sheet and selects Japanese.
+    fireEvent.click(screen.getByRole("button", { name: "언어한국어" }))
+    const languageDialog = screen.getByRole("dialog", { name: "언어" })
+    fireEvent.click(within(languageDialog).getByRole("option", { name: "日本語" }))
 
     // Then: the language preference is applied and reflected in the UI.
     expect(i18n.resolvedLanguage).toBe("ja")
-    expect(screen.getByRole("button", { name: "日本語" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: "言語日本語" })).toBeInTheDocument()
     expect(screen.getByRole("heading", { level: 1, name: "設定" })).toBeInTheDocument()
   })
 
@@ -103,13 +110,16 @@ describe("SettingsRoute", () => {
       </MemoryRouter>,
     )
 
-    // When: the user chooses dark mode from the settings screen.
-    fireEvent.click(screen.getByRole("button", { name: "다크" }))
+    // When: the user opens the theme sheet and chooses dark mode.
+    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
+    const themeDialog = screen.getByRole("dialog", { name: "테마" })
+    fireEvent.click(within(themeDialog).getByRole("option", { name: "다크" }))
 
-    // Then: the preference is persisted and applied to the document root.
+    // Then: the preference is persisted, applied to the root, and shown as the row value.
     expect(localStorage.getItem(themePreferenceStorageKey)).toBe("dark")
     expect(document.documentElement.dataset["theme"]).toBe("dark")
-    expect(screen.getByRole("button", { name: "다크" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.queryByRole("dialog", { name: "테마" })).not.toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "테마다크" })).toBeInTheDocument()
   })
 
   it("renders logout and delete account buttons with the UI-only hint", () => {
