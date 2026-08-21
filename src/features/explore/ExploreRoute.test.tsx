@@ -37,15 +37,15 @@ describe("ExploreRoute", () => {
     expect(within(scroller).getAllByRole("button")).toHaveLength(7)
   })
 
-  it("lists popular posts with translated like metrics", () => {
+  it("renders the explore feed as an image-only grid", () => {
     render(<ExploreRoute />)
 
-    // When: the popular posts section is discovered by its labelled region.
+    // When: the explore feed is discovered by its labelled region.
     const popularSection = screen.getByRole("region", { name: "인기 게시물" })
 
-    // Then: every popular post appears with a translated like metric.
+    // Then: every popular post appears as an image tile without text overlays.
     expect(within(popularSection).getAllByRole("listitem")).toHaveLength(4)
-    expect(within(popularSection).getAllByText(/좋아요/)).toHaveLength(4)
+    expect(within(popularSection).getAllByRole("img")).toHaveLength(4)
   })
 
   it("filters popular pets by the selected category", () => {

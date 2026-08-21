@@ -56,20 +56,14 @@ export function ExploreRoute() {
         <h2 className="explore-section__title" id="explore-posts-title">
           {t(($) => $.explore.popularPosts)}
         </h2>
-        <ul className="explore-post-list">
+        <ul className="explore-grid">
           {popularPosts.map((post) => (
-            <li className="explore-post-card" key={post.postId}>
+            <li className="explore-grid__item" key={post.postId}>
               <ThumbImage
                 alt={post.petName}
-                className="explore-post-card__image"
+                className="explore-grid__image"
                 src={post.imageUrl}
               />
-              <div className="explore-post-card__identity">
-                <p className="explore-post-card__pet-name">{post.petName}</p>
-                <p className="explore-post-card__likes">
-                  {t(($) => $.home.metrics.likeCount, { count: post.likeCount })}
-                </p>
-              </div>
             </li>
           ))}
         </ul>
