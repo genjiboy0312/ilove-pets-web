@@ -84,6 +84,34 @@ export function ShareSheet({ onClose, onCopied }: ShareSheetProps) {
     }
   }
 
+  function openShareWindow(href: string) {
+    window.open(href, "_blank", "noopener,noreferrer")
+    onClose()
+  }
+
+  function handleXShare() {
+    const url = encodeURIComponent(window.location.href)
+    const text = encodeURIComponent("iLove Pets")
+
+    openShareWindow(`https://twitter.com/intent/tweet?url=${url}&text=${text}`)
+  }
+
+  function handleFacebookShare() {
+    const url = encodeURIComponent(window.location.href)
+
+    openShareWindow(`https://www.facebook.com/sharer/sharer.php?u=${url}`)
+  }
+
+  function handleKakaoShare() {
+    // Direct KakaoTalk sharing requires a Kakao JS SDK app key; copy the link for manual pasting.
+    void handleCopyLink()
+  }
+
+  function handleInstagramShare() {
+    // Instagram exposes no web sharing endpoint; copy the link for manual pasting.
+    void handleCopyLink()
+  }
+
   return createPortal(
     <div className="share-sheet__backdrop" onMouseDown={onClose}>
       <div
@@ -110,25 +138,41 @@ export function ShareSheet({ onClose, onCopied }: ShareSheetProps) {
         </header>
 
         <div className="share-sheet__targets" role="group">
-          <button className="share-sheet__target" type="button">
+          <button
+            className="share-sheet__target"
+            onClick={handleKakaoShare}
+            type="button"
+          >
             <span className="share-sheet__target-icon share-sheet__target-icon--kakao">
               <KakaoIcon />
             </span>
             <span className="share-sheet__target-label">{t(($) => $.home.share.kakao)}</span>
           </button>
-          <button className="share-sheet__target" type="button">
+          <button
+            className="share-sheet__target"
+            onClick={handleInstagramShare}
+            type="button"
+          >
             <span className="share-sheet__target-icon share-sheet__target-icon--instagram">
               <InstagramIcon />
             </span>
             <span className="share-sheet__target-label">{t(($) => $.home.share.instagram)}</span>
           </button>
-          <button className="share-sheet__target" type="button">
+          <button
+            className="share-sheet__target"
+            onClick={handleXShare}
+            type="button"
+          >
             <span className="share-sheet__target-icon share-sheet__target-icon--x">
               <XIcon />
             </span>
             <span className="share-sheet__target-label">{t(($) => $.home.share.x)}</span>
           </button>
-          <button className="share-sheet__target" type="button">
+          <button
+            className="share-sheet__target"
+            onClick={handleFacebookShare}
+            type="button"
+          >
             <span className="share-sheet__target-icon share-sheet__target-icon--facebook">
               <FacebookIcon />
             </span>
