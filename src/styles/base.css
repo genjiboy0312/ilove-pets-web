@@ -184,7 +184,7 @@ select {
 
   to {
     opacity: 1;
-    transform: translateY(var(--space-0));
+    transform: none;
   }
 }
 

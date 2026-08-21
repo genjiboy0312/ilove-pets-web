@@ -1,5 +1,6 @@
 import { useEffect, useId, useState } from "react"
 import type { SyntheticEvent } from "react"
+import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 
 import type { HttpsUrl, IsoDateTimeString, PostId } from "../../types/domain"
@@ -68,7 +69,7 @@ export function CommentDialog({
     onCommentAdded()
   }
 
-  return (
+  return createPortal(
     <div className="comment-dialog__backdrop" onMouseDown={onClose}>
       <div
         aria-labelledby={titleId}
@@ -169,6 +170,7 @@ export function CommentDialog({
           </button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
