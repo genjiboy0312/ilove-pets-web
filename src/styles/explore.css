@@ -160,7 +160,7 @@
 .explore-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-1);
+  gap: calc(var(--space-1) / 2);
   padding: var(--space-0);
   list-style: none;
 }
@@ -168,6 +168,7 @@
 .explore-grid__item {
   aspect-ratio: 1;
   overflow: hidden;
+  border-radius: calc(var(--radius-small) / 2);
   background: var(--color-surface-subtle);
 }
 
