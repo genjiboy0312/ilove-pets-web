@@ -48,6 +48,27 @@ describe("ExploreRoute", () => {
     expect(within(popularSection).getAllByRole("img")).toHaveLength(9)
   })
 
+  it("collapses and expands the popular pets section", () => {
+    render(<ExploreRoute />)
+
+    // Given: the pets section starts expanded with its toggle exposed.
+    const petsToggle = screen.getByRole("button", { name: "인기 펫" })
+
+    expect(petsToggle).toHaveAttribute("aria-expanded", "true")
+
+    // When: the toggle is activated once.
+    fireEvent.click(petsToggle)
+
+    // Then: the pet cards are hidden from view.
+    expect(screen.queryByRole("heading", { level: 3, name: "Kiki" })).not.toBeInTheDocument()
+
+    // When: the toggle is activated again.
+    fireEvent.click(petsToggle)
+
+    // Then: the pet cards are visible again.
+    expect(screen.getByRole("heading", { level: 3, name: "Kiki" })).toBeInTheDocument()
+  })
+
   it("appends more tiles when the scroll sentinel becomes visible", () => {
     let sentinelCallback: IntersectionObserverCallback = () => {}
 

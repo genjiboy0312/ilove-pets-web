@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -15,6 +16,7 @@ const EXPLORE_PAGE_SIZE = 9
 export function ExploreRoute() {
   const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState<PetCategoryFilter>(PET_FILTER_ALL)
+  const [isPetsOpen, setIsPetsOpen] = useState(true)
   const [pageCount, setPageCount] = useState(1)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const [activePost, setActivePost] = useState<{
@@ -101,11 +103,33 @@ export function ExploreRoute() {
 
       <section className="explore-section" aria-labelledby="explore-pets-title">
         <h2 className="explore-section__title" id="explore-pets-title">
-          {t(($) => $.explore.popularPets)}
+          <button
+            aria-controls="explore-pets-content"
+            aria-expanded={isPetsOpen}
+            className="explore-section__toggle"
+            onClick={() => {
+              setIsPetsOpen((isOpen) => !isOpen)
+            }}
+            type="button"
+          >
+            <span>{t(($) => $.explore.popularPets)}</span>
+            <ChevronDown
+              aria-hidden="true"
+              className={[
+                "explore-section__toggle-icon",
+                isPetsOpen ? "" : "explore-section__toggle-icon--closed",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              size={16}
+              strokeWidth={2.1}
+            />
+          </button>
         </h2>
-        {explorePets.length === 0 ? (
-          <p className="explore-section__empty">{t(($) => $.explore.empty)}</p>
-        ) : (
+        <div className="explore-section__content" hidden={!isPetsOpen} id="explore-pets-content">
+          {explorePets.length === 0 ? (
+            <p className="explore-section__empty">{t(($) => $.explore.empty)}</p>
+          ) : (
           <ul className="explore-pet-list">
             {explorePets.map((pet) => (
               <li className="explore-pet-card" key={pet.petId}>
@@ -125,6 +149,7 @@ export function ExploreRoute() {
             ))}
           </ul>
         )}
+        </div>
       </section>
 
       <section className="explore-section" aria-labelledby="explore-posts-title">

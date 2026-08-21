@@ -105,6 +105,29 @@
   letter-spacing: -0.01em;
 }
 
+.explore-section__toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-1) var(--space-0);
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+}
+
+.explore-section__toggle-icon {
+  flex: 0 0 auto;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.explore-section__toggle-icon--closed {
+  transform: rotate(-90deg);
+}
+
 .explore-section__empty {
   padding: var(--space-6);
   border: var(--border-hairline) solid var(--color-border);
