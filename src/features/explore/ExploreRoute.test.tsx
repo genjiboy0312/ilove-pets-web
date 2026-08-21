@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react"
+import { act, fireEvent, render, screen, within } from "@testing-library/react"
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { i18n, initializeI18n } from "../../i18n/i18n"
@@ -43,9 +43,49 @@ describe("ExploreRoute", () => {
     // When: the explore feed is discovered by its labelled region.
     const popularSection = screen.getByRole("region", { name: "인기 게시물" })
 
-    // Then: every popular post appears as an image tile without text overlays.
-    expect(within(popularSection).getAllByRole("listitem")).toHaveLength(4)
-    expect(within(popularSection).getAllByRole("img")).toHaveLength(4)
+    // Then: the first page of square image tiles is rendered.
+    expect(within(popularSection).getAllByRole("listitem")).toHaveLength(9)
+    expect(within(popularSection).getAllByRole("img")).toHaveLength(9)
+  })
+
+  it("appends more tiles when the scroll sentinel becomes visible", () => {
+    let sentinelCallback: IntersectionObserverCallback = () => {}
+
+    class StubIntersectionObserver implements IntersectionObserver {
+      readonly root: IntersectionObserver["root"] = null
+      readonly rootMargin = ""
+      readonly scrollMargin = ""
+      readonly thresholds: ReadonlyArray<number> = []
+
+      constructor(callback: IntersectionObserverCallback) {
+        sentinelCallback = callback
+      }
+
+      disconnect(): void {}
+      observe(): void {}
+      takeRecords(): IntersectionObserverEntry[] {
+        return []
+      }
+      unobserve(): void {}
+    }
+
+    window.IntersectionObserver =
+      StubIntersectionObserver as unknown as typeof IntersectionObserver
+
+    render(<ExploreRoute />)
+    const popularSection = screen.getByRole("region", { name: "인기 게시물" })
+    expect(within(popularSection).getAllByRole("listitem")).toHaveLength(9)
+
+    // When: the sentinel intersects the viewport.
+    act(() => {
+      sentinelCallback(
+        [{ isIntersecting: true } as unknown as IntersectionObserverEntry],
+        new StubIntersectionObserver(() => {}) as unknown as IntersectionObserver,
+      )
+    })
+
+    // Then: another page of tiles is appended.
+    expect(within(popularSection).getAllByRole("listitem")).toHaveLength(18)
   })
 
   it("filters popular pets by the selected category", () => {

@@ -159,6 +159,10 @@
   object-fit: cover;
 }
 
+.explore-grid__sentinel {
+  width: 100%;
+  height: 1px;
+}
 .explore-pet-card {
   grid-template-columns: auto minmax(var(--space-0), 1fr);
   align-items: center;

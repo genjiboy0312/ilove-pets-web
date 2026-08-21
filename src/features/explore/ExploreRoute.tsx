@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ThumbImage } from "../../components/ThumbImage"
@@ -6,12 +6,52 @@ import { PET_FILTER_ALL } from "../../constants/petCategories"
 import type { PetCategoryFilter } from "../../constants/petCategories"
 import { CategoryTabs } from "../home/CategoryTabs"
 import { getExplorePets, getPopularPosts } from "./exploreData"
+import type { ExplorePost } from "./exploreData"
 
+const EXPLORE_PAGE_SIZE = 9
 export function ExploreRoute() {
   const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState<PetCategoryFilter>(PET_FILTER_ALL)
+  const [pageCount, setPageCount] = useState(1)
+  const sentinelRef = useRef<HTMLDivElement | null>(null)
   const explorePets = getExplorePets(selectedFilter)
   const popularPosts = getPopularPosts()
+
+  const gridItems = useMemo(() => {
+    const items: Array<ExplorePost & { readonly itemKey: string }> = []
+
+    for (let index = 0; index < pageCount * EXPLORE_PAGE_SIZE; index += 1) {
+      const post = popularPosts[index % popularPosts.length]
+
+      if (post === undefined) {
+        break
+      }
+
+      items.push({ ...post, itemKey: `${post.postId}-${index}` })
+    }
+
+    return items
+  }, [pageCount, popularPosts])
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+
+    if (sentinel === null || typeof IntersectionObserver === "undefined") {
+      return undefined
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setPageCount((currentCount) => currentCount + 1)
+      }
+    })
+
+    observer.observe(sentinel)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
 
   return (
     <section className="explore-screen" aria-labelledby="explore-route-title">
@@ -52,23 +92,6 @@ export function ExploreRoute() {
         selectedFilter={selectedFilter}
       />
 
-      <section className="explore-section" aria-labelledby="explore-posts-title">
-        <h2 className="explore-section__title" id="explore-posts-title">
-          {t(($) => $.explore.popularPosts)}
-        </h2>
-        <ul className="explore-grid">
-          {popularPosts.map((post) => (
-            <li className="explore-grid__item" key={post.postId}>
-              <ThumbImage
-                alt={post.petName}
-                className="explore-grid__image"
-                src={post.imageUrl}
-              />
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section className="explore-section" aria-labelledby="explore-pets-title">
         <h2 className="explore-section__title" id="explore-pets-title">
           {t(($) => $.explore.popularPets)}
@@ -95,6 +118,24 @@ export function ExploreRoute() {
             ))}
           </ul>
         )}
+      </section>
+
+      <section className="explore-section" aria-labelledby="explore-posts-title">
+        <h2 className="explore-section__title" id="explore-posts-title">
+          {t(($) => $.explore.popularPosts)}
+        </h2>
+        <ul className="explore-grid">
+          {gridItems.map((item) => (
+            <li className="explore-grid__item" key={item.itemKey}>
+              <ThumbImage
+                alt={item.petName}
+                className="explore-grid__image"
+                src={item.imageUrl}
+              />
+            </li>
+          ))}
+        </ul>
+        <div aria-hidden="true" className="explore-grid__sentinel" ref={sentinelRef} />
       </section>
     </section>
   )
