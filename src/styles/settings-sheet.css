@@ -3,7 +3,7 @@
   inset: 0;
   z-index: 20;
   display: grid;
-  place-items: end center;
+  place-items: center;
   background: rgb(0 0 0 / 0.55);
   animation: app-canvas-enter var(--duration-fast) var(--ease-standard) both;
 }
@@ -12,28 +12,15 @@
   position: relative;
   display: grid;
   grid-template-rows: auto minmax(var(--space-0), 1fr);
-  width: 100%;
+  width: calc(100% - 2 * var(--space-4));
   max-width: var(--size-app-max);
   max-height: min(80dvh, 34rem);
   overflow: hidden;
   border: var(--border-hairline) solid var(--color-border);
-  border-block-end: none;
-  border-radius: var(--radius-large) var(--radius-large) 0 0;
+  border-radius: var(--radius-large);
   background: var(--color-surface-elevated);
   color: var(--color-text-primary);
-  animation: sheet-slide-up var(--duration-slow) var(--ease-standard) both;
-}
-
-.settings-sheet::before {
-  position: absolute;
-  top: var(--space-2);
-  left: 50%;
-  width: 2.5rem;
-  height: 0.25rem;
-  border-radius: var(--radius-pill);
-  background: var(--color-border-strong);
-  content: "";
-  transform: translateX(-50%);
+  animation: app-canvas-enter var(--duration-slow) var(--ease-standard) both;
 }
 
 .settings-sheet__header {

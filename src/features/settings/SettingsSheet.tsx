@@ -1,5 +1,6 @@
 import { useEffect, useId } from "react"
 import type { ReactNode } from "react"
+import { createPortal } from "react-dom"
 import { useTranslation } from "react-i18next"
 
 interface SettingsSheetProps {
@@ -26,7 +27,7 @@ export function SettingsSheet({ children, onClose, title }: SettingsSheetProps) 
     }
   }, [onClose])
 
-  return (
+  return createPortal(
     <div className="settings-sheet__backdrop" onMouseDown={onClose}>
       <div
         aria-labelledby={titleId}
@@ -52,6 +53,7 @@ export function SettingsSheet({ children, onClose, title }: SettingsSheetProps) 
         </header>
         <div className="settings-sheet__body">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
