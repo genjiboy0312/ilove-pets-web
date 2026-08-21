@@ -14,7 +14,7 @@
   grid-template-rows: auto minmax(var(--space-0), 1fr) auto;
   width: calc(100% - 2 * var(--space-4));
   max-width: var(--size-app-max);
-  max-height: min(85dvh, 40rem);
+  height: min(85dvh, 40rem);
   overflow: hidden;
   border: var(--border-hairline) solid var(--color-border);
   border-radius: var(--radius-large);
@@ -67,7 +67,7 @@
 
 .comment-dialog__split {
   display: grid;
-  grid-template-columns: minmax(7rem, 2fr) minmax(0, 3fr);
+  grid-template-columns: minmax(7rem, 4fr) minmax(0, 3fr);
   min-width: var(--space-0);
   min-height: var(--space-0);
   overflow: hidden;
@@ -280,6 +280,6 @@
 
 @media (max-width: 30rem) {
   .comment-dialog__split {
-    grid-template-columns: minmax(6rem, 5fr) minmax(0, 7fr);
+    grid-template-columns: minmax(6rem, 10fr) minmax(0, 7fr);
   }
 }
