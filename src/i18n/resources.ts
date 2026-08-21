@@ -139,6 +139,10 @@ export const resources = {
           heading: "Share",
           copyLink: "Copy link",
           copied: "Link copied.",
+          kakao: "KakaoTalk",
+          instagram: "Instagram",
+          x: "X",
+          facebook: "Facebook",
         },
       },
       setup: {
@@ -307,6 +311,10 @@ export const resources = {
           heading: "シェア",
           copyLink: "リンクをコピー",
           copied: "リンクをコピーしました。",
+          kakao: "カカオトーク",
+          instagram: "インスタグラム",
+          x: "X",
+          facebook: "Facebook",
         },
       },
       setup: {
@@ -474,6 +482,10 @@ export const resources = {
           heading: "공유",
           copyLink: "링크 복사",
           copied: "링크가 복사되었습니다.",
+          kakao: "카카오톡",
+          instagram: "인스타그램",
+          x: "X",
+          facebook: "페이스북",
         },
       },
       setup: {
