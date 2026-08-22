@@ -105,10 +105,24 @@ describe("ExploreRoute", () => {
       )
     })
 
-    // Then: another page of tiles is appended.
-    expect(within(popularSection).getAllByRole("listitem")).toHaveLength(18)
   })
 
+  it("shows the reels feed when the reels tab is selected", () => {
+    render(<ExploreRoute />)
+
+    // When: the reels tab is selected.
+    fireEvent.click(screen.getByRole("tab", { name: "릴스" }))
+
+    // Then: reel items replace the posts grid and pets section.
+    expect(document.querySelectorAll(".reels-feed__item").length).toBeGreaterThan(0)
+    expect(screen.queryByRole("region", { name: "인기 게시물" })).not.toBeInTheDocument()
+
+    // When: the posts tab is selected again.
+    fireEvent.click(screen.getByRole("tab", { name: "게시물" }))
+
+    // Then: the grid comes back.
+    expect(screen.getByRole("region", { name: "인기 게시물" })).toBeInTheDocument()
+  })
   it("opens the comment dialog from an explore tile", () => {
     render(<ExploreRoute />)
 

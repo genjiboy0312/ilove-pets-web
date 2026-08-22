@@ -157,6 +157,96 @@
   background: var(--color-surface-elevated);
 }
 
+
+.explore-view-tabs {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.explore-view-tab {
+  flex: 1 1 auto;
+  min-height: calc(var(--size-touch-min) * 0.85);
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.explore-view-tab[aria-selected="true"] {
+  border-color: transparent;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.reels-feed {
+  display: grid;
+  gap: var(--space-3);
+  height: calc(100dvh - var(--size-bottom-nav));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y mandatory;
+}
+
+.reels-feed__item {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  border-radius: var(--radius-medium);
+  background: rgb(0 0 0 / 0.9);
+}
+
+.reels-feed__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reels-feed__overlay {
+  position: absolute;
+  inset-inline: var(--space-0);
+  bottom: var(--space-0);
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4) var(--space-4);
+  background: linear-gradient(to top, rgb(0 0 0 / 0.6), transparent);
+  color: #ffffff;
+}
+
+.reels-feed__caption {
+  margin: var(--space-0);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.5);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.reels-feed__like {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+}
+
+.reels-feed__like--active {
+  color: var(--color-like);
+}
 .explore-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

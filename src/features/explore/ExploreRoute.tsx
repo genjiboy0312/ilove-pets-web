@@ -10,13 +10,16 @@ import { CategoryTabs } from "../home/CategoryTabs"
 import { CommentDialog } from "../home/CommentDialog"
 import { getExplorePets, getPopularPosts } from "./exploreData"
 import type { ExplorePost } from "./exploreData"
+import { ReelsFeed } from "./ReelsFeed"
 
+type ExploreView = "posts" | "reels"
 const EXPLORE_PAGE_SIZE = 9
 
 export function ExploreRoute() {
   const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState<PetCategoryFilter>(PET_FILTER_ALL)
   const [isPetsOpen, setIsPetsOpen] = useState(true)
+  const [view, setView] = useState<ExploreView>("posts")
   const [pageCount, setPageCount] = useState(1)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const [activePost, setActivePost] = useState<{
@@ -101,7 +104,40 @@ export function ExploreRoute() {
         selectedFilter={selectedFilter}
       />
 
-      <section className="explore-section" aria-labelledby="explore-pets-title">
+      <div
+        aria-label={t(($) => $.explore.tabsLabel)}
+        className="explore-view-tabs"
+        role="tablist"
+      >
+        <button
+          aria-selected={view === "posts"}
+          className="explore-view-tab"
+          onClick={() => {
+            setView("posts")
+          }}
+          role="tab"
+          type="button"
+        >
+          {t(($) => $.explore.tabPosts)}
+        </button>
+        <button
+          aria-selected={view === "reels"}
+          className="explore-view-tab"
+          onClick={() => {
+            setView("reels")
+          }}
+          role="tab"
+          type="button"
+        >
+          {t(($) => $.explore.tabReels)}
+        </button>
+      </div>
+
+      {view === "reels" ? (
+        <ReelsFeed />
+      ) : (
+        <>
+          <section className="explore-section" aria-labelledby="explore-pets-title">
         <h2 className="explore-section__title" id="explore-pets-title">
           <button
             aria-controls="explore-pets-content"
@@ -177,7 +213,9 @@ export function ExploreRoute() {
           ))}
         </ul>
         <div aria-hidden="true" className="explore-grid__sentinel" ref={sentinelRef} />
-      </section>
+          </section>
+        </>
+      )}
 
       {activePost === null ? null : (
         <CommentDialog
