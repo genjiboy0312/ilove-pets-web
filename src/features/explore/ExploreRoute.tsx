@@ -1,5 +1,6 @@
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, ChevronRight, MessageCircle } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
 
 import { ThumbImage } from "../../components/ThumbImage"
@@ -137,6 +138,13 @@ export function ExploreRoute() {
         <ReelsFeed />
       ) : (
         <>
+          <Link className="community-entry" to="/community">
+            <MessageCircle aria-hidden="true" size={18} strokeWidth={2.1} />
+            <span className="community-entry__label">
+              {t(($) => $.explore.communityCta)}
+            </span>
+            <ChevronRight aria-hidden="true" size={16} strokeWidth={2.1} />
+          </Link>
           <section className="explore-section" aria-labelledby="explore-pets-title">
         <h2 className="explore-section__title" id="explore-pets-title">
           <button

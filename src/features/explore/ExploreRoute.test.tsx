@@ -1,9 +1,17 @@
 import { act, fireEvent, render, screen, within } from "@testing-library/react"
+import { MemoryRouter } from "react-router"
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { i18n, initializeI18n } from "../../i18n/i18n"
 import { ExploreRoute } from "./ExploreRoute"
 
+function renderExplore() {
+  return render(
+    <MemoryRouter>
+      <ExploreRoute />
+    </MemoryRouter>,
+  )
+}
 describe("ExploreRoute", () => {
   beforeEach(async () => {
     localStorage.clear()
@@ -12,13 +20,13 @@ describe("ExploreRoute", () => {
   })
 
   it("names the route with a level-one Korean heading", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     expect(screen.getByRole("heading", { level: 1, name: "탐색" })).toBeInTheDocument()
   })
 
   it("renders a search form with label and submit button", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     const search = screen.getByRole("search")
     expect(search).toHaveAttribute("aria-label", "검색")
@@ -30,7 +38,7 @@ describe("ExploreRoute", () => {
   })
 
   it("renders the category strip with the explore-specific label", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     const categorySection = screen.getByRole("region", { name: "동물 카테고리" })
     const scroller = within(categorySection).getByRole("group")
@@ -38,7 +46,7 @@ describe("ExploreRoute", () => {
   })
 
   it("renders the explore feed as an image-only grid", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     // When: the explore feed is discovered by its labelled region.
     const popularSection = screen.getByRole("region", { name: "인기 게시물" })
@@ -49,7 +57,7 @@ describe("ExploreRoute", () => {
   })
 
   it("collapses and expands the popular pets section", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     // Given: the pets section starts expanded with its toggle exposed.
     const petsToggle = screen.getByRole("button", { name: "인기 펫" })
@@ -93,7 +101,8 @@ describe("ExploreRoute", () => {
     window.IntersectionObserver =
       StubIntersectionObserver as unknown as typeof IntersectionObserver
 
-    render(<ExploreRoute />)
+    renderExplore()
+
     const popularSection = screen.getByRole("region", { name: "인기 게시물" })
     expect(within(popularSection).getAllByRole("listitem")).toHaveLength(9)
 
@@ -105,10 +114,12 @@ describe("ExploreRoute", () => {
       )
     })
 
+    // Then: another page of tiles is appended.
+    expect(within(popularSection).getAllByRole("listitem")).toHaveLength(18)
   })
 
   it("shows the reels feed when the reels tab is selected", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     // When: the reels tab is selected.
     fireEvent.click(screen.getByRole("tab", { name: "릴스" }))
@@ -124,7 +135,7 @@ describe("ExploreRoute", () => {
     expect(screen.getByRole("region", { name: "인기 게시물" })).toBeInTheDocument()
   })
   it("opens the comment dialog from an explore tile", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     // When: the user activates the first grid tile.
     const popularSection = screen.getByRole("region", { name: "인기 게시물" })
@@ -146,7 +157,7 @@ describe("ExploreRoute", () => {
     expect(screen.queryByRole("dialog", { name: "댓글" })).not.toBeInTheDocument()
   })
   it("filters popular pets by the selected category", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     // Given: every pet category is selected by default.
     expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(6)
@@ -159,7 +170,7 @@ describe("ExploreRoute", () => {
     expect(screen.getByRole("heading", { name: "Kiki" })).toBeInTheDocument()
   })
   it("filters popular pets to the reptile category", () => {
-    render(<ExploreRoute />)
+    renderExplore()
 
     // When: the reptile category is selected.
     fireEvent.click(screen.getByRole("button", { name: "파충류" }))

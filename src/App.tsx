@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { BottomNavigation } from "./components/BottomNavigation"
 import { MobileAppShell } from "./components/MobileAppShell"
 import { ActivityRoute } from "./features/activity/ActivityRoute"
+import { CommunityRoute } from "./features/community/CommunityRoute"
 import { CreateRoute } from "./features/create/CreateRoute"
 import { ExploreRoute } from "./features/explore/ExploreRoute"
 import { HomeRoute } from "./features/home/HomeRoute"
@@ -19,6 +20,7 @@ export function App() {
       <Routes>
         <Route index element={<HomeRoute />} />
         <Route path="explore" element={<ExploreRoute />} />
+        <Route path="community" element={<CommunityRoute />} />
         <Route path="create" element={<CreateRoute />} />
         <Route path="activity" element={<ActivityRoute />} />
         <Route path="myaccount" element={<MyRoute />} />

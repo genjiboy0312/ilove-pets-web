@@ -1,0 +1,159 @@
+.community-screen {
+  display: grid;
+  width: 100%;
+  min-width: var(--space-0);
+  gap: var(--space-5);
+  color: var(--color-text-primary);
+  animation: app-canvas-enter var(--duration-slow) var(--ease-standard) both;
+}
+
+.community-screen__heading-group {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.community-screen__eyebrow,
+.community-screen__title,
+.community-row__category,
+.community-row__title,
+.community-row__meta,
+.community-screen__empty {
+  margin: var(--space-0);
+}
+
+.community-screen__eyebrow {
+  color: var(--color-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+.community-screen__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.01em;
+}
+
+.community-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.community-filter__chip {
+  min-height: calc(var(--size-touch-min) * 0.8);
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.community-filter__chip[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.community-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
+}
+
+.community-list > li > .community-row {
+  width: 100%;
+}
+
+.community-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--size-touch-min);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  text-align: start;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.community-row:active {
+  background: var(--color-primary-soft);
+  transform: translateY(1px);
+}
+
+.community-row > svg:last-child {
+  flex: 0 0 auto;
+  color: var(--color-text-secondary);
+}
+
+.community-row__category {
+  flex: 0 0 auto;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+}
+
+.community-row__title {
+  display: -webkit-box;
+  flex: 1 1 auto;
+  overflow: hidden;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  word-break: keep-all;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.community-row__meta {
+  flex: 0 0 auto;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}
+
+.community-screen__empty {
+  padding: var(--space-6);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.community-detail__body {
+  margin: var(--space-0);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-loose);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+.community-detail__meta {
+  margin: var(--space-4) var(--space-0) var(--space-0);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+}

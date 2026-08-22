@@ -30,6 +30,7 @@ export const resources = {
         tabPosts: "Posts",
         tabReels: "Reels",
         reelsLabel: "Pet reels",
+        communityCta: "Community board",
       },
       create: {
         heading: "Create",
@@ -64,6 +65,16 @@ export const resources = {
         petsLabel: "Registered pets",
         gridLabel: "My posts",
         empty: "No posts yet.",
+      },
+      community: {
+        heading: "Community",
+        filterLabel: "Board categories",
+        categoryAll: "All",
+        categoryFree: "Free",
+        categoryInfo: "Tips",
+        categoryAdopt: "Adopt & Foster",
+        listLabel: "Community posts",
+        empty: "Nothing here yet.",
       },
       settings: {
         heading: "Settings",
@@ -243,6 +254,16 @@ export const resources = {
         gridLabel: "マイ投稿",
         empty: "投稿はまだありません。",
       },
+      community: {
+        heading: "コミュニティ",
+        filterLabel: "掲示板カテゴリー",
+        categoryAll: "全体",
+        categoryFree: "自由",
+        categoryInfo: "情報",
+        categoryAdopt: "譲渡・預かり",
+        listLabel: "コミュニティ投稿",
+        empty: "投稿はまだありません。",
+      },
       settings: {
         heading: "設定",
         back: "戻る",
@@ -419,6 +440,16 @@ export const resources = {
         petsLabel: "등록 펫",
         gridLabel: "내 게시물",
         empty: "아직 게시물이 없습니다.",
+      },
+      community: {
+        heading: "커뮤니티",
+        filterLabel: "게시판 카테고리",
+        categoryAll: "전체",
+        categoryFree: "자유",
+        categoryInfo: "정보",
+        categoryAdopt: "입양·임보",
+        listLabel: "커뮤니티 게시물",
+        empty: "게시물이 없습니다.",
       },
       settings: {
         heading: "설정",
