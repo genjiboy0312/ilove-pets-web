@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react"
+import { fireEvent, render, screen, within } from "@testing-library/react"
 import { MemoryRouter } from "react-router"
 import { beforeEach, describe, expect, it } from "vitest"
 
@@ -81,5 +81,59 @@ describe("MyRoute", () => {
 
     // Then: one list item exists per my post.
     expect(within(grid).getAllByRole("listitem")).toHaveLength(2)
+  })
+
+  it("collapses and expands the pets and posts sections", () => {
+    render(
+      <MemoryRouter>
+        <MyRoute />
+      </MemoryRouter>,
+    )
+
+    const petsToggle = screen.getByRole("button", { name: "등록 펫" })
+    const postsToggle = screen.getByRole("button", { name: "내 게시물" })
+
+    expect(petsToggle).toHaveAttribute("aria-expanded", "true")
+    expect(postsToggle).toHaveAttribute("aria-expanded", "true")
+
+    // When: both sections are collapsed.
+    fireEvent.click(petsToggle)
+    fireEvent.click(postsToggle)
+
+    // Then: their content is hidden.
+    expect(screen.queryByRole("heading", { level: 3, name: "Bori" })).not.toBeInTheDocument()
+    const grid = screen.getByRole("region", { name: "내 게시물" })
+    expect(within(grid).queryByRole("listitem")).not.toBeInTheDocument()
+
+    // When: both sections are expanded again.
+    fireEvent.click(petsToggle)
+    fireEvent.click(postsToggle)
+
+    // Then: their content is visible again.
+    expect(screen.getByRole("heading", { level: 3, name: "Bori" })).toBeInTheDocument()
+    expect(within(grid).getAllByRole("listitem")).toHaveLength(2)
+  })
+
+  it("opens follower and following sheets from the stat buttons", () => {
+    render(
+      <MemoryRouter>
+        <MyRoute />
+      </MemoryRouter>,
+    )
+
+    // When: the follower count button is activated.
+    fireEvent.click(screen.getByRole("button", { name: "팔로워 128명" }))
+
+    // Then: a dialog listing followers opens.
+    const dialog = screen.getByRole("dialog", { name: "팔로워 목록" })
+
+    expect(within(dialog).getAllByRole("listitem")).toHaveLength(2)
+
+    // When: the dialog is closed and the following button is activated.
+    fireEvent.click(within(dialog).getByRole("button", { name: "닫기" }))
+    fireEvent.click(screen.getByRole("button", { name: "팔로잉 46명" }))
+
+    // Then: a dialog listing followed users opens.
+    expect(screen.getByRole("dialog", { name: "팔로잉 목록" })).toBeInTheDocument()
   })
 })

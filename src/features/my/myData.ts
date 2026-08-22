@@ -6,7 +6,14 @@ import {
   mockPostsById,
   mockUsersById,
 } from "../../mocks/mockData"
-import type { HttpsUrl, IsoDateTimeString, PetId, PostId } from "../../types/domain"
+import type { HttpsUrl, IsoDateTimeString, PetId, PostId, UserId } from "../../types/domain"
+
+export interface MyConnection {
+  readonly userId: UserId
+  readonly displayName: string
+  readonly username: string
+  readonly avatarUrl: HttpsUrl
+}
 
 export interface MyPet {
   readonly petId: PetId
@@ -77,4 +84,29 @@ export function getMyProfile(): MyProfile {
     pets,
     posts,
   }
+}
+
+const connectionUserIds = ["user_arden", "user_solana"] as const satisfies readonly UserId[]
+
+function getConnections(): readonly MyConnection[] {
+  return connectionUserIds.flatMap((userId) => {
+    const user = mockUsersById[userId]
+
+    return [
+      {
+        userId: user.id,
+        displayName: user.displayName,
+        username: user.username,
+        avatarUrl: user.profileImageUrl,
+      },
+    ]
+  })
+}
+
+export function getFollowers(): readonly MyConnection[] {
+  return getConnections()
+}
+
+export function getFollowing(): readonly MyConnection[] {
+  return getConnections()
 }
