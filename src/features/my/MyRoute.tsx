@@ -5,7 +5,10 @@ import { useTranslation } from "react-i18next"
 
 import { ThumbImage } from "../../components/ThumbImage"
 import { SettingsSheet } from "../settings/SettingsSheet"
+import { GrowthSheet } from "./GrowthSheet"
 import { getFollowers, getFollowing, getMyProfile } from "./myData"
+
+import type { PetId } from "../../types/domain"
 
 export function MyRoute() {
   const { t } = useTranslation()
@@ -15,6 +18,7 @@ export function MyRoute() {
   const profile = getMyProfile()
   const followers = getFollowers()
   const following = getFollowing()
+  const [activeGrowthPetId, setActiveGrowthPetId] = useState<PetId | null>(null)
 
   function closeSheet() {
     setOpenSheet(null)
@@ -113,17 +117,26 @@ export function MyRoute() {
         <ul className="my-pet-list">
           {profile.pets.map((pet) => (
             <li className="my-pet-card" key={pet.petId}>
-              <ThumbImage
-                alt={pet.name}
-                className="my-pet-card__avatar"
-                height={48}
-                src={pet.avatarUrl}
-                width={48}
-              />
-              <div className="my-pet-card__identity">
-                <h3 className="my-pet-card__name">{pet.name}</h3>
-                <p className="my-pet-card__breed">{pet.breed}</p>
-              </div>
+              <button
+                aria-label={pet.name}
+                className="my-pet-card__button"
+                onClick={() => {
+                  setActiveGrowthPetId(pet.petId)
+                }}
+                type="button"
+              >
+                <ThumbImage
+                  alt={pet.name}
+                  className="my-pet-card__avatar"
+                  height={48}
+                  src={pet.avatarUrl}
+                  width={48}
+                />
+                <div className="my-pet-card__identity">
+                  <h3 className="my-pet-card__name">{pet.name}</h3>
+                  <p className="my-pet-card__breed">{pet.breed}</p>
+                </div>
+              </button>
             </li>
           ))}
         </ul>
@@ -200,6 +213,18 @@ export function MyRoute() {
           </ul>
         </SettingsSheet>
       )}
+
+      {activeGrowthPetId === null
+        ? null
+        : (
+            <GrowthSheet
+              onClose={() => {
+                setActiveGrowthPetId(null)
+              }}
+              petId={activeGrowthPetId}
+              petName={profile.pets.find((pet) => pet.petId === activeGrowthPetId)?.name ?? ""}
+            />
+          )}
     </section>
   )
 }

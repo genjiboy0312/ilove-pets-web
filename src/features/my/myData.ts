@@ -110,3 +110,98 @@ export function getFollowers(): readonly MyConnection[] {
 export function getFollowing(): readonly MyConnection[] {
   return getConnections()
 }
+
+export interface PetGrowthPoint {
+  readonly month: string
+  readonly weightKg: number
+}
+
+export interface PetCareEvent {
+  readonly eventId: string
+  readonly date: IsoDateTimeString
+  readonly label: string
+  readonly kind: "vaccine" | "checkup" | "grooming"
+}
+
+export interface PetGrowth {
+  readonly petId: PetId
+  readonly weights: readonly PetGrowthPoint[]
+  readonly events: readonly PetCareEvent[]
+}
+
+const growthByPetId: Record<string, PetGrowth> = {
+  pet_bori: {
+    petId: "pet_bori",
+    weights: [
+      { month: "2026-03", weightKg: 9.2 },
+      { month: "2026-04", weightKg: 9.8 },
+      { month: "2026-05", weightKg: 10.4 },
+      { month: "2026-06", weightKg: 11.1 },
+      { month: "2026-07", weightKg: 11.6 },
+      { month: "2026-08", weightKg: 12.0 },
+    ],
+    events: [
+      {
+        eventId: "care_bori_1",
+        date: "2026-06-14T10:00:00.000Z",
+        label: "Rabies vaccine (annual)",
+        kind: "vaccine",
+      },
+      {
+        eventId: "care_bori_2",
+        date: "2026-07-02T16:30:00.000Z",
+        label: "Bath & brushing",
+        kind: "grooming",
+      },
+      {
+        eventId: "care_bori_3",
+        date: "2026-08-08T11:00:00.000Z",
+        label: "Regular checkup — all clear",
+        kind: "checkup",
+      },
+    ],
+  },
+  pet_miso: {
+    petId: "pet_miso",
+    weights: [
+      { month: "2026-03", weightKg: 0.42 },
+      { month: "2026-04", weightKg: 0.45 },
+      { month: "2026-05", weightKg: 0.47 },
+      { month: "2026-06", weightKg: 0.46 },
+      { month: "2026-07", weightKg: 0.48 },
+      { month: "2026-08", weightKg: 0.5 },
+    ],
+    events: [
+      {
+        eventId: "care_miso_1",
+        date: "2026-05-20T09:00:00.000Z",
+        label: "Shedding check",
+        kind: "checkup",
+      },
+      {
+        eventId: "care_miso_2",
+        date: "2026-08-01T14:00:00.000Z",
+        label: "Nail trim",
+        kind: "grooming",
+      },
+    ],
+  },
+}
+
+export function getPetGrowth(petId: PetId): PetGrowth {
+  const growth = growthByPetId[petId]
+
+  if (growth !== undefined) {
+    return growth
+  }
+
+  return {
+    petId,
+    weights: [
+      { month: "2026-06", weightKg: 1 },
+      { month: "2026-07", weightKg: 1.1 },
+      { month: "2026-08", weightKg: 1.2 },
+    ],
+    events: [],
+  }
+}

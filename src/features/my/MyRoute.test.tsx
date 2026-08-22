@@ -136,4 +136,33 @@ describe("MyRoute", () => {
     // Then: a dialog listing followed users opens.
     expect(screen.getByRole("dialog", { name: "팔로잉 목록" })).toBeInTheDocument()
   })
+
+  it("opens the growth sheet from a pet card", () => {
+    render(
+      <MemoryRouter>
+        <MyRoute />
+      </MemoryRouter>,
+    )
+
+    // When: the first pet card is activated.
+    const petButtons = screen.getAllByRole("button", { name: "Bori" })
+    const petCard = petButtons[0]
+
+    if (petCard === undefined) {
+      throw new Error("Expected Bori pet card.")
+    }
+
+    fireEvent.click(petCard)
+
+    // Then: a growth dialog opens with chart and care history.
+    expect(screen.getByRole("dialog", { name: "Bori" })).toBeInTheDocument()
+    expect(document.querySelector(".growth-chart")).not.toBeNull()
+    expect(screen.getAllByText("케어 기록").length).toBeGreaterThan(0)
+
+    // When: the sheet is closed.
+    fireEvent.click(screen.getByRole("button", { name: "닫기" }))
+
+    // Then: the sheet is removed.
+    expect(screen.queryByRole("dialog", { name: "Bori" })).not.toBeInTheDocument()
+  })
 })
