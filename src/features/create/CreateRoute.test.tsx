@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react"
-import { beforeEach, describe, expect, it } from "vitest"
+import { act, fireEvent, render, screen, within } from "@testing-library/react"
+import { beforeEach, afterEach, describe, expect, it, vi } from "vitest"
 
 import { i18n, initializeI18n } from "../../i18n/i18n"
 import { CreateRoute } from "./CreateRoute"
@@ -9,6 +9,10 @@ describe("CreateRoute", () => {
     localStorage.clear()
     await initializeI18n()
     await i18n.changeLanguage("ko")
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it("names the route with a level-one Korean heading", () => {
@@ -50,6 +54,37 @@ describe("CreateRoute", () => {
 
     expect(screen.getByRole("button", { name: "게시" })).toBeInTheDocument()
     expect(screen.getByText("업로드는 나중에 연결됩니다.")).toBeInTheDocument()
+  })
+
+  it("suggests AI captions and fills the content on pick", () => {
+    vi.useFakeTimers()
+    render(<CreateRoute />)
+
+    // When: the AI caption button is activated.
+    fireEvent.click(screen.getByRole("button", { name: /AI 캡션 추천/ }))
+
+    // Then: it first shows the generating state.
+    expect(screen.getByRole("button", { name: "생성 중..." })).toBeDisabled()
+
+    // When: the fake generation delay passes.
+    act(() => {
+      vi.advanceTimersByTime(600)
+    })
+
+    // Then: three suggestion chips appear and picking one fills the content.
+    const suggestions = within(screen.getByRole("group")).getAllByRole("button")
+    expect(suggestions).toHaveLength(3)
+
+    const firstSuggestion = suggestions[0]
+
+    if (firstSuggestion === undefined) {
+      throw new Error("Expected at least one AI suggestion.")
+    }
+
+    fireEvent.click(firstSuggestion)
+    expect(screen.getByRole("textbox", { name: "내용" })).toHaveValue(
+      "오늘 산책, 최고의 하루 🐾",
+    )
   })
 })
 
