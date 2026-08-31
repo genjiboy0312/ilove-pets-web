@@ -1,12 +1,12 @@
-import { ChevronDown, ChevronRight, MessageCircle } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
 
 import { ThumbImage } from "../../components/ThumbImage"
 import { PET_FILTER_ALL } from "../../constants/petCategories"
 import type { PetCategoryFilter } from "../../constants/petCategories"
 import type { HttpsUrl, PostId } from "../../types/domain"
+import { ActivityButton } from "../activity/ActivityButton"
 import { CategoryTabs } from "../home/CategoryTabs"
 import { CommentDialog } from "../home/CommentDialog"
 import { getExplorePets, getPopularPosts } from "./exploreData"
@@ -68,13 +68,15 @@ export function ExploreRoute() {
 
   return (
     <section className="explore-screen" aria-labelledby="explore-route-title">
-      <div className="explore-screen__heading-group">
-        <p className="explore-screen__eyebrow">iLove Pets</p>
-        <h1 className="explore-screen__title" id="explore-route-title">
-          {t(($) => $.explore.heading)}
-        </h1>
-      </div>
-
+      <header className="screen-header">
+        <div className="explore-screen__heading-group">
+          <p className="explore-screen__eyebrow">iLove Pets</p>
+          <h1 className="explore-screen__title" id="explore-route-title">
+            {t(($) => $.explore.heading)}
+          </h1>
+        </div>
+        <ActivityButton />
+      </header>
       <form
         aria-label={t(($) => $.explore.searchLabel)}
         className="explore-search"
@@ -138,13 +140,6 @@ export function ExploreRoute() {
         <ReelsFeed />
       ) : (
         <>
-          <Link className="community-entry" to="/community">
-            <MessageCircle aria-hidden="true" size={18} strokeWidth={2.1} />
-            <span className="community-entry__label">
-              {t(($) => $.explore.communityCta)}
-            </span>
-            <ChevronRight aria-hidden="true" size={16} strokeWidth={2.1} />
-          </Link>
           <section className="explore-section" aria-labelledby="explore-pets-title">
         <h2 className="explore-section__title" id="explore-pets-title">
           <button

@@ -71,7 +71,7 @@
   --border-hairline: 1px;
   --shadow-none: none;
   --shadow-status: 0 16px 40px rgb(0 0 0 / 0.16);
-
+}
 :root[data-theme="dark"] {
   color-scheme: dark;
   --color-background: #141414;

@@ -1,5 +1,6 @@
-// Minimal offline-first service worker for the iLove Pets demo PWA.
-const CACHE_NAME = "ilove-pets-cache-v1"
+// Service worker for the iLove Pets demo PWA.
+// Strategy: network-first with cache fallback so users always get the latest shell.
+const CACHE_NAME = "ilove-pets-cache-v2"
 const APP_SHELL_URLS = ["/", "/index.html", "/manifest.webmanifest", "/icon.svg"]
 
 self.addEventListener("install", (event) => {
@@ -28,25 +29,27 @@ self.addEventListener("fetch", (event) => {
     return
   }
 
+  const isNavigation = request.mode === "navigate"
+
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse !== undefined) {
-        return cachedResponse
-      }
+    fetch(request)
+      .then((networkResponse) => {
+        if (
+          networkResponse.ok &&
+          new URL(request.url).origin === self.location.origin &&
+          (isNavigation || request.destination === "script" || request.destination === "style")
+        ) {
+          const responseClone = networkResponse.clone()
 
-      return fetch(request)
-        .then((networkResponse) => {
-          if (networkResponse.ok && new URL(request.url).origin === self.location.origin) {
-            const responseClone = networkResponse.clone()
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseClone)
+          })
+        }
 
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseClone)
-            })
-          }
-
-          return networkResponse
-        })
-        .catch(() => caches.match("/index.html"))
-    }),
+        return networkResponse
+      })
+      .catch(() =>
+        caches.match(request).then((cachedResponse) => cachedResponse ?? caches.match("/index.html")),
+      ),
   )
 })

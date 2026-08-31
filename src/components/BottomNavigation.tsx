@@ -1,4 +1,4 @@
-import { Bell, CirclePlus, Compass, House, UserRound } from "lucide-react"
+import { CirclePlus, Compass, House, UserRound, UsersRound } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { NavLink } from "react-router"
@@ -6,15 +6,15 @@ import { NavLink } from "react-router"
 interface NavigationItem {
   readonly end: boolean
   readonly Icon: LucideIcon
-  readonly labelKey: "home" | "explore" | "create" | "activity" | "my"
-  readonly to: "/" | "/explore" | "/create" | "/activity" | "/myaccount"
+  readonly labelKey: "home" | "explore" | "create" | "community" | "my"
+  readonly to: "/" | "/explore" | "/create" | "/community" | "/myaccount"
 }
 
 const navigationItems = [
   { to: "/", labelKey: "home", Icon: House, end: true },
   { to: "/explore", labelKey: "explore", Icon: Compass, end: true },
   { to: "/create", labelKey: "create", Icon: CirclePlus, end: true },
-  { to: "/activity", labelKey: "activity", Icon: Bell, end: true },
+  { to: "/community", labelKey: "community", Icon: UsersRound, end: false },
   { to: "/myaccount", labelKey: "my", Icon: UserRound, end: true },
 ] as const satisfies readonly NavigationItem[]
 

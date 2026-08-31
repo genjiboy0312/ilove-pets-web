@@ -70,6 +70,42 @@ select {
   animation: app-canvas-enter var(--duration-slow) var(--ease-standard) both;
 }
 
+.screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.icon-button--glass {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: calc(var(--size-touch-min) * 0.85);
+  height: calc(var(--size-touch-min) * 0.85);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-surface-elevated) 72%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.icon-button--glass:hover {
+  background: var(--color-primary-soft);
+}
+
+.icon-button--glass:active {
+  background: var(--color-primary-soft);
+  transform: translateY(1px);
+}
+
 .setup-status__label,
 .setup-status__title,
 .setup-status__body,

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, within } from "@testing-library/react"
+import { MemoryRouter } from "react-router"
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { PET_FILTER_ALL } from "../../constants/petCategories"
@@ -6,6 +7,13 @@ import { i18n, initializeI18n } from "../../i18n/i18n"
 import { getHomeFeedPosts } from "./homeFeedData"
 import { HomeRoute } from "./HomeRoute"
 
+function renderHome() {
+  return render(
+    <MemoryRouter>
+      <HomeRoute />
+    </MemoryRouter>,
+  )
+}
 describe("HomeRoute", () => {
   beforeEach(async () => {
     // Given: each HomeRoute test starts from Korean copy and clean language storage.
@@ -19,7 +27,7 @@ describe("HomeRoute", () => {
     const allPosts = getHomeFeedPosts(PET_FILTER_ALL)
 
     // When: the home route renders.
-    render(<HomeRoute />)
+    renderHome()
 
     // Then: the page exposes the home heading, categories, full feed, and no Stage 4 status.
     expect(screen.getAllByRole("heading", { level: 1, name: "홈" })).toHaveLength(1)
@@ -39,7 +47,7 @@ describe("HomeRoute", () => {
 
   it("filters the home feed to only Bori when the DOG category is selected", () => {
     // Given: the Stage 5 home route is showing all posts.
-    render(<HomeRoute />)
+    renderHome()
 
     // When: the user selects the dog category.
     fireEvent.click(screen.getByRole("button", { name: "강아지" }))
@@ -57,7 +65,7 @@ describe("HomeRoute", () => {
 
   it("shows the Korean empty state with no articles when the CAT category is selected", () => {
     // Given: the Stage 5 home route is showing all posts.
-    render(<HomeRoute />)
+    renderHome()
 
     // When: the user selects the cat category.
     fireEvent.click(screen.getByRole("button", { name: "고양이" }))

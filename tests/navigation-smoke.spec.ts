@@ -127,9 +127,7 @@ test("clicking bottom navigation routes updates URL, heading, and active state",
   const routeChecks = [
     { heading: "탐색", label: "탐색", path: "/explore" },
     { heading: "작성", label: "작성", path: "/create" },
-    { heading: "활동", label: "활동", path: "/activity" },
-    { heading: "내 계정", label: "내 계정", path: "/myaccount" },
-    { heading: "홈", label: "홈", path: "/" },
+    { heading: "커뮤니티", label: "커뮤니티", path: "/community" },
   ] as const
 
   for (const routeCheck of routeChecks) {
@@ -197,19 +195,19 @@ test("renders Japanese bottom navigation labels", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 })
   await seedStorage(page, { key: i18nextStorageKey, value: "ja-JP" })
 
-  // When: the production preview app starts on the activity route.
-  await page.goto("/activity")
-  const activityLink = page.getByRole("link", { name: "通知" })
-  const activityBox = await activityLink.boundingBox()
+  // When: the production preview app starts on the community route.
+  await page.goto("/community")
+  const communityLink = page.getByRole("link", { name: "コミュニティ" })
+  const communityBox = await communityLink.boundingBox()
   const metrics = await getNavigationMetrics(page)
 
   // Then: Japanese navigation labels are visible, active, touch-safe, and unclipped at 375px.
   await expect(page.getByRole("navigation", { name: "主要ナビゲーション" })).toContainText(
-    "ホーム探す作成通知マイ",
+    "ホーム探す作成コミュニティマイアカウント",
   )
-  await expect(activityLink).toHaveAttribute("aria-current", "page")
-  expect(activityBox?.width).toBeGreaterThanOrEqual(44)
-  expect(activityBox?.height).toBeGreaterThanOrEqual(44)
+  await expect(communityLink).toHaveAttribute("aria-current", "page")
+  expect(communityBox?.width).toBeGreaterThanOrEqual(44)
+  expect(communityBox?.height).toBeGreaterThanOrEqual(44)
   expect(metrics.mainBottom).toBeLessThanOrEqual(metrics.navigationTop)
   expect(metrics.documentOverflows).toBe(false)
 
@@ -228,7 +226,7 @@ test("renders English fallback bottom navigation labels", async ({ page }) => {
 
   // Then: English fallback navigation labels are visible.
   await expect(page.getByRole("navigation", { name: "Primary navigation" })).toContainText(
-    "HomeExploreCreateActivityMy",
+    "HomeExploreCreateCommunityMy Account",
   )
 })
 

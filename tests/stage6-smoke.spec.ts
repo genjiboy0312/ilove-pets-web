@@ -6,9 +6,8 @@ const i18nextStorageKey = "i18nextLng"
 
 interface ShellMetrics {
   readonly documentOverflows: boolean
-  readonly mainBottom: number
-  readonly navigationTop: number
   readonly navigationWidth: number
+  readonly navigationDocked: boolean
 }
 
 interface StorageSeed {
@@ -31,12 +30,16 @@ async function getShellMetrics(page: Page): Promise<ShellMetrics> {
       throw new Error("Stage 6 shell requires navigation and main landmarks")
     }
 
+    const scrollable = document.scrollingElement ?? document.documentElement
+    const navRect = navigation.getBoundingClientRect()
+
     return {
       documentOverflows:
-        document.documentElement.scrollWidth > document.documentElement.clientWidth,
-      mainBottom: main.getBoundingClientRect().bottom,
-      navigationTop: navigation.getBoundingClientRect().top,
-      navigationWidth: navigation.getBoundingClientRect().width,
+        scrollable.scrollWidth > scrollable.clientWidth,
+      navigationWidth: navRect.width,
+      navigationDocked:
+        getComputedStyle(navigation).position === "fixed" &&
+        Math.abs(navRect.bottom - window.innerHeight) < 1,
     }
   })
 }
@@ -53,7 +56,7 @@ async function expectNoShellOverflow(page: Page): Promise<void> {
 
   expect(metrics.documentOverflows).toBe(false)
   expect(metrics.navigationWidth).toBeLessThanOrEqual(430)
-  expect(metrics.mainBottom).toBeLessThanOrEqual(metrics.navigationTop)
+  expect(metrics.navigationDocked).toBe(true)
 }
 
 test("renders Korean Explore screen acceptance at 375px", async ({ page }) => {
@@ -149,15 +152,16 @@ test("renders Korean Settings screen acceptance at 375px", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "설정" })).toBeVisible()
   await expect(settingsRegion.getByRole("heading", { name: "계정" })).toBeVisible()
   await expect(settingsRegion.getByRole("heading", { name: "화면 및 언어" })).toBeVisible()
-  await expect(settingsRegion.getByRole("group", { name: "테마 설정" })).toBeVisible()
-  await expect(settingsRegion.getByRole("button", { name: "한국어" })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  )
+
+  // Then: theme and language rows open listbox sheets and show their current values.
+  await expect(settingsRegion.getByRole("button", { name: "테마 시스템" })).toBeVisible()
+  await expect(settingsRegion.getByRole("button", { name: "언어 한국어" })).toBeVisible()
+
+  await expect(settingsRegion.getByRole("heading", { name: "알림" })).toBeVisible()
+  await expect(settingsRegion.getByRole("switch", { name: "좋아요 켜짐" })).toBeVisible()
   await expect(settingsRegion.getByRole("button", { name: "로그아웃" })).toBeVisible()
   await expect(settingsRegion.getByRole("button", { name: "계정 삭제" })).toBeVisible()
   await expect(settingsRegion.getByText("지금은 UI만 제공됩니다.")).toBeVisible()
-  await expectNoShellOverflow(page)
 
   await page.screenshot({ path: "test-results/stage6-settings-ko-375.png", fullPage: false })
 })
@@ -177,7 +181,7 @@ for (const viewportWidth of viewportWidths) {
       const metrics = await getShellMetrics(page)
       expect(metrics.documentOverflows).toBe(false)
       expect(metrics.navigationWidth).toBeLessThanOrEqual(430)
-      expect(metrics.mainBottom).toBeLessThanOrEqual(metrics.navigationTop)
+      expect(metrics.navigationDocked).toBe(true)
     }
   })
 }

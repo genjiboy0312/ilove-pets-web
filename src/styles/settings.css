@@ -192,6 +192,7 @@
   list-style: none;
   -webkit-user-select: none;
   user-select: none;
+}
 
 .settings-switch-list__item {
   display: flex;
@@ -228,6 +229,7 @@
   transition:
     border-color var(--duration-fast) var(--ease-standard),
     background-color var(--duration-fast) var(--ease-standard);
+}
 
 .settings-switch__thumb {
   position: absolute;

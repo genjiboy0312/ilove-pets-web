@@ -29,22 +29,21 @@ describe("BottomNavigation", () => {
     const navigation = screen.getByRole("navigation", { name: "주요 탐색" })
     const links = within(navigation).getAllByRole("link")
 
-    // Then: route labels are visible text in the required order.
-    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "활동", "내 계정"])
+    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "커뮤니티", "내 계정"])
   })
 
   it("keeps icons decorative and labels available as accessible names", () => {
-    // Given: the activity route is active.
-    renderBottomNavigationAt("/activity")
+    // Given: the community route is active.
+    renderBottomNavigationAt("/community")
 
     // When: links and icons are inspected.
-    const activityLink = screen.getByRole("link", { name: "활동" })
+    const communityLink = screen.getByRole("link", { name: "커뮤니티" })
     const decorativeIcons = document.querySelectorAll(
       ".bottom-navigation__icon[aria-hidden='true']",
     )
 
     // Then: every icon is hidden from assistive technology and the visible label names the link.
-    expect(activityLink).toHaveAttribute("aria-current", "page")
+    expect(communityLink).toHaveAttribute("aria-current", "page")
     expect(decorativeIcons).toHaveLength(5)
   })
 })

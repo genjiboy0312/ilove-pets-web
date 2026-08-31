@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
+import { ActivityButton } from "../activity/ActivityButton"
 import { PET_FILTER_ALL } from "../../constants/petCategories"
 import type { PetCategoryFilter } from "../../constants/petCategories"
 import { CategoryTabs } from "./CategoryTabs"
@@ -14,13 +15,15 @@ export function HomeRoute() {
 
   return (
     <section className="home-screen" aria-labelledby="home-route-title">
-      <div className="home-screen__heading-group">
-        <p className="home-screen__eyebrow">iLove Pets</p>
-        <h1 className="home-screen__title" id="home-route-title">
-          {t(($) => $.home.heading)}
-        </h1>
-      </div>
-
+      <header className="screen-header">
+        <div className="home-screen__heading-group">
+          <p className="home-screen__eyebrow">iLove Pets</p>
+          <h1 className="home-screen__title" id="home-route-title">
+            {t(($) => $.home.heading)}
+          </h1>
+        </div>
+        <ActivityButton />
+      </header>
       <CategoryTabs selectedFilter={selectedFilter} onSelectFilter={setSelectedFilter} />
 
       <div className="home-feed" role="feed" aria-label={t(($) => $.home.feedLabel)}>

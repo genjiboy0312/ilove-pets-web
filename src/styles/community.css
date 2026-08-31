@@ -42,6 +42,43 @@
   gap: var(--space-2);
 }
 
+.community-view-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(var(--space-0), 1fr));
+  gap: var(--space-2);
+  padding: var(--space-1);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-subtle);
+}
+
+.community-view-tabs__button {
+  min-width: var(--space-0);
+  min-height: calc(var(--size-touch-min) * 0.9);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hairline) solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.community-view-tabs__button[aria-pressed="true"] {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+}
+
+.community-view-tabs__button:active {
+  transform: translateY(1px);
+}
+
 .community-filter__chip {
   min-height: calc(var(--size-touch-min) * 0.8);
   padding: var(--space-1) var(--space-3);
@@ -156,4 +193,111 @@
   margin: var(--space-4) var(--space-0) var(--space-0);
   color: var(--color-text-secondary);
   font-size: var(--font-size-caption);
+}
+
+.hospital-map {
+  display: grid;
+  width: 100%;
+  min-width: var(--space-0);
+  gap: var(--space-3);
+}
+
+.hospital-map__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+}
+
+.hospital-map__summary-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--size-touch-min);
+  height: var(--size-touch-min);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.hospital-map__title,
+.hospital-map__count {
+  margin: var(--space-0);
+}
+
+.hospital-map__title {
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.hospital-map__count {
+  margin-block-start: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-normal);
+}
+
+.hospital-map__canvas {
+  overflow: hidden;
+  width: 100%;
+  min-width: var(--space-0);
+  height: calc(100dvh - var(--size-bottom-nav) - var(--space-12) - var(--space-12));
+  min-height: calc(var(--size-touch-min) * 7);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-large);
+  background: var(--color-surface-subtle);
+}
+
+.hospital-map__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.hospital-map__marker-dot {
+  display: block;
+  width: var(--space-4);
+  height: var(--space-4);
+  border: calc(var(--border-hairline) * 2) solid var(--color-text-inverse);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+
+.hospital-map__popup .leaflet-popup-content {
+  display: grid;
+  gap: var(--space-1);
+  margin: var(--space-3);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-normal);
+}
+
+.hospital-map__popup .leaflet-popup-content strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.hospital-map__popup .leaflet-popup-content span {
+  color: var(--color-text-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-view-tabs__button {
+    transition-duration: var(--duration-fast);
+  }
+
+  .community-view-tabs__button:active {
+    transform: none;
+  }
 }
