@@ -1,6 +1,6 @@
 # iLove Pets 진행 현황 보드
 
-마지막 업데이트: 2026-08-22
+마지막 업데이트: 2026-10-06
 출처 계획: [MyAIAgent/ilove-pets-planning.md](./ilove-pets-planning.md)
 
 ## 마커
@@ -31,6 +31,8 @@
 - [x] React Router와 하단 Bottom Navigation 구성이 완료되어 있다.
 - [x] Home, 카테고리 swipe, mock feed 구현을 완료했다.
 - [x] 댓글, 공유, 설정 정보 시트를 body 포털 기반 뷰포트 중앙 모달로 통일했다.
+- [x] Leaflet 기반 커뮤니티 병원 지도에 시·구·동 필터, 야간 응급 필터, 데모 연락처·진료 시간 목록을 연결했다.
+- [x] PWA 서비스 워커는 네트워크 우선 캐시와 즉시 활성화(`skipWaiting`)로 최신 앱 셸 갱신을 우선한다.
 ## 프론트엔드 MVP 작업 단계
 
 1. [x] React, TypeScript, Vite 스캐폴드와 품질 도구 구성
@@ -40,6 +42,7 @@
 5. [x] Home, 카테고리 swipe, mock feed 구현
 6. [x] Explore, Create, Activity, My, Settings 화면 구현
 7. [x] theme 전환, 언어 전환, 수동 확인, TypeScript, ESLint, build 검증
+8. [x] 커뮤니티 병원 지도 필터와 야간 응급 데모 목록 검증
 
 ## 팝업 UX 개선 (2026-08-22)
 
@@ -49,6 +52,15 @@
 4. [x] X·페이스북은 공유 인텐트로 연결하고, 카카오톡·인스타그램은 링크 복사 폴백으로 동작하게 했다.
 5. [x] 설정의 개인정보·서비스 하위 항목 시트를 동일한 중앙 모달로 전환했다.
 6. [x] 설정 테마/언어를 현재값 표시 행 + 리스트박스 선택 시트로 전환했다.
+
+## 병원 지도 및 PWA 갱신 (2026-10-06)
+
+1. [x] 병원 지도는 Cesium이 아니라 기존 Leaflet 구현을 유지한다.
+2. [x] 시·구·동 필터와 야간 응급 필터가 지도 핀 수와 병원 목록 수를 함께 갱신한다.
+3. [x] 병원 연락처와 진료 시간은 검증된 실제 정보가 아니라 데모 샘플임을 화면과 README에 명시했다.
+4. [x] 홈, 탐색, 커뮤니티의 활동 하트 버튼은 URL 이동 없이 활동 팝업을 연다.
+5. [x] 서비스 워커에 즉시 활성화를 추가하고, preview에서 현재 `/sw.js`가 네트워크 우선 로직과 `skipWaiting`을 포함함을 확인했다.
+
 ## 다음 액션 큐
 
 1. [x] 패키지 매니저는 npm으로 확정했다.
@@ -106,6 +118,9 @@
 - [x] 댓글/공유/설정 시트가 백드포스=뷰포트, 중앙 정렬 조건을 Playwright 실측으로 통과했다.
 - [x] 테마/언어 리스트박스에서 선택 즉시 적용, 시트 닫힘, 행 값 갱신을 Playwright로 확인했다.
 - [x] 팝업 UX 개선 후 Vitest 102개, TypeScript, production build가 통과했다.
+- [x] 2026-10-06 `npm run typecheck`, 변경 파일 대상 ESLint/Prettier, `npm run test:run` 121개, `npm run smoke:preview` 31개가 통과했다.
+- [x] 2026-10-06 preview `http://127.0.0.1:5174/community`에서 병원 지도 초기 18곳, 강남구 3곳, 강남구+야간 2곳, 지도 팝업·목록 `tel:` 링크를 Playwright로 확인했다.
+- [x] 2026-10-06 preview에서 명시적 dark와 system-dark가 중립 회색 토큰(`#141414`, `#1d1d1d`, `#d6d6d6`)으로 적용됨을 Playwright로 확인했다.
 
 ## 업데이트 규칙
 
