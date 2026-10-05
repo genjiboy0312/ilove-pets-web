@@ -69,5 +69,15 @@ export default [
       },
     },
   },
+  {
+    ...tseslint.configs.disableTypeChecked,
+    files: ["public/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.serviceworker,
+      },
+    },
+  },
   prettier,
 ]
