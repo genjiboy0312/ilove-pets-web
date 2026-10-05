@@ -225,7 +225,11 @@
 }
 
 .hospital-map__title,
-.hospital-map__count {
+.hospital-map__count,
+.hospital-map__notice,
+.hospital-map__empty,
+.hospital-card__title,
+.hospital-card__meta {
   margin: var(--space-0);
 }
 
@@ -242,6 +246,103 @@
   color: var(--color-text-secondary);
   font-size: var(--font-size-small);
   line-height: var(--line-height-normal);
+}
+
+.hospital-map__region-filter {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(var(--space-0), 1fr));
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-subtle);
+}
+
+.hospital-map__region-field {
+  display: grid;
+  min-width: var(--space-0);
+  gap: var(--space-1);
+}
+
+.hospital-map__region-label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+.hospital-map__region-select,
+.hospital-map__region-reset {
+  width: 100%;
+  min-width: var(--space-0);
+  min-height: var(--size-touch-min);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+.hospital-map__region-select {
+  padding: var(--space-2) var(--space-3);
+}
+
+.hospital-map__region-reset {
+  grid-column: 1 / -1;
+  padding: var(--space-2) var(--space-4);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.hospital-map__region-reset:active {
+  border-color: var(--color-border-strong);
+  background: var(--color-primary-soft);
+  transform: translateY(1px);
+}
+
+.hospital-map__night-filter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.hospital-map__night-filter[aria-pressed="true"] {
+  border-color: var(--color-border-strong);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.hospital-map__night-filter:active {
+  transform: translateY(1px);
+}
+
+.hospital-map__notice,
+.hospital-map__empty {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-normal);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
 }
 
 .hospital-map__canvas {
@@ -292,12 +393,86 @@
   color: var(--color-text-secondary);
 }
 
+.hospital-map__popup .leaflet-popup-content a,
+.hospital-card__contact {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.hospital-map__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-0);
+  padding: var(--space-0);
+  list-style: none;
+}
+
+.hospital-card {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+}
+
+.hospital-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: var(--space-0);
+}
+
+.hospital-card__title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  word-break: keep-all;
+}
+
+.hospital-card__badge {
+  flex: 0 0 auto;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-soft);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+.hospital-card__meta {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-normal);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.hospital-card__contact {
+  min-height: var(--size-touch-min);
+  align-content: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .community-view-tabs__button {
     transition-duration: var(--duration-fast);
   }
 
   .community-view-tabs__button:active {
+    transform: none;
+  }
+
+  .hospital-map__region-reset,
+  .hospital-map__night-filter {
+    transition-duration: var(--duration-fast);
+  }
+
+  .hospital-map__region-reset:active,
+  .hospital-map__night-filter:active {
     transform: none;
   }
 }
