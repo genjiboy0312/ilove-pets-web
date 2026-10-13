@@ -7,6 +7,13 @@ vi.mock("./photoStore", () => ({
   getPhoto: vi.fn((key: string) =>
     Promise.resolve(key === "missing-photo" ? null : new Blob(["ok"])),
   ),
+  getPhotos: vi.fn((keys: ReadonlySet<string>) =>
+    Promise.resolve(
+      new Map(
+        [...keys].filter((key) => key !== "missing-photo").map((key) => [key, new Blob(["ok"])]),
+      ),
+    ),
+  ),
   putPhoto: vi.fn(),
 }))
 

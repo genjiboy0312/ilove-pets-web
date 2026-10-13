@@ -9,7 +9,7 @@ import type {
 import { localContentChangedEvent } from "./localContentTypes"
 import { LocalContentMetadataError, LocalContentStorageError } from "./localContentErrors"
 import { commitMetadata, withMetadataLock } from "./localContentCommit"
-import { deletePhoto, getPhoto, putPhoto, prunePhotos } from "./photoStore"
+import { deletePhoto, getPhotos, putPhoto, prunePhotos } from "./photoStore"
 import {
   readCreateDraft,
   readMetadata,
@@ -28,25 +28,26 @@ const placeholderAvatarUrl: ImageSourceUrl =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' rx='48' fill='%23e5ece3'/%3E%3Cpath d='M26 54c4 14 16 22 30 18 13-4 19-18 14-30-5-13-20-20-34-15C25 31 21 42 26 54Z' fill='%235f7561'/%3E%3Ccircle cx='40' cy='45' r='4' fill='%23faf9f6'/%3E%3Ccircle cx='59' cy='43' r='4' fill='%23faf9f6'/%3E%3Cpath d='M46 57c5 3 10 2 15-2' fill='none' stroke='%23faf9f6' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E"
 
 export async function loadLocalContent(): Promise<LocalContentLoadResult> {
-  const metadata = await withMetadataLock(async () => {
+  const { metadata, photos } = await withMetadataLock(async () => {
     const saved = readMetadata()
+    const keys = new Set([
+      ...saved.pets.flatMap((pet) => (pet.photoKey === undefined ? [] : [pet.photoKey])),
+      ...saved.posts.map((post) => post.photoKey),
+    ])
     // Only prune under a real cross-tab lock, after metadata was parsed successfully.
     // This retries orphan cleanup from failed deletion or interrupted restore staging.
     if ("locks" in navigator && canPrunePhotos(saved)) {
-      const keys = new Set([
-        ...saved.pets.flatMap((pet) => (pet.photoKey === undefined ? [] : [pet.photoKey])),
-        ...saved.posts.map((post) => post.photoKey),
-      ])
       try {
         await prunePhotos(keys)
       } catch {
         /* Retry on the next refresh without blocking readable content. */
       }
     }
-    return saved
+    // Capture all referenced photos in one transaction while replacement writes are excluded.
+    return { metadata: saved, photos: await getPhotos(keys) }
   })
-  const pets = await Promise.all(metadata.pets.map(toLocalPet))
-  const loadedPosts = await Promise.all(metadata.posts.map(toLocalPostResult))
+  const pets = metadata.pets.map((pet) => toLocalPet(pet, photos))
+  const loadedPosts = metadata.posts.map((post) => toLocalPostResult(post, photos))
   const posts = loadedPosts.flatMap((result) => (result.post === null ? [] : [result.post]))
   const missingPhotoCount = loadedPosts.filter((result) => result.post === null).length
 
@@ -143,13 +144,13 @@ function createStoredPet(
   return photoKey === undefined ? basePet : { ...basePet, photoKey }
 }
 
-async function toLocalPet(pet: StoredPet): Promise<LocalPet> {
+function toLocalPet(pet: StoredPet, photos: ReadonlyMap<string, Blob>): LocalPet {
   const basePet = {
     petId: pet.id,
     name: pet.name,
     category: pet.category,
     breed: pet.breed,
-    avatarUrl: await getOptionalImageUrl(pet.photoKey),
+    avatarUrl: getOptionalImageUrl(pet.photoKey, photos),
     createdAt: pet.createdAt,
     ...(pet.growth === undefined ? {} : { growth: pet.growth }),
   }
@@ -161,9 +162,9 @@ interface LocalPostResult {
   readonly post: LocalPost | null
 }
 
-async function toLocalPostResult(post: StoredPost): Promise<LocalPostResult> {
+function toLocalPostResult(post: StoredPost, photos: ReadonlyMap<string, Blob>): LocalPostResult {
   try {
-    return { post: await toLocalPost(post) }
+    return { post: toLocalPost(post, photos) }
   } catch (error) {
     if (error instanceof LocalContentStorageError) {
       return { post: null }
@@ -173,13 +174,13 @@ async function toLocalPostResult(post: StoredPost): Promise<LocalPostResult> {
   }
 }
 
-async function toLocalPost(post: StoredPost): Promise<LocalPost> {
+function toLocalPost(post: StoredPost, photos: ReadonlyMap<string, Blob>): LocalPost {
   return {
     postId: post.id,
     ...(post.liked === undefined ? {} : { liked: post.liked }),
     ...(post.comments === undefined ? {} : { comments: post.comments }),
     petId: post.petId,
-    imageUrl: await getRequiredImageUrl(post.photoKey),
+    imageUrl: getRequiredImageUrl(post.photoKey, photos),
     photoKey: post.photoKey,
     content: post.content,
     tags: post.tags,
@@ -187,19 +188,22 @@ async function toLocalPost(post: StoredPost): Promise<LocalPost> {
   }
 }
 
-async function getOptionalImageUrl(photoKey: string | undefined): Promise<ImageSourceUrl> {
+function getOptionalImageUrl(
+  photoKey: string | undefined,
+  photos: ReadonlyMap<string, Blob>,
+): ImageSourceUrl {
   if (photoKey === undefined) {
     return placeholderAvatarUrl
   }
 
-  const blob = await getPhoto(photoKey)
-  return blob === null ? placeholderAvatarUrl : toBlobUrl(blob)
+  const blob = photos.get(photoKey)
+  return blob === undefined ? placeholderAvatarUrl : toBlobUrl(blob)
 }
 
-async function getRequiredImageUrl(photoKey: string): Promise<ImageSourceUrl> {
-  const blob = await getPhoto(photoKey)
+function getRequiredImageUrl(photoKey: string, photos: ReadonlyMap<string, Blob>): ImageSourceUrl {
+  const blob = photos.get(photoKey)
 
-  if (blob === null) {
+  if (blob === undefined) {
     throw new LocalContentStorageError(
       "A saved post photo is missing. Recreate the post or clear site data.",
     )
