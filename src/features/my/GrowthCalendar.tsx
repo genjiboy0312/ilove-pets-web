@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import type { GrowthRecord } from "../local/localContentTypes"
+import { localDate } from "../local/growthDates"
 
 export function GrowthCalendar({ records }: { readonly records: readonly GrowthRecord[] }) {
   const { i18n, t } = useTranslation()
@@ -8,7 +9,7 @@ export function GrowthCalendar({ records }: { readonly records: readonly GrowthR
     const now = new Date()
     return new Date(now.getFullYear(), now.getMonth(), 1)
   })
-  const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const [selectedDate, setSelectedDate] = useState<string | null>(() => localDate())
   const year = month.getFullYear()
   const monthIndex = month.getMonth()
   const days = new Date(year, monthIndex + 1, 0).getDate()
@@ -47,6 +48,17 @@ export function GrowthCalendar({ records }: { readonly records: readonly GrowthR
           ›
         </button>
       </header>
+      <button
+        className="local-button"
+        type="button"
+        onClick={() => {
+          const now = new Date()
+          setMonth(new Date(now.getFullYear(), now.getMonth(), 1))
+          setSelectedDate(localDate(now))
+        }}
+      >
+        {t(($) => $.growthEdit.today)}
+      </button>
       <div className="growth-calendar__grid">
         {Array.from({ length: 7 }, (_, index) => (
           <span className="growth-calendar__weekday" key={index}>
@@ -67,6 +79,7 @@ export function GrowthCalendar({ records }: { readonly records: readonly GrowthR
               aria-label={`${date} (${String(count)})`}
               aria-pressed={selectedDate === date}
               data-has-record={count > 0}
+              aria-current={date === localDate() ? "date" : undefined}
               onClick={() => {
                 setSelectedDate(date)
               }}
@@ -79,7 +92,7 @@ export function GrowthCalendar({ records }: { readonly records: readonly GrowthR
       </div>
       {selectedDate === null ? null : (
         <div aria-live="polite">
-          <h4>{selectedDate}</h4>
+          <h4>{t(($) => $.growthEdit.selected, { date: selectedDate })}</h4>
           {selection.length === 0 ? (
             <p>{t(($) => $.manage.noRecords)}</p>
           ) : (

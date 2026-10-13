@@ -3,7 +3,6 @@ import { LocalContentMetadataError } from "./localContentErrors"
 import {
   createDraftStorageKey,
   metadataStorageKey,
-  isRecordDate,
   toIsoDateTimeString,
 } from "./localContentMetadata"
 import type { StoredMetadata } from "./localContentMetadata"
@@ -11,6 +10,7 @@ import type { GrowthRecord, PetRegistrationInput } from "./localContentTypes"
 import { emitLocalContentChanged } from "./localContentStore"
 import { deletePhoto, clearPhotos } from "./photoStore"
 import { withMetadataLock } from "./localContentCommit"
+import { isGrowthInputValid } from "./growthDates"
 import type { PetId, PostId } from "../../types/domain"
 
 export class LinkedPetError extends Error {}
@@ -119,13 +119,7 @@ export async function addGrowthRecord(
   petId: PetId,
   input: Omit<GrowthRecord, "id">,
 ): Promise<void> {
-  if (
-    !isRecordDate(input.date) ||
-    (input.weightKg === undefined && !input.note.trim()) ||
-    (input.weightKg !== undefined &&
-      (!Number.isFinite(input.weightKg) || input.weightKg <= 0 || input.weightKg > 1000))
-  )
-    throw new LocalContentMetadataError("Invalid growth record.")
+  if (!isGrowthInputValid(input)) throw new LocalContentMetadataError("Invalid growth record.")
   await updateContent((metadata) => {
     if (!metadata.pets.some((pet) => pet.id === petId))
       throw new LocalContentMetadataError("Pet no longer exists.")
@@ -141,6 +135,36 @@ export async function addGrowthRecord(
               ].sort((a, b) => a.date.localeCompare(b.date)),
             }
           : pet,
+      ),
+    }
+  })
+}
+
+export async function updateGrowthRecord(
+  petId: PetId,
+  recordId: string,
+  input: Omit<GrowthRecord, "id">,
+): Promise<void> {
+  if (!isGrowthInputValid(input)) throw new LocalContentMetadataError("Invalid growth record.")
+  await updateContent((metadata) => {
+    const target = metadata.pets.find((pet) => pet.id === petId)
+    if (!target?.growth?.some((record) => record.id === recordId))
+      throw new LocalContentMetadataError("Record no longer exists.")
+    return {
+      ...metadata,
+      pets: metadata.pets.map((pet) =>
+        pet.id !== petId
+          ? pet
+          : {
+              ...pet,
+              growth: (pet.growth ?? [])
+                .map((record) =>
+                  record.id === recordId
+                    ? { ...input, id: recordId, note: input.note.trim() }
+                    : record,
+                )
+                .sort((a, b) => a.date.localeCompare(b.date)),
+            },
       ),
     }
   })

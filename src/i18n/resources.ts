@@ -1,6 +1,9 @@
+import { growthMessages } from "./growthMessages"
+
 export const resources = {
   en: {
     translation: {
+      ...growthMessages.en,
       backup: {
         title: "Backup and restore",
         notice:
@@ -311,6 +314,7 @@ export const resources = {
   },
   ja: {
     translation: {
+      ...growthMessages.ja,
       backup: {
         title: "バックアップと復元",
         notice:
@@ -619,6 +623,7 @@ export const resources = {
   },
   ko: {
     translation: {
+      ...growthMessages.ko,
       backup: {
         title: "백업과 복원",
         notice:

@@ -16,6 +16,7 @@ import {
   setLocalPostLiked,
   updateLocalPet,
   updateLocalPost,
+  updateGrowthRecord,
 } from "./localContentActions"
 import { publishLocalPost } from "./localContentStore"
 import { clearPhotos, deletePhoto, putPhoto } from "./photoStore"
@@ -132,6 +133,42 @@ describe("local data management", () => {
   ])("rejects invalid growth records before committing: %j", async (record) => {
     await expect(addGrowthRecord(pet.id, record)).rejects.toThrow()
     expect(readMetadata().pets[0]?.growth).toBeUndefined()
+  })
+
+  it("edits a growth record without changing its identity or another pet's records", async () => {
+    await addGrowthRecord(pet.id, { date: "2024-02-29", weightKg: 3.4, note: "original" })
+    const recordId = readMetadata().pets[0]?.growth?.[0]?.id
+    if (recordId === undefined) throw new Error("Missing record")
+    localStorage.setItem(
+      metadataStorageKey,
+      JSON.stringify({
+        schemaVersion: 1,
+        ...readMetadata(),
+        pets: [
+          ...readMetadata().pets,
+          {
+            ...pet,
+            id: "pet_other",
+            growth: [{ id: "other", date: "2024-02-28", note: "unaffected" }],
+          },
+        ],
+      }),
+    )
+    await updateGrowthRecord(pet.id, recordId, { date: "2023-12-31", note: " care only " })
+    expect(readMetadata().pets[0]?.growth?.[0]).toEqual({
+      id: recordId,
+      date: "2023-12-31",
+      note: "care only",
+    })
+    expect(readMetadata().pets[1]?.growth?.[0]?.note).toBe("unaffected")
+    const previous = localStorage.getItem(metadataStorageKey)
+    await expect(
+      updateGrowthRecord(pet.id, recordId, { date: "2099-01-01", note: "future" }),
+    ).rejects.toThrow()
+    await expect(
+      updateGrowthRecord(pet.id, "missing", { date: "2024-02-29", note: "lost" }),
+    ).rejects.toThrow()
+    expect(localStorage.getItem(metadataStorageKey)).toBe(previous)
   })
 
   it("cleans up a newly uploaded photo when metadata saving fails", async () => {
