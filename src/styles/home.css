@@ -7,7 +7,6 @@
   animation: app-canvas-enter var(--duration-slow) var(--ease-standard) both;
 }
 
-
 .home-screen__header {
   display: flex;
   align-items: center;
@@ -367,6 +366,12 @@
 
 .post-card__action[aria-pressed="true"] .post-card__action-icon {
   color: var(--color-like);
+}
+
+.post-card__action:disabled {
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .post-card__share-toast {

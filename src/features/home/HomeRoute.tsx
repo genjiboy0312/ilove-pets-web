@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { ActivityButton } from "../activity/ActivityButton"
 import { PET_FILTER_ALL } from "../../constants/petCategories"
 import type { PetCategoryFilter } from "../../constants/petCategories"
+import { useLocalContent } from "../local/useLocalContent"
 import { CategoryTabs } from "./CategoryTabs"
 import { getHomeFeedPosts } from "./homeFeedData"
 import { PostCard } from "./PostCard"
@@ -11,7 +12,11 @@ import { PostCard } from "./PostCard"
 export function HomeRoute() {
   const { t } = useTranslation()
   const [selectedFilter, setSelectedFilter] = useState<PetCategoryFilter>(PET_FILTER_ALL)
-  const posts = useMemo(() => getHomeFeedPosts(selectedFilter), [selectedFilter])
+  const localContent = useLocalContent()
+  const posts = useMemo(
+    () => getHomeFeedPosts(selectedFilter, localContent.content),
+    [localContent.content, selectedFilter],
+  )
 
   return (
     <section className="home-screen" aria-labelledby="home-route-title">
@@ -25,6 +30,11 @@ export function HomeRoute() {
         <ActivityButton />
       </header>
       <CategoryTabs selectedFilter={selectedFilter} onSelectFilter={setSelectedFilter} />
+      {localContent.errorMessage === null ? null : (
+        <p className="home-feed__empty" role="alert">
+          {t(($) => $.manage.storageProblem)}
+        </p>
+      )}
 
       <div className="home-feed" role="feed" aria-label={t(($) => $.home.feedLabel)}>
         {posts.length === 0 ? (

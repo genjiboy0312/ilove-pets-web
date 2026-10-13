@@ -1,6 +1,29 @@
 export const resources = {
   en: {
     translation: {
+      backup: {
+        title: "Backup and restore",
+        notice:
+          "Save your pets, posts, photos, likes, comments and growth records in one file. Keep it private. Settings and draft text are excluded. Up to 100 MB per file and 64 MB of photos.",
+        download: "Download backup",
+        select: "Select backup file",
+        summary:
+          "Pets: {{pets}} · Posts: {{posts}} · Growth records: {{records}} · Photos: {{photos}} ({{size}} MB)",
+        replaceNotice:
+          "Restoring replaces all saved pets, posts and records in this browser. Download a backup of your current data first. Other open tabs will update too. Cancel leaves your data unchanged. Restore needs a browser with Web Locks support.",
+        confirm: "Replace local data and restore",
+        busy: "Processing backup. Please wait.",
+        downloaded: "Backup download started.",
+        restored: "Backup restored. Photos and records are available in this browser.",
+        errors: {
+          invalid: "This is not a valid iLove Pets backup. Your data has not been replaced.",
+          version: "This backup version is not supported. Your data has not been replaced.",
+          size: "The backup exceeds 100 MB, 64 MB of photos, or 5 MB per photo. Your data has not been replaced.",
+          missingPhoto: "A referenced photo is missing. A complete backup is required.",
+          storage:
+            "Backup could not finish. Check browser storage space and Web Locks support, then retry. Existing data is preserved if restoration fails.",
+        },
+      },
       app: {
         title: "iLove Pets",
       },
@@ -44,7 +67,18 @@ export const resources = {
         tagLabel: "Tags",
         tagPlaceholder: "Add tags",
         submit: "Post",
-        hint: "Upload will be connected later.",
+        publishing: "Posting...",
+        publishSuccess: "Posted locally. It now appears in Home and My on this device.",
+        hint: "Photos are stored in this browser with IndexedDB. Clearing site data removes them.",
+        validation: {
+          required: "Choose a pet, add a valid photo, and write content before posting.",
+          storageFailed: "local publish failed",
+        },
+        imageErrors: {
+          type: "Use a JPEG, PNG, or WebP image.",
+          size: "Use an image under 5MB.",
+          decode: "This file could not be decoded as an image. Try another photo.",
+        },
         aiButton: "AI caption ideas",
         aiGenerating: "Generating...",
         aiSuggestion1: "Best walk day ever 🐾",
@@ -74,6 +108,62 @@ export const resources = {
         petsLabel: "Registered pets",
         gridLabel: "My posts",
         empty: "No posts yet.",
+        petForm: {
+          heading: "Register my pet",
+          name: "Pet name",
+          category: "Category",
+          breed: "Breed",
+          photo: "Profile photo (optional)",
+          submit: "Save pet",
+          saving: "Saving...",
+          saved: "Pet saved locally and is available for Create.",
+          required: "Enter a pet name and breed.",
+          storageFailed: "local pet save failed",
+        },
+      },
+      manage: {
+        edit: "Edit",
+        save: "Save changes",
+        delete: "Delete",
+        cancel: "Cancel",
+        confirmDelete: "Delete permanently",
+        deleteNotice: "This cannot be undone. Delete this item?",
+        saved: "Saved on this device.",
+        storageProblem:
+          "Could not access local data. Try again, or use My Account to reset local data.",
+        linkedPet: "Delete this pet’s posts before deleting the pet.",
+        editPet: "Edit pet",
+        editPost: "Edit post",
+        localPosts: "Posts on this device",
+        firstPet:
+          "Register your own pet below to get started. The other pets and posts are demo examples.",
+        firstPost: "Your pet is ready. Share your first photo.",
+        createPost: "Write a post",
+        growth: "Add growth record",
+        date: "Date",
+        weight: "Weight (kg, optional)",
+        note: "Care note (optional)",
+        addRecord: "Save record",
+        invalidRecord: "Use a valid date and a weight between 0 and 1000 kg, or write a care note.",
+        noWeights: "No weight records yet.",
+        calendar: "Record calendar",
+        previousMonth: "Previous month",
+        nextMonth: "Next month",
+        recordList: "Saved records",
+        noRecords: "No records on this date.",
+        reset: "Reset local data",
+        resetNotice:
+          "All pets, posts, photos, comments, likes and draft text saved in this browser will be removed. This cannot be undone.",
+        resetConfirm: "Remove all local data",
+        resetDone: "Local data cleared. Demo examples are unchanged.",
+        sessionOnly: "Interactions on demo posts last only while this screen is open.",
+      },
+      local: {
+        limitation:
+          "Local-only demo: pets and posts stay in this browser. Login, public sharing, and cross-device sync need a server phase.",
+        draftPhoto:
+          "Draft text, selected pet, and tags are restored after refresh. Photo files are not restored; reselect the photo if needed.",
+        storageError: "Local storage needs attention: {{message}}",
       },
       community: {
         heading: "Community",
@@ -186,6 +276,7 @@ export const resources = {
           heading: "Share",
           copyLink: "Copy link",
           copied: "Link copied.",
+          localOnly: "local only",
           kakao: "KakaoTalk",
           instagram: "Instagram",
           x: "X",
@@ -220,6 +311,29 @@ export const resources = {
   },
   ja: {
     translation: {
+      backup: {
+        title: "バックアップと復元",
+        notice:
+          "ペット、投稿、写真、いいね、コメント、成長記録を1つのファイルに保存します。安全な場所に保管してください。設定と下書きは含みません。ファイル100 MB、写真合計64 MBまで。",
+        download: "バックアップをダウンロード",
+        select: "バックアップファイルを選択",
+        summary:
+          "ペット: {{pets}} · 投稿: {{posts}} · 成長記録: {{records}} · 写真: {{photos}} ({{size}} MB)",
+        replaceNotice:
+          "復元すると、このブラウザのペット、投稿、記録をすべて置き換えます。先に現在のデータをバックアップしてください。他のタブにも反映されます。キャンセルでは変更されません。Web Locks対応ブラウザが必要です。",
+        confirm: "ローカルデータを置き換えて復元",
+        busy: "バックアップを処理しています。お待ちください。",
+        downloaded: "バックアップのダウンロードを開始しました。",
+        restored: "復元しました。このブラウザで写真と記録を確認できます。",
+        errors: {
+          invalid: "有効なiLove Petsバックアップではありません。データは置き換えていません。",
+          version: "このバックアップのバージョンには対応していません。データは置き換えていません。",
+          size: "ファイル100 MB、写真合計64 MB、写真1枚5 MBの上限を超えています。データは置き換えていません。",
+          missingPhoto: "参照された写真がありません。完全なバックアップが必要です。",
+          storage:
+            "処理できませんでした。空き容量とWeb Locks対応を確認して再試行してください。復元に失敗した場合、既存データは保持されます。",
+        },
+      },
       app: {
         title: "iLove Pets",
       },
@@ -262,7 +376,18 @@ export const resources = {
         tagLabel: "タグ",
         tagPlaceholder: "タグを追加",
         submit: "投稿する",
-        hint: "アップロードは後で接続されます。",
+        publishing: "投稿中...",
+        publishSuccess: "この端末に保存され、ホームとマイに表示されます。",
+        hint: "写真はこのブラウザーのIndexedDBに保存されます。サイトデータを消すと削除されます。",
+        validation: {
+          required: "ペット、有効な写真、本文を入力してから投稿してください。",
+          storageFailed: "ローカル投稿に失敗しました",
+        },
+        imageErrors: {
+          type: "JPEG、PNG、WebP画像を選んでください。",
+          size: "5MB未満の画像を選んでください。",
+          decode: "画像として読み込めませんでした。別の写真を選んでください。",
+        },
         aiButton: "AIキャプション提案",
         aiGenerating: "生成中...",
         aiSuggestion1: "今日のお散歩、最高の一日 🐾",
@@ -292,6 +417,62 @@ export const resources = {
         petsLabel: "登録ペット",
         gridLabel: "マイ投稿",
         empty: "投稿はまだありません。",
+        petForm: {
+          heading: "自分のペットを登録",
+          name: "ペット名",
+          category: "カテゴリー",
+          breed: "品種",
+          photo: "プロフィール写真（任意）",
+          submit: "ペットを保存",
+          saving: "保存中...",
+          saved: "ペットをこの端末に保存し、作成画面で選べます。",
+          required: "ペット名と品種を入力してください。",
+          storageFailed: "ローカル保存に失敗しました",
+        },
+      },
+      manage: {
+        edit: "編集",
+        save: "変更を保存",
+        delete: "削除",
+        cancel: "キャンセル",
+        confirmDelete: "完全に削除",
+        deleteNotice: "元に戻せません。この項目を削除しますか？",
+        saved: "この端末に保存しました。",
+        storageProblem:
+          "ローカルデータにアクセスできません。再試行するか、マイページでデータをリセットしてください。",
+        linkedPet: "このペットの投稿を先に削除してください。",
+        editPet: "ペットを編集",
+        editPost: "投稿を編集",
+        localPosts: "この端末の投稿",
+        firstPet: "下のフォームでペットを登録してください。他のペットと投稿はデモです。",
+        firstPost: "ペットを登録しました。最初の写真を投稿しましょう。",
+        createPost: "投稿を書く",
+        growth: "成長記録を追加",
+        date: "日付",
+        weight: "体重 (kg、任意)",
+        note: "ケアメモ (任意)",
+        addRecord: "記録を保存",
+        invalidRecord:
+          "正しい日付と0より大きく1000kg以下の体重を入力するか、ケアメモを書いてください。",
+        noWeights: "体重記録はまだありません。",
+        calendar: "記録カレンダー",
+        previousMonth: "前の月",
+        nextMonth: "次の月",
+        recordList: "保存した記録",
+        noRecords: "この日の記録はありません。",
+        reset: "ローカルデータをリセット",
+        resetNotice:
+          "このブラウザのペット、投稿、写真、コメント、いいね、下書きがすべて削除されます。元に戻せません。",
+        resetConfirm: "全ローカルデータを削除",
+        resetDone: "ローカルデータを削除しました。デモはそのままです。",
+        sessionOnly: "デモ投稿への反応は、この画面を開いている間のみ保持されます。",
+      },
+      local: {
+        limitation:
+          "ローカル限定デモ: ペットと投稿はこのブラウザーだけに保存されます。ログイン、公開共有、端末間同期にはサーバー段階が必要です。",
+        draftPhoto:
+          "下書きの本文、ペット、タグは更新後も復元されます。写真ファイルは復元されないため、必要なら再選択してください。",
+        storageError: "ローカル保存を確認してください: {{message}}",
       },
       community: {
         heading: "コミュニティ",
@@ -404,6 +585,7 @@ export const resources = {
           heading: "シェア",
           copyLink: "リンクをコピー",
           copied: "リンクをコピーしました。",
+          localOnly: "端末のみ",
           kakao: "カカオトーク",
           instagram: "インスタグラム",
           x: "X",
@@ -437,6 +619,30 @@ export const resources = {
   },
   ko: {
     translation: {
+      backup: {
+        title: "백업과 복원",
+        notice:
+          "펫·게시물·사진·좋아요·댓글·성장 기록을 한 파일로 보관합니다. 파일은 안전한 곳에 보관하세요. 설정과 작성 초안은 제외합니다. 파일 100MB, 사진 합계 64MB까지 지원합니다.",
+        download: "백업 다운로드",
+        select: "백업 파일 선택",
+        summary:
+          "펫 {{pets}}마리 · 게시물 {{posts}}개 · 성장 기록 {{records}}개 · 사진 {{photos}}장 ({{size}}MB)",
+        replaceNotice:
+          "복원하면 이 브라우저의 펫·게시물·기록을 모두 교체합니다. 먼저 현재 데이터를 백업하세요. 다른 열린 탭에도 반영됩니다. 취소하면 데이터는 그대로 유지됩니다. Web Locks를 지원하는 브라우저가 필요합니다.",
+        confirm: "로컬 데이터 교체 후 복원",
+        busy: "백업을 처리하고 있습니다. 잠시 기다려 주세요.",
+        downloaded: "백업 다운로드를 시작했습니다.",
+        restored: "백업을 복원했습니다. 이 브라우저에서 사진과 기록을 확인할 수 있습니다.",
+        errors: {
+          invalid: "올바른 iLove Pets 백업 파일이 아닙니다. 기존 데이터는 교체하지 않았습니다.",
+          version: "지원하지 않는 백업 버전입니다. 기존 데이터는 교체하지 않았습니다.",
+          size: "파일 100MB·사진 합계 64MB·사진 한 장 5MB 제한을 초과했습니다. 기존 데이터는 교체하지 않았습니다.",
+          missingPhoto:
+            "백업에 필요한 사진이 누락되었습니다. 사진이 모두 포함된 백업을 사용하세요.",
+          storage:
+            "백업 처리를 완료하지 못했습니다. 브라우저 저장 공간과 Web Locks 지원 여부를 확인한 뒤 다시 시도하세요. 복원 실패 시 기존 데이터는 유지됩니다.",
+        },
+      },
       app: {
         title: "iLove Pets",
       },
@@ -479,7 +685,18 @@ export const resources = {
         tagLabel: "태그",
         tagPlaceholder: "태그 추가",
         submit: "게시",
-        hint: "업로드는 나중에 연결됩니다.",
+        publishing: "게시 중...",
+        publishSuccess: "이 기기에 로컬 게시되었습니다. 홈과 내 계정에 표시됩니다.",
+        hint: "사진은 이 브라우저의 IndexedDB에 저장됩니다. 사이트 데이터를 지우면 삭제됩니다.",
+        validation: {
+          required: "펫, 올바른 사진, 내용을 모두 입력한 뒤 게시하세요.",
+          storageFailed: "로컬 게시 실패",
+        },
+        imageErrors: {
+          type: "JPEG, PNG, WebP 이미지를 선택하세요.",
+          size: "5MB 이하 이미지를 선택하세요.",
+          decode: "이미지로 해석할 수 없는 파일입니다. 다른 사진을 선택하세요.",
+        },
         aiButton: "AI 캡션 추천",
         aiGenerating: "생성 중...",
         aiSuggestion1: "오늘 산책, 최고의 하루 🐾",
@@ -509,6 +726,61 @@ export const resources = {
         petsLabel: "등록 펫",
         gridLabel: "내 게시물",
         empty: "아직 게시물이 없습니다.",
+        petForm: {
+          heading: "내 펫 등록",
+          name: "펫 이름",
+          category: "카테고리",
+          breed: "품종",
+          photo: "프로필 사진(선택)",
+          submit: "펫 저장",
+          saving: "저장 중...",
+          saved: "펫이 이 기기에 저장되어 작성 화면에서 선택할 수 있습니다.",
+          required: "펫 이름과 품종을 입력하세요.",
+          storageFailed: "로컬 펫 저장 실패",
+        },
+      },
+      manage: {
+        edit: "수정",
+        save: "변경 저장",
+        delete: "삭제",
+        cancel: "취소",
+        confirmDelete: "영구 삭제",
+        deleteNotice: "되돌릴 수 없습니다. 이 항목을 삭제할까요?",
+        saved: "이 기기에 저장했습니다.",
+        storageProblem:
+          "로컬 데이터에 접근하지 못했습니다. 다시 시도하거나 내 계정에서 로컬 데이터를 초기화하세요.",
+        linkedPet: "이 펫의 게시물을 먼저 삭제한 후 펫을 삭제하세요.",
+        editPet: "펫 수정",
+        editPost: "게시물 수정",
+        localPosts: "이 기기의 게시물",
+        firstPet: "아래에서 내 펫을 등록하고 시작해 보세요. 다른 펫과 게시물은 데모 예시입니다.",
+        firstPost: "펫 등록을 마쳤습니다. 첫 사진을 공유해 보세요.",
+        createPost: "게시물 작성",
+        growth: "성장 기록 추가",
+        date: "날짜",
+        weight: "체중 (kg, 선택)",
+        note: "돌봄 메모 (선택)",
+        addRecord: "기록 저장",
+        invalidRecord: "올바른 날짜와 0 초과 1000kg 이하 체중을 입력하거나 돌봄 메모를 적어주세요.",
+        noWeights: "아직 체중 기록이 없습니다.",
+        calendar: "기록 달력",
+        previousMonth: "이전 달",
+        nextMonth: "다음 달",
+        recordList: "저장된 기록",
+        noRecords: "이 날짜에는 기록이 없습니다.",
+        reset: "로컬 데이터 초기화",
+        resetNotice:
+          "이 브라우저에 저장한 펫·게시물·사진·댓글·좋아요·작성 초안이 모두 삭제됩니다. 되돌릴 수 없습니다.",
+        resetConfirm: "모든 로컬 데이터 삭제",
+        resetDone: "로컬 데이터를 지웠습니다. 데모 예시는 유지됩니다.",
+        sessionOnly: "데모 게시물의 반응은 현재 화면을 열어 둔 동안만 유지됩니다.",
+      },
+      local: {
+        limitation:
+          "로컬 전용 데모: 펫과 게시물은 이 브라우저에만 저장됩니다. 로그인, 공개 공유, 기기 간 동기화는 서버 단계가 필요합니다.",
+        draftPhoto:
+          "작성 중인 내용, 선택한 펫, 태그는 새로고침 후 복원됩니다. 사진 파일은 복원되지 않으니 필요하면 다시 선택하세요.",
+        storageError: "로컬 저장소 확인 필요: {{message}}",
       },
       community: {
         heading: "커뮤니티",
@@ -621,6 +893,7 @@ export const resources = {
           heading: "공유",
           copyLink: "링크 복사",
           copied: "링크가 복사되었습니다.",
+          localOnly: "이 기기 전용",
           kakao: "카카오톡",
           instagram: "인스타그램",
           x: "X",

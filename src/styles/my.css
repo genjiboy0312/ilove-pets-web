@@ -336,6 +336,65 @@
   word-break: keep-all;
 }
 
+.my-pet-form {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-medium);
+  background: var(--color-surface-elevated);
+}
+
+.my-pet-form__field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.my-pet-form__label,
+.my-pet-form__hint,
+.my-pet-form__message {
+  margin: var(--space-0);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+.my-pet-form__hint,
+.my-pet-form__message {
+  font-weight: var(--font-weight-medium);
+  word-break: keep-all;
+}
+
+.my-pet-form__input {
+  width: 100%;
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-normal);
+}
+
+.my-pet-form__submit {
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-hairline) solid transparent;
+  border-radius: var(--radius-small);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+}
+
+.my-pet-form__submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
 .my-pet-list {
   display: grid;
   min-width: var(--space-0);
@@ -394,6 +453,15 @@
   min-width: var(--space-0);
 }
 
+.my-post-grid__button {
+  display: block;
+  width: 100%;
+  padding: var(--space-0);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
 .my-post-grid__image {
   width: 100%;
   aspect-ratio: 1;
@@ -412,4 +480,119 @@
   .my-screen__settings-link:active {
     transform: none;
   }
+}
+
+.local-editor,
+.local-backup,
+.local-editor__fields {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-3);
+}
+.local-backup {
+  padding: var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-small);
+  overflow-wrap: anywhere;
+}
+.local-backup__file {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-2);
+}
+.local-backup__file input {
+  max-width: 100%;
+  min-width: 0;
+  color: inherit;
+  font: inherit;
+}
+.local-editor__fields {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.local-editor__actions,
+.local-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.local-confirm p {
+  flex-basis: 100%;
+}
+.local-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--size-touch-min);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.local-button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+.local-button:focus-visible,
+.growth-calendar__day:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+.my-post-grid__edit {
+  width: 100%;
+  margin-top: var(--space-1);
+}
+.growth-calendar__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+.growth-calendar__header h3 {
+  font-size: var(--font-size-body);
+  text-align: center;
+}
+.growth-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+.growth-calendar__weekday {
+  text-align: center;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+}
+.growth-calendar__day {
+  min-height: var(--size-touch-min);
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  color: var(--color-text-primary);
+  background: var(--color-surface-elevated);
+  cursor: pointer;
+}
+.growth-calendar__day[data-has-record="true"] {
+  border-color: var(--color-primary);
+}
+.growth-calendar__day[aria-pressed="true"] {
+  outline: 2px solid var(--color-primary);
+}
+.growth-records {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+.growth-records li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  overflow-wrap: anywhere;
 }

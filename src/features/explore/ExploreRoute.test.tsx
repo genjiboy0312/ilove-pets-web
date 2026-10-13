@@ -78,28 +78,35 @@ describe("ExploreRoute", () => {
   })
 
   it("appends more tiles when the scroll sentinel becomes visible", () => {
-    let sentinelCallback: IntersectionObserverCallback = () => {}
+    let sentinelCallback: IntersectionObserverCallback = () => {
+      /* Assigned by the observer stub. */
+    }
 
     class StubIntersectionObserver implements IntersectionObserver {
       readonly root: IntersectionObserver["root"] = null
       readonly rootMargin = ""
       readonly scrollMargin = ""
-      readonly thresholds: ReadonlyArray<number> = []
+      readonly thresholds: readonly number[] = []
 
       constructor(callback: IntersectionObserverCallback) {
         sentinelCallback = callback
       }
 
-      disconnect(): void {}
-      observe(): void {}
+      disconnect(): void {
+        /* No real observation in this stub. */
+      }
+      observe(): void {
+        /* Intersection is triggered explicitly below. */
+      }
       takeRecords(): IntersectionObserverEntry[] {
         return []
       }
-      unobserve(): void {}
+      unobserve(): void {
+        /* No real observation in this stub. */
+      }
     }
 
-    window.IntersectionObserver =
-      StubIntersectionObserver as unknown as typeof IntersectionObserver
+    window.IntersectionObserver = StubIntersectionObserver
 
     renderExplore()
 
@@ -110,7 +117,9 @@ describe("ExploreRoute", () => {
     act(() => {
       sentinelCallback(
         [{ isIntersecting: true } as unknown as IntersectionObserverEntry],
-        new StubIntersectionObserver(() => {}) as unknown as IntersectionObserver,
+        new StubIntersectionObserver(() => {
+          /* Not used by this assertion. */
+        }),
       )
     })
 

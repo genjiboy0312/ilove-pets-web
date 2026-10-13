@@ -7,6 +7,7 @@ export default defineConfig({
     include: ["src/**/*.test.{ts,tsx}"],
     environment: "jsdom",
     globals: false,
+    maxWorkers: 2,
     setupFiles: ["src/test/setup.ts"],
     css: true,
     coverage: {

@@ -1,18 +1,35 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest"
 
 import { i18n, initializeI18n } from "../../i18n/i18n"
+import type * as LocalContentStoreModule from "../local/localContentStore"
 import { CreateRoute } from "./CreateRoute"
+
+vi.mock("../local/localContentStore", async (importOriginal) => {
+  const actual = await importOriginal<typeof LocalContentStoreModule>()
+  return {
+    ...actual,
+    publishLocalPost: vi.fn(actual.publishLocalPost),
+  }
+})
+
+const localContentStore = await import("../local/localContentStore")
 
 describe("CreateRoute", () => {
   beforeEach(async () => {
     localStorage.clear()
+    vi.stubGlobal(
+      "createImageBitmap",
+      vi.fn(() => Promise.resolve({ close: vi.fn() })),
+    )
     await initializeI18n()
     await i18n.changeLanguage("ko")
   })
 
   afterEach(() => {
     vi.useRealTimers()
+    vi.restoreAllMocks()
+    vi.unstubAllGlobals()
   })
 
   it("names the route with a level-one Korean heading", () => {
@@ -21,10 +38,11 @@ describe("CreateRoute", () => {
     expect(screen.getByRole("heading", { level: 1, name: "작성" })).toBeInTheDocument()
   })
 
-  it("renders a photo picker button with translated hint", () => {
+  it("renders a photo picker with translated hint", () => {
     render(<CreateRoute />)
 
-    expect(screen.getByRole("button", { name: "사진 추가" })).toBeInTheDocument()
+    expect(screen.getByText("사진 추가")).toBeInTheDocument()
+    expect(screen.getByLabelText("사진")).toHaveAttribute("type", "file")
   })
 
   it("lists the current user's pets in the pet selector", () => {
@@ -53,7 +71,11 @@ describe("CreateRoute", () => {
     render(<CreateRoute />)
 
     expect(screen.getByRole("button", { name: "게시" })).toBeInTheDocument()
-    expect(screen.getByText("업로드는 나중에 연결됩니다.")).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        "사진은 이 브라우저의 IndexedDB에 저장됩니다. 사이트 데이터를 지우면 삭제됩니다.",
+      ),
+    ).toBeInTheDocument()
   })
 
   it("suggests AI captions and fills the content on pick", () => {
@@ -82,9 +104,72 @@ describe("CreateRoute", () => {
     }
 
     fireEvent.click(firstSuggestion)
-    expect(screen.getByRole("textbox", { name: "내용" })).toHaveValue(
-      "오늘 산책, 최고의 하루 🐾",
-    )
+    expect(screen.getByRole("textbox", { name: "내용" })).toHaveValue("오늘 산책, 최고의 하루 🐾")
+  })
+
+  it("restores text, selected pet, and tags draft after remount", () => {
+    const { unmount } = render(<CreateRoute />)
+
+    fireEvent.change(screen.getByRole("combobox", { name: "펫" }), {
+      target: { value: "pet_bori" },
+    })
+    fireEvent.change(screen.getByRole("textbox", { name: "내용" }), {
+      target: { value: "Bori local draft" },
+    })
+    fireEvent.change(screen.getByRole("textbox", { name: "태그" }), {
+      target: { value: "bori draft" },
+    })
+
+    unmount()
+    render(<CreateRoute />)
+
+    expect(screen.getByRole("combobox", { name: "펫" })).toHaveValue("pet_bori")
+    expect(screen.getByRole("textbox", { name: "내용" })).toHaveValue("Bori local draft")
+    expect(screen.getByRole("textbox", { name: "태그" })).toHaveValue("bori draft")
+  })
+
+  it("shows draft storage errors without crashing", () => {
+    // Given: localStorage refuses draft writes.
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("Draft quota exceeded", "QuotaExceededError")
+    })
+
+    // When: the user edits the draft content.
+    render(<CreateRoute />)
+    fireEvent.change(screen.getByRole("textbox", { name: "내용" }), {
+      target: { value: "Bori local draft" },
+    })
+
+    // Then: the route remains mounted and reports the storage failure.
+    expect(screen.getByRole("alert")).toHaveTextContent("로컬 데이터에 접근하지 못했습니다")
+  })
+
+  it("keeps publish success visible when clearing the draft fails", async () => {
+    // Given: publishing succeeds but localStorage refuses draft removal.
+    vi.mocked(localContentStore.publishLocalPost).mockResolvedValue("post_local_test")
+    vi.spyOn(Storage.prototype, "removeItem").mockImplementation(() => {
+      throw new DOMException("Draft clear blocked", "SecurityError")
+    })
+    render(<CreateRoute />)
+
+    // When: the user completes and submits the form.
+    fireEvent.change(screen.getByRole("combobox", { name: "펫" }), {
+      target: { value: "pet_bori" },
+    })
+    fireEvent.change(screen.getByRole("textbox", { name: "내용" }), {
+      target: { value: "Bori posted" },
+    })
+    fireEvent.change(screen.getByLabelText("사진"), {
+      target: { files: [new File(["photo"], "bori.png", { type: "image/png" })] },
+    })
+    const submitButton = screen.getByRole("button", { name: "게시" })
+    await waitFor(() => {
+      expect(submitButton).not.toBeDisabled()
+    })
+    fireEvent.click(submitButton)
+
+    // Then: clear failure does not convert a completed publish into an error state.
+    expect(await screen.findByRole("status")).toHaveTextContent("로컬 게시되었습니다")
   })
 })
 

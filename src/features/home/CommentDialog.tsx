@@ -1,9 +1,12 @@
-import { useEffect, useId, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import type { SyntheticEvent } from "react"
 import { createPortal } from "react-dom"
+import { useDialogFocus } from "../../components/useDialogFocus"
 import { useTranslation } from "react-i18next"
 
-import type { HttpsUrl, IsoDateTimeString, PostId } from "../../types/domain"
+import { addLocalComment } from "../local/localContentActions"
+import { localContentChangedEvent } from "../local/localContentTypes"
+import type { ImageSourceUrl, IsoDateTimeString, PostId } from "../../types/domain"
 import { getCurrentCommenter, getPostComments } from "./postCommentsData"
 import type { PostCommentView } from "./postCommentsData"
 
@@ -13,7 +16,7 @@ function toIsoDateTimeString(date: Date): IsoDateTimeString {
 
 interface CommentDialogProps {
   readonly postId: PostId
-  readonly postImageUrl: HttpsUrl
+  readonly postImageUrl: ImageSourceUrl
   readonly onClose: () => void
   readonly onCommentAdded: () => void
 }
@@ -26,6 +29,10 @@ export function CommentDialog({
 }: CommentDialogProps) {
   const { t } = useTranslation()
   const titleId = useId()
+  const dialogRef = useDialogFocus()
+  const [busy, setBusy] = useState(false)
+  const [saveError, setSaveError] = useState(false)
+  const pending = useRef(false)
   const [draft, setDraft] = useState("")
   const [avatarLoadStates, setAvatarLoadStates] = useState<ReadonlySet<string>>(() => new Set())
   const [mediaLoadState, setMediaLoadState] = useState<"loaded" | "failed">("loaded")
@@ -47,11 +54,45 @@ export function CommentDialog({
     }
   }, [onClose])
 
-  function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
+  useEffect(() => {
+    if (!postId.startsWith("post_local_")) return undefined
+    const refresh = () => {
+      try {
+        setComments(getPostComments(postId))
+      } catch {
+        setSaveError(true)
+      }
+    }
+    window.addEventListener(localContentChangedEvent, refresh)
+    window.addEventListener("storage", refresh)
+    return () => {
+      window.removeEventListener(localContentChangedEvent, refresh)
+      window.removeEventListener("storage", refresh)
+    }
+  }, [postId])
+
+  async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
     const content = draft.trim()
 
-    if (content === "") {
+    if (pending.current || content === "") {
+      return
+    }
+
+    if (postId.startsWith("post_local_")) {
+      pending.current = true
+      setBusy(true)
+      setSaveError(false)
+      try {
+        await addLocalComment(postId, content)
+        setDraft("")
+        onCommentAdded()
+      } catch {
+        setSaveError(true)
+      } finally {
+        pending.current = false
+        setBusy(false)
+      }
       return
     }
 
@@ -78,6 +119,8 @@ export function CommentDialog({
         onMouseDown={(event) => {
           event.stopPropagation()
         }}
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
       >
         <header className="comment-dialog__header">
@@ -150,7 +193,8 @@ export function CommentDialog({
           </div>
         </div>
 
-        <form className="comment-dialog__form" onSubmit={handleSubmit}>
+        {saveError ? <p role="alert">{t(($) => $.manage.storageProblem)}</p> : null}
+        <form className="comment-dialog__form" onSubmit={(event) => void handleSubmit(event)}>
           <label className="comment-dialog__input-label" htmlFor={`comment-input-${titleId}`}>
             <span className="comment-dialog__visually-hidden">
               {t(($) => $.home.comments.heading)}
@@ -165,7 +209,11 @@ export function CommentDialog({
               value={draft}
             />
           </label>
-          <button className="comment-dialog__submit" disabled={draft.trim() === ""} type="submit">
+          <button
+            className="comment-dialog__submit"
+            disabled={busy || draft.trim() === ""}
+            type="submit"
+          >
             {t(($) => $.home.comments.submit)}
           </button>
         </form>

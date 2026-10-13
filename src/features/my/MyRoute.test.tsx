@@ -83,6 +83,20 @@ describe("MyRoute", () => {
     expect(within(grid).getAllByRole("listitem")).toHaveLength(2)
   })
 
+  it("shows the local-only pet registration form", () => {
+    render(
+      <MemoryRouter>
+        <MyRoute />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByRole("heading", { name: "내 펫 등록" })).toBeInTheDocument()
+    expect(screen.getByLabelText("펫 이름")).toBeInTheDocument()
+    expect(screen.getByLabelText("카테고리")).toBeInTheDocument()
+    expect(screen.getByLabelText("품종")).toBeInTheDocument()
+    expect(screen.getByText(/로컬 전용 데모/)).toBeInTheDocument()
+  })
+
   it("collapses and expands the pets and posts sections", () => {
     render(
       <MemoryRouter>

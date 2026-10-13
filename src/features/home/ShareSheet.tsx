@@ -138,41 +138,25 @@ export function ShareSheet({ onClose, onCopied }: ShareSheetProps) {
         </header>
 
         <div className="share-sheet__targets" role="group">
-          <button
-            className="share-sheet__target"
-            onClick={handleKakaoShare}
-            type="button"
-          >
+          <button className="share-sheet__target" onClick={handleKakaoShare} type="button">
             <span className="share-sheet__target-icon share-sheet__target-icon--kakao">
               <KakaoIcon />
             </span>
             <span className="share-sheet__target-label">{t(($) => $.home.share.kakao)}</span>
           </button>
-          <button
-            className="share-sheet__target"
-            onClick={handleInstagramShare}
-            type="button"
-          >
+          <button className="share-sheet__target" onClick={handleInstagramShare} type="button">
             <span className="share-sheet__target-icon share-sheet__target-icon--instagram">
               <InstagramIcon />
             </span>
             <span className="share-sheet__target-label">{t(($) => $.home.share.instagram)}</span>
           </button>
-          <button
-            className="share-sheet__target"
-            onClick={handleXShare}
-            type="button"
-          >
+          <button className="share-sheet__target" onClick={handleXShare} type="button">
             <span className="share-sheet__target-icon share-sheet__target-icon--x">
               <XIcon />
             </span>
             <span className="share-sheet__target-label">{t(($) => $.home.share.x)}</span>
           </button>
-          <button
-            className="share-sheet__target"
-            onClick={handleFacebookShare}
-            type="button"
-          >
+          <button className="share-sheet__target" onClick={handleFacebookShare} type="button">
             <span className="share-sheet__target-icon share-sheet__target-icon--facebook">
               <FacebookIcon />
             </span>

@@ -35,7 +35,7 @@ export function getReels(): readonly Reel[] {
     }
 
     return {
-      reelId: `reel_${index + 1}`,
+      reelId: `reel_${String(index + 1)}`,
       petName: seed.petName,
       caption: seed.caption,
       videoUrl,

@@ -1,6 +1,7 @@
 import { useEffect, useId } from "react"
 import type { ReactNode } from "react"
 import { createPortal } from "react-dom"
+import { useDialogFocus } from "../../components/useDialogFocus"
 import { useTranslation } from "react-i18next"
 
 interface SettingsSheetProps {
@@ -12,6 +13,7 @@ interface SettingsSheetProps {
 export function SettingsSheet({ children, onClose, title }: SettingsSheetProps) {
   const { t } = useTranslation()
   const titleId = useId()
+  const dialogRef = useDialogFocus()
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -36,6 +38,8 @@ export function SettingsSheet({ children, onClose, title }: SettingsSheetProps) 
         onMouseDown={(event) => {
           event.stopPropagation()
         }}
+        ref={dialogRef}
+        tabIndex={-1}
         role="dialog"
       >
         <header className="settings-sheet__header">

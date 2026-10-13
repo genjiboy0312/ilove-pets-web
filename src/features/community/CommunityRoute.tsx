@@ -4,10 +4,7 @@ import { useTranslation } from "react-i18next"
 
 import { ActivityButton } from "../activity/ActivityButton"
 import { SettingsSheet } from "../settings/SettingsSheet"
-import {
-  getCommunityCategories,
-  getCommunityPosts,
-} from "./communityData"
+import { getCommunityCategories, getCommunityPosts } from "./communityData"
 import type { CommunityCategory } from "./communityData"
 import { HospitalMap } from "./HospitalMap"
 
@@ -46,7 +43,11 @@ export function CommunityRoute() {
         <ActivityButton />
       </header>
 
-      <div aria-label={t(($) => $.community.viewSwitcherLabel)} className="community-view-tabs" role="group">
+      <div
+        aria-label={t(($) => $.community.viewSwitcherLabel)}
+        className="community-view-tabs"
+        role="group"
+      >
         <button
           aria-pressed={selectedView === "board"}
           className="community-view-tabs__button"
@@ -71,7 +72,11 @@ export function CommunityRoute() {
 
       {selectedView === "board" ? (
         <>
-          <div aria-label={t(($) => $.community.filterLabel)} className="community-filter" role="group">
+          <div
+            aria-label={t(($) => $.community.filterLabel)}
+            className="community-filter"
+            role="group"
+          >
             <button
               aria-pressed={selectedCategory === "all"}
               className="community-filter__chip"

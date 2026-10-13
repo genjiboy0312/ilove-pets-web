@@ -61,4 +61,28 @@ describe("getMyProfile", () => {
     // Then: only posts from the current user's pets are returned.
     expect(posts).toEqual(expectedPosts)
   })
+
+  it("includes local posts published for seeded owned pets", () => {
+    const profile = getMyProfile({
+      pets: [],
+      posts: [
+        {
+          postId: "post_local_bori_seeded",
+          petId: "pet_bori",
+          imageUrl: "blob:http://127.0.0.1/seeded",
+          photoKey: "post-post_local_bori_seeded",
+          content: "Bori uses the seeded pet selector.",
+          tags: ["dog", "local"],
+          createdAt: "2026-10-10T12:00:00.000Z",
+        },
+      ],
+    })
+
+    expect(profile.posts[0]).toEqual({
+      postId: "post_local_bori_seeded",
+      petName: "Bori",
+      imageUrl: "blob:http://127.0.0.1/seeded",
+      createdAt: "2026-10-10T12:00:00.000Z",
+    })
+  })
 })

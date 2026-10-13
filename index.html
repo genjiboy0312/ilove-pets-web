@@ -13,9 +13,31 @@
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <title>iLove Pets</title>
+    <style>
+      .startup-status {
+        max-width: 430px;
+        margin: 20vh auto;
+        padding: 24px;
+        font:
+          16px/1.6 system-ui,
+          sans-serif;
+      }
+      .startup-status button {
+        min-height: 44px;
+        padding: 8px 16px;
+        font: inherit;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <section class="startup-status" role="status">
+        iLove Pets 불러오는 중… / Loading…<noscript
+          >JavaScript를 켜야 앱을 사용할 수 있습니다.</noscript
+        >
+      </section>
+    </div>
+    <script src="/startup.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

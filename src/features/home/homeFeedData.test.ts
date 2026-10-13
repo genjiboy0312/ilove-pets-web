@@ -19,6 +19,7 @@ const boriPost = {
   commentCount: 3,
   petCategory: "DOG",
   isLikedByMe: false,
+  isLocalOnly: false,
 } satisfies HomeFeedPost
 
 describe("getHomeFeedPosts", () => {
@@ -67,5 +68,124 @@ describe("getHomeFeedPosts", () => {
 
     // Then: the result is empty.
     expect(posts).toEqual([])
+  })
+
+  it("prepends local posts newest-first under the same category filters", () => {
+    // Given: local pet and post records stored by the browser-only milestone.
+    const localContent = {
+      pets: [
+        {
+          petId: "pet_local_mochi",
+          name: "Mochi",
+          category: "CAT",
+          breed: "Korean shorthair",
+          avatarUrl: "data:image/svg+xml,%3Csvg/%3E",
+          createdAt: "2026-10-10T10:00:00.000Z",
+        },
+      ],
+      posts: [
+        {
+          postId: "post_local_mochi_1",
+          petId: "pet_local_mochi",
+          imageUrl: "blob:http://127.0.0.1/local-photo",
+          photoKey: "post-post_local_mochi_1",
+          content: "Mochi joined the local demo feed.",
+          tags: ["cat", "local"],
+          createdAt: "2026-10-10T10:05:00.000Z",
+        },
+      ],
+    } as const
+
+    // When: the CAT feed is selected.
+    const posts = getHomeFeedPosts("CAT", localContent)
+
+    // Then: the local post appears as local-only display data instead of requiring mock IDs.
+    expect(posts).toEqual([
+      {
+        postId: "post_local_mochi_1",
+        petName: "Mochi",
+        petAvatarUrl: "data:image/svg+xml,%3Csvg/%3E",
+        ownerUsername: "mira",
+        createdAt: "2026-10-10T10:05:00.000Z",
+        imageUrl: "blob:http://127.0.0.1/local-photo",
+        content: "Mochi joined the local demo feed.",
+        tags: ["cat", "local"],
+        likeCount: 0,
+        commentCount: 0,
+        petCategory: "CAT",
+        isLikedByMe: false,
+        isLocalOnly: true,
+      },
+    ])
+  })
+
+  it("keeps local post order lexical by padded ISO timestamps", () => {
+    // Given: two local posts whose chronological order depends on padded date parts.
+    const localContent = {
+      pets: [
+        {
+          petId: "pet_local_mochi",
+          name: "Mochi",
+          category: "CAT",
+          breed: "Korean shorthair",
+          avatarUrl: "data:image/svg+xml,%3Csvg/%3E",
+          createdAt: "2026-01-01T00:00:00.000Z",
+        },
+      ],
+      posts: [
+        {
+          postId: "post_local_old",
+          petId: "pet_local_mochi",
+          imageUrl: "blob:http://127.0.0.1/old",
+          photoKey: "post-post_local_old",
+          content: "Old post",
+          tags: [],
+          createdAt: "2026-01-09T00:00:00.000Z",
+        },
+        {
+          postId: "post_local_new",
+          petId: "pet_local_mochi",
+          imageUrl: "blob:http://127.0.0.1/new",
+          photoKey: "post-post_local_new",
+          content: "New post",
+          tags: [],
+          createdAt: "2026-01-10T00:00:00.000Z",
+        },
+      ],
+    } as const
+
+    // When: the CAT feed is selected.
+    const posts = getHomeFeedPosts("CAT", localContent)
+
+    // Then: lexical sorting keeps the newer padded date first.
+    expect(posts.map((post) => post.postId)).toEqual(["post_local_new", "post_local_old"])
+  })
+
+  it("shows local posts published for seeded owned pets in matching home filters", () => {
+    const localContent = {
+      pets: [],
+      posts: [
+        {
+          postId: "post_local_bori_seeded",
+          petId: "pet_bori",
+          imageUrl: "blob:http://127.0.0.1/seeded",
+          photoKey: "post-post_local_bori_seeded",
+          content: "Bori uses the seeded pet selector.",
+          tags: ["dog", "local"],
+          createdAt: "2026-10-10T12:00:00.000Z",
+        },
+      ],
+    } as const
+
+    const dogPosts = getHomeFeedPosts("DOG", localContent)
+    const catPosts = getHomeFeedPosts("CAT", localContent)
+
+    expect(dogPosts[0]).toMatchObject({
+      postId: "post_local_bori_seeded",
+      petName: "Bori",
+      petCategory: "DOG",
+      isLocalOnly: true,
+    })
+    expect(catPosts).toEqual([])
   })
 })

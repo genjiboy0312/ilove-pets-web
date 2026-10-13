@@ -29,7 +29,13 @@ describe("BottomNavigation", () => {
     const navigation = screen.getByRole("navigation", { name: "주요 탐색" })
     const links = within(navigation).getAllByRole("link")
 
-    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "커뮤니티", "내 계정"])
+    expect(links.map((link) => link.textContent)).toEqual([
+      "홈",
+      "탐색",
+      "작성",
+      "커뮤니티",
+      "내 계정",
+    ])
   })
 
   it("keeps icons decorative and labels available as accessible names", () => {

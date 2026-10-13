@@ -5,7 +5,9 @@ import { useTranslation } from "react-i18next"
 import { ThumbImage } from "../../components/ThumbImage"
 import { PET_FILTER_ALL } from "../../constants/petCategories"
 import type { PetCategoryFilter } from "../../constants/petCategories"
-import type { HttpsUrl, PostId } from "../../types/domain"
+import type { ImageSourceUrl, PostId } from "../../types/domain"
+import { useLocalContent } from "../local/useLocalContent"
+import { getHomeFeedPosts } from "../home/homeFeedData"
 import { ActivityButton } from "../activity/ActivityButton"
 import { CategoryTabs } from "../home/CategoryTabs"
 import { CommentDialog } from "../home/CommentDialog"
@@ -24,14 +26,18 @@ export function ExploreRoute() {
   const [pageCount, setPageCount] = useState(1)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const [activePost, setActivePost] = useState<{
-    readonly imageUrl: HttpsUrl
+    readonly imageUrl: ImageSourceUrl
     readonly postId: PostId
   } | null>(null)
+  const localContent = useLocalContent()
+  const localPosts = getHomeFeedPosts(selectedFilter, localContent.content).filter(
+    (post) => post.isLocalOnly,
+  )
   const explorePets = getExplorePets(selectedFilter)
   const popularPosts = getPopularPosts()
 
   const gridItems = useMemo(() => {
-    const items: Array<ExplorePost & { readonly itemKey: string }> = []
+    const items: (ExplorePost & { readonly itemKey: string })[] = []
 
     for (let index = 0; index < pageCount * EXPLORE_PAGE_SIZE; index += 1) {
       const post = popularPosts[index % popularPosts.length]
@@ -40,7 +46,7 @@ export function ExploreRoute() {
         break
       }
 
-      items.push({ ...post, itemKey: `${post.postId}-${index}` })
+      items.push({ ...post, itemKey: `${post.postId}-${String(index)}` })
     }
 
     return items
@@ -107,11 +113,7 @@ export function ExploreRoute() {
         selectedFilter={selectedFilter}
       />
 
-      <div
-        aria-label={t(($) => $.explore.tabsLabel)}
-        className="explore-view-tabs"
-        role="tablist"
-      >
+      <div aria-label={t(($) => $.explore.tabsLabel)} className="explore-view-tabs" role="tablist">
         <button
           aria-selected={view === "posts"}
           className="explore-view-tab"
@@ -140,82 +142,114 @@ export function ExploreRoute() {
         <ReelsFeed />
       ) : (
         <>
+          {localContent.errorMessage === null ? null : (
+            <p role="alert">{t(($) => $.manage.storageProblem)}</p>
+          )}
+          {localPosts.length === 0 ? null : (
+            <section className="explore-section" aria-label={t(($) => $.manage.localPosts)}>
+              <h2 className="explore-section__title">{t(($) => $.manage.localPosts)}</h2>
+              <ul className="explore-grid">
+                {localPosts.map((post) => (
+                  <li className="explore-grid__item" key={post.postId}>
+                    <button
+                      className="explore-grid__tile"
+                      aria-label={post.petName}
+                      type="button"
+                      onClick={() => {
+                        setActivePost({ postId: post.postId, imageUrl: post.imageUrl })
+                      }}
+                    >
+                      <ThumbImage
+                        alt={post.petName}
+                        className="explore-grid__image"
+                        src={post.imageUrl}
+                      />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           <section className="explore-section" aria-labelledby="explore-pets-title">
-        <h2 className="explore-section__title" id="explore-pets-title">
-          <button
-            aria-controls="explore-pets-content"
-            aria-expanded={isPetsOpen}
-            className="explore-section__toggle"
-            onClick={() => {
-              setIsPetsOpen((isOpen) => !isOpen)
-            }}
-            type="button"
-          >
-            <span>{t(($) => $.explore.popularPets)}</span>
-            <ChevronDown
-              aria-hidden="true"
-              className={[
-                "explore-section__toggle-icon",
-                isPetsOpen ? "" : "explore-section__toggle-icon--closed",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              size={16}
-              strokeWidth={2.1}
-            />
-          </button>
-        </h2>
-        <div className="explore-section__content" hidden={!isPetsOpen} id="explore-pets-content">
-          {explorePets.length === 0 ? (
-            <p className="explore-section__empty">{t(($) => $.explore.empty)}</p>
-          ) : (
-          <ul className="explore-pet-list">
-            {explorePets.map((pet) => (
-              <li className="explore-pet-card" key={pet.petId}>
-                <ThumbImage
-                  alt={pet.name}
-                  className="explore-pet-card__avatar"
-                  height={48}
-                  src={pet.avatarUrl}
-                  width={48}
-                />
-                <div className="explore-pet-card__identity">
-                  <h3 className="explore-pet-card__name">{pet.name}</h3>
-                  <p className="explore-pet-card__breed">{pet.breed}</p>
-                  <p className="explore-pet-card__owner">@{pet.ownerUsername}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-        </div>
-      </section>
-
-      <section className="explore-section" aria-labelledby="explore-posts-title">
-        <h2 className="explore-section__title" id="explore-posts-title">
-          {t(($) => $.explore.popularPosts)}
-        </h2>
-        <ul className="explore-grid">
-          {gridItems.map((item) => (
-            <li className="explore-grid__item" key={item.itemKey}>
+            <h2 className="explore-section__title" id="explore-pets-title">
               <button
-                aria-label={item.petName}
-                className="explore-grid__tile"
+                aria-controls="explore-pets-content"
+                aria-expanded={isPetsOpen}
+                className="explore-section__toggle"
                 onClick={() => {
-                  setActivePost({ postId: item.postId, imageUrl: item.imageUrl })
+                  setIsPetsOpen((isOpen) => !isOpen)
                 }}
                 type="button"
               >
-                <ThumbImage
-                  alt={item.petName}
-                  className="explore-grid__image"
-                  src={item.imageUrl}
+                <span>{t(($) => $.explore.popularPets)}</span>
+                <ChevronDown
+                  aria-hidden="true"
+                  className={[
+                    "explore-section__toggle-icon",
+                    isPetsOpen ? "" : "explore-section__toggle-icon--closed",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  size={16}
+                  strokeWidth={2.1}
                 />
               </button>
-            </li>
-          ))}
-        </ul>
-        <div aria-hidden="true" className="explore-grid__sentinel" ref={sentinelRef} />
+            </h2>
+            <div
+              className="explore-section__content"
+              hidden={!isPetsOpen}
+              id="explore-pets-content"
+            >
+              {explorePets.length === 0 ? (
+                <p className="explore-section__empty">{t(($) => $.explore.empty)}</p>
+              ) : (
+                <ul className="explore-pet-list">
+                  {explorePets.map((pet) => (
+                    <li className="explore-pet-card" key={pet.petId}>
+                      <ThumbImage
+                        alt={pet.name}
+                        className="explore-pet-card__avatar"
+                        height={48}
+                        src={pet.avatarUrl}
+                        width={48}
+                      />
+                      <div className="explore-pet-card__identity">
+                        <h3 className="explore-pet-card__name">{pet.name}</h3>
+                        <p className="explore-pet-card__breed">{pet.breed}</p>
+                        <p className="explore-pet-card__owner">@{pet.ownerUsername}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </section>
+
+          <section className="explore-section" aria-labelledby="explore-posts-title">
+            <h2 className="explore-section__title" id="explore-posts-title">
+              {t(($) => $.explore.popularPosts)}
+            </h2>
+            <ul className="explore-grid">
+              {gridItems.map((item) => (
+                <li className="explore-grid__item" key={item.itemKey}>
+                  <button
+                    aria-label={item.petName}
+                    className="explore-grid__tile"
+                    onClick={() => {
+                      setActivePost({ postId: item.postId, imageUrl: item.imageUrl })
+                    }}
+                    type="button"
+                  >
+                    <ThumbImage
+                      alt={item.petName}
+                      className="explore-grid__image"
+                      src={item.imageUrl}
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div aria-hidden="true" className="explore-grid__sentinel" ref={sentinelRef} />
           </section>
         </>
       )}
@@ -225,9 +259,15 @@ export function ExploreRoute() {
           onClose={() => {
             setActivePost(null)
           }}
-          onCommentAdded={() => {}}
+          onCommentAdded={() => {
+            /* Local comments refresh through the shared store. */
+          }}
           postId={activePost.postId}
-          postImageUrl={activePost.imageUrl}
+          key={activePost.postId}
+          postImageUrl={
+            localPosts.find((post) => post.postId === activePost.postId)?.imageUrl ??
+            activePost.imageUrl
+          }
         />
       )}
     </section>

@@ -1,9 +1,10 @@
 import { Heart, MessageCircle, Send } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { memo, useMemo, useState } from "react"
+import { memo, useMemo, useRef, useState } from "react"
 import type { MouseEventHandler, ReactEventHandler } from "react"
 import { useTranslation } from "react-i18next"
 
+import { setLocalPostLiked } from "../local/localContentActions"
 import type { HomeFeedPost } from "./homeFeedData"
 import { CommentDialog } from "./CommentDialog"
 import { ShareSheet } from "./ShareSheet"
@@ -24,9 +25,14 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
   const { i18n, t } = useTranslation()
   const [avatarLoadState, setAvatarLoadState] = useState<"loaded" | "failed">("loaded")
   const [imageLoadState, setImageLoadState] = useState<"loaded" | "failed">("loaded")
-  const [isLikedByMe, setIsLikedByMe] = useState(post.isLikedByMe)
-  const [likeCount, setLikeCount] = useState(post.likeCount)
-  const [commentCount, setCommentCount] = useState(post.commentCount)
+  const [sessionLiked, setIsLikedByMe] = useState(post.isLikedByMe)
+  const [sessionLikeCount, setLikeCount] = useState(post.likeCount)
+  const [sessionCommentCount, setCommentCount] = useState(post.commentCount)
+  const isLikedByMe = post.isLocalOnly ? post.isLikedByMe : sessionLiked
+  const likeCount = post.isLocalOnly ? post.likeCount : sessionLikeCount
+  const commentCount = post.isLocalOnly ? post.commentCount : sessionCommentCount
+  const likePending = useRef(false)
+  const [interactionError, setInteractionError] = useState(false)
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false)
   const [isShareSheetOpen, setIsShareSheetOpen] = useState(false)
   const [isShareToastVisible, setIsShareToastVisible] = useState(false)
@@ -58,6 +64,19 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
   }
 
   function handleLikeToggle() {
+    if (post.isLocalOnly) {
+      if (likePending.current) return
+      likePending.current = true
+      setInteractionError(false)
+      void setLocalPostLiked(post.postId, !post.isLikedByMe)
+        .catch(() => {
+          setInteractionError(true)
+        })
+        .finally(() => {
+          likePending.current = false
+        })
+      return
+    }
     setIsLikedByMe((isLiked) => {
       const nextIsLiked = !isLiked
 
@@ -138,6 +157,7 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
         </ul>
       </div>
 
+      {interactionError ? <p role="alert">{t(($) => $.manage.storageProblem)}</p> : null}
       <footer className="post-card__actions">
         {postActions.map(({ Icon, className, labelKey, metricKey, onActivate }) => {
           const isLike = labelKey === "like"
@@ -148,6 +168,7 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
               aria-label={t(($) => $.home.actions[labelKey])}
               aria-pressed={isLike ? isLikedByMe : undefined}
               className={["post-card__action", className].filter(Boolean).join(" ")}
+              disabled={labelKey === "share" && post.isLocalOnly}
               key={labelKey}
               onClick={onActivate}
               type="button"
@@ -163,6 +184,9 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
               {metricText === undefined ? null : (
                 <span className="post-card__metric">{metricText}</span>
               )}
+              {labelKey === "share" && post.isLocalOnly ? (
+                <span className="post-card__metric">{t(($) => $.home.share.localOnly)}</span>
+              ) : null}
             </button>
           )
         })}
@@ -174,14 +198,14 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
             setIsCommentDialogOpen(false)
           }}
           onCommentAdded={() => {
-            setCommentCount((currentCount) => currentCount + 1)
+            if (!post.isLocalOnly) setCommentCount((currentCount) => currentCount + 1)
           }}
           postId={post.postId}
           postImageUrl={post.imageUrl}
         />
       ) : null}
 
-      {isShareSheetOpen ? (
+      {isShareSheetOpen && !post.isLocalOnly ? (
         <ShareSheet
           onClose={() => {
             setIsShareSheetOpen(false)

@@ -34,8 +34,7 @@ async function getShellMetrics(page: Page): Promise<ShellMetrics> {
     const navRect = navigation.getBoundingClientRect()
 
     return {
-      documentOverflows:
-        scrollable.scrollWidth > scrollable.clientWidth,
+      documentOverflows: scrollable.scrollWidth > scrollable.clientWidth,
       navigationWidth: navRect.width,
       navigationDocked:
         getComputedStyle(navigation).position === "fixed" &&

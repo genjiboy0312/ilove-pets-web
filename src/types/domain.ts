@@ -8,14 +8,18 @@ export type PostId = `post_${string}`
 
 export type ActivityId = `activity_${string}`
 export type CommentId = `comment_${string}`
-export type IsoDateTimeString = `${number}-${number}-${number}T${string}Z`
+export type IsoDateTimeString =
+  `${number}-${number}-${number}T${number}:${number}:${number}.${number}Z`
 export type HttpsUrl = `https://${string}`
+export type LocalBlobUrl = `blob:${string}`
+export type DataImageUrl = `data:image/${string}`
+export type ImageSourceUrl = HttpsUrl | LocalBlobUrl | DataImageUrl
 
 export interface User {
   readonly id: UserId
   readonly username: string
   readonly displayName: string
-  readonly profileImageUrl: HttpsUrl
+  readonly profileImageUrl: ImageSourceUrl
   readonly bio: string
   readonly followerCount: number
   readonly followingCount: number
@@ -34,7 +38,7 @@ export interface Pet {
 export interface Post {
   readonly id: PostId
   readonly petId: PetId
-  readonly imageUrl: HttpsUrl
+  readonly imageUrl: ImageSourceUrl
   readonly content: string
   readonly tags: readonly string[]
   readonly likedByUserIds: readonly UserId[]

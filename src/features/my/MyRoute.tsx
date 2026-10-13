@@ -1,28 +1,43 @@
-import { ChevronDown, Settings } from "lucide-react"
+import { Settings } from "lucide-react"
 import { useState } from "react"
-import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
+import { Link } from "react-router"
 
 import { ThumbImage } from "../../components/ThumbImage"
+import type { ImageSourceUrl, PetId, PostId } from "../../types/domain"
+import { CommentDialog } from "../home/CommentDialog"
+import { useLocalContent } from "../local/useLocalContent"
 import { SettingsSheet } from "../settings/SettingsSheet"
+import { LocalPostEditor } from "./LocalPostEditor"
+import { LocalDataControls } from "./LocalDataControls"
+import { LocalBackupControls } from "./LocalBackupControls"
 import { GrowthSheet } from "./GrowthSheet"
+import { MyCollapsibleSection } from "./MyCollapsibleSection"
+import { MyPetList } from "./MyPetList"
+import { MyPostGrid } from "./MyPostGrid"
+import { PetRegistrationForm } from "./PetRegistrationForm"
 import { getFollowers, getFollowing, getMyProfile } from "./myData"
+import { usePetRegistrationForm } from "./usePetRegistrationForm"
 
-import type { PetId } from "../../types/domain"
+interface ActivePost {
+  readonly postId: PostId
+  readonly imageUrl: ImageSourceUrl
+}
 
 export function MyRoute() {
   const { t } = useTranslation()
   const [isPetsOpen, setIsPetsOpen] = useState(true)
   const [isPostsOpen, setIsPostsOpen] = useState(true)
   const [openSheet, setOpenSheet] = useState<"followers" | "following" | null>(null)
-  const profile = getMyProfile()
-  const followers = getFollowers()
-  const following = getFollowing()
   const [activeGrowthPetId, setActiveGrowthPetId] = useState<PetId | null>(null)
-
-  function closeSheet() {
-    setOpenSheet(null)
-  }
+  const [activePost, setActivePost] = useState<ActivePost | null>(null)
+  const [editingPostId, setEditingPostId] = useState<PostId | null>(null)
+  const localContent = useLocalContent()
+  const editingPost = localContent.content.posts.find((post) => post.postId === editingPostId)
+  const growthPet = localContent.content.pets.find((pet) => pet.petId === activeGrowthPetId)
+  const profile = getMyProfile(localContent.content)
+  const petForm = usePetRegistrationForm(t)
+  const connections = openSheet === "followers" ? getFollowers() : getFollowing()
 
   return (
     <section className="my-screen" aria-labelledby="my-route-title">
@@ -88,114 +103,70 @@ export function MyRoute() {
         </li>
       </ul>
 
-      <section className="my-section" aria-labelledby="my-pets-title">
-        <h2 className="my-section__title" id="my-pets-title">
-          <button
-            aria-controls="my-pets-content"
-            aria-expanded={isPetsOpen}
-            className="my-section__toggle"
-            onClick={() => {
-              setIsPetsOpen((isOpen) => !isOpen)
-            }}
-            type="button"
-          >
-            <span>{t(($) => $.my.petsLabel)}</span>
-            <ChevronDown
-              aria-hidden="true"
-              className={[
-                "my-section__toggle-icon",
-                isPetsOpen ? "" : "my-section__toggle-icon--closed",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              size={16}
-              strokeWidth={2.1}
-            />
-          </button>
-        </h2>
-        <div hidden={!isPetsOpen} id="my-pets-content">
-        <ul className="my-pet-list">
-          {profile.pets.map((pet) => (
-            <li className="my-pet-card" key={pet.petId}>
-              <button
-                aria-label={pet.name}
-                className="my-pet-card__button"
-                onClick={() => {
-                  setActiveGrowthPetId(pet.petId)
-                }}
-                type="button"
-              >
-                <ThumbImage
-                  alt={pet.name}
-                  className="my-pet-card__avatar"
-                  height={48}
-                  src={pet.avatarUrl}
-                  width={48}
-                />
-                <div className="my-pet-card__identity">
-                  <h3 className="my-pet-card__name">{pet.name}</h3>
-                  <p className="my-pet-card__breed">{pet.breed}</p>
-                </div>
-              </button>
-            </li>
-          ))}
-        </ul>
+      {localContent.status === "ready" && localContent.content.pets.length === 0 ? (
+        <p className="my-pet-form__hint">{t(($) => $.manage.firstPet)}</p>
+      ) : null}
+      {localContent.content.pets.length > 0 && localContent.content.posts.length === 0 ? (
+        <div>
+          <p>{t(($) => $.manage.firstPost)}</p>
+          <Link to="/create" className="local-button">
+            {t(($) => $.manage.createPost)}
+          </Link>
         </div>
-      </section>
+      ) : null}
+      <PetRegistrationForm form={petForm} />
+      {localContent.errorMessage === null ? null : (
+        <p className="my-section__empty" role="alert">
+          {t(($) => $.manage.storageProblem)}
+        </p>
+      )}
 
-      <section className="my-section" aria-labelledby="my-posts-title">
-        <h2 className="my-section__title" id="my-posts-title">
-          <button
-            aria-controls="my-posts-content"
-            aria-expanded={isPostsOpen}
-            className="my-section__toggle"
-            onClick={() => {
-              setIsPostsOpen((isOpen) => !isOpen)
-            }}
-            type="button"
-          >
-            <span>{t(($) => $.my.gridLabel)}</span>
-            <ChevronDown
-              aria-hidden="true"
-              className={[
-                "my-section__toggle-icon",
-                isPostsOpen ? "" : "my-section__toggle-icon--closed",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              size={16}
-              strokeWidth={2.1}
-            />
-          </button>
-        </h2>
-        <div hidden={!isPostsOpen} id="my-posts-content">
-        {profile.posts.length === 0 ? (
-          <p className="my-section__empty">{t(($) => $.my.empty)}</p>
-        ) : (
-          <ul className="my-post-grid">
-            {profile.posts.map((post) => (
-              <li className="my-post-grid__item" key={post.postId}>
-                <ThumbImage
-                  alt={post.petName}
-                  className="my-post-grid__image"
-                  src={post.imageUrl}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
-        </div>
-      </section>
+      <MyCollapsibleSection
+        contentId="my-pets-content"
+        isOpen={isPetsOpen}
+        onToggle={() => {
+          setIsPetsOpen((isOpen) => !isOpen)
+        }}
+        title={t(($) => $.my.petsLabel)}
+        titleId="my-pets-title"
+      >
+        <MyPetList onPetClick={setActiveGrowthPetId} pets={profile.pets} />
+      </MyCollapsibleSection>
 
+      <MyCollapsibleSection
+        contentId="my-posts-content"
+        isOpen={isPostsOpen}
+        onToggle={() => {
+          setIsPostsOpen((isOpen) => !isOpen)
+        }}
+        title={t(($) => $.my.gridLabel)}
+        titleId="my-posts-title"
+      >
+        <MyPostGrid onPostClick={setActivePost} onEdit={setEditingPostId} posts={profile.posts} />
+      </MyCollapsibleSection>
+
+      <LocalBackupControls />
+      <LocalDataControls />
+      {editingPost === undefined ? null : (
+        <LocalPostEditor
+          key={editingPost.postId}
+          post={editingPost}
+          onClose={() => {
+            setEditingPostId(null)
+          }}
+        />
+      )}
       {openSheet === null ? null : (
         <SettingsSheet
-          onClose={closeSheet}
+          onClose={() => {
+            setOpenSheet(null)
+          }}
           title={t(
             openSheet === "followers" ? ($) => $.my.followersList : ($) => $.my.followingList,
           )}
         >
           <ul className="my-connection-list" role="list">
-            {(openSheet === "followers" ? followers : following).map((connection) => (
+            {connections.map((connection) => (
               <li className="my-connection" key={connection.userId}>
                 <ThumbImage
                   alt=""
@@ -214,17 +185,34 @@ export function MyRoute() {
         </SettingsSheet>
       )}
 
-      {activeGrowthPetId === null
-        ? null
-        : (
-            <GrowthSheet
-              onClose={() => {
-                setActiveGrowthPetId(null)
-              }}
-              petId={activeGrowthPetId}
-              petName={profile.pets.find((pet) => pet.petId === activeGrowthPetId)?.name ?? ""}
-            />
-          )}
+      {activeGrowthPetId === null ? null : (
+        <GrowthSheet
+          onClose={() => {
+            setActiveGrowthPetId(null)
+          }}
+          key={activeGrowthPetId}
+          {...(growthPet === undefined ? {} : { localPet: growthPet })}
+          hasPosts={localContent.content.posts.some((post) => post.petId === activeGrowthPetId)}
+          petId={activeGrowthPetId}
+          petName={profile.pets.find((pet) => pet.petId === activeGrowthPetId)?.name ?? ""}
+        />
+      )}
+      {activePost === null ? null : (
+        <CommentDialog
+          onClose={() => {
+            setActivePost(null)
+          }}
+          onCommentAdded={() => {
+            setActivePost((current) => current)
+          }}
+          postId={activePost.postId}
+          key={activePost.postId}
+          postImageUrl={
+            localContent.content.posts.find((post) => post.postId === activePost.postId)
+              ?.imageUrl ?? activePost.imageUrl
+          }
+        />
+      )}
     </section>
   )
 }

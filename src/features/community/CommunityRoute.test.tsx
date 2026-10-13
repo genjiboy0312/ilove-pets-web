@@ -53,7 +53,9 @@ describe("CommunityRoute", () => {
     fireEvent.click(screen.getByRole("button", { name: "입양·임보" }))
 
     // Then: only adoption posts remain.
-    const titles = within(list).getAllByRole("button").map((row) => row.textContent)
+    const titles = within(list)
+      .getAllByRole("button")
+      .map((row) => row.textContent)
 
     expect(titles.length).toBe(2)
     expect(titles.join(" ")).toContain("임보")

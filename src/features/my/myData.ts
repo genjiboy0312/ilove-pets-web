@@ -6,26 +6,28 @@ import {
   mockPostsById,
   mockUsersById,
 } from "../../mocks/mockData"
-import type { HttpsUrl, IsoDateTimeString, PetId, PostId, UserId } from "../../types/domain"
+import type { ImageSourceUrl, IsoDateTimeString, PetId, PostId, UserId } from "../../types/domain"
+import type { LocalContent } from "../local/localContentTypes"
+import { resolveOwnedPet } from "../local/ownedPetResolver"
 
 export interface MyConnection {
   readonly userId: UserId
   readonly displayName: string
   readonly username: string
-  readonly avatarUrl: HttpsUrl
+  readonly avatarUrl: ImageSourceUrl
 }
 
 export interface MyPet {
   readonly petId: PetId
   readonly name: string
   readonly breed: string
-  readonly avatarUrl: HttpsUrl
+  readonly avatarUrl: ImageSourceUrl
 }
 
 export interface MyPost {
   readonly postId: PostId
   readonly petName: string
-  readonly imageUrl: HttpsUrl
+  readonly imageUrl: ImageSourceUrl
   readonly createdAt: IsoDateTimeString
 }
 
@@ -33,14 +35,14 @@ export interface MyProfile {
   readonly username: string
   readonly displayName: string
   readonly bio: string
-  readonly avatarUrl: HttpsUrl
+  readonly avatarUrl: ImageSourceUrl
   readonly followerCount: number
   readonly followingCount: number
   readonly pets: readonly MyPet[]
   readonly posts: readonly MyPost[]
 }
 
-export function getMyProfile(): MyProfile {
+export function getMyProfile(localContent: LocalContent = { pets: [], posts: [] }): MyProfile {
   const user = mockUsersById[CURRENT_USER_ID]
 
   const pets = mockPetIds.flatMap((petId) => {
@@ -74,6 +76,21 @@ export function getMyProfile(): MyProfile {
       : []
   })
 
+  const localPosts = localContent.posts.flatMap((post) => {
+    const pet = resolveOwnedPet(post.petId, localContent.pets)
+
+    return pet === null
+      ? []
+      : [
+          {
+            postId: post.postId,
+            petName: pet.name,
+            imageUrl: post.imageUrl,
+            createdAt: post.createdAt,
+          },
+        ]
+  })
+
   return {
     username: user.username,
     displayName: user.displayName,
@@ -81,8 +98,8 @@ export function getMyProfile(): MyProfile {
     avatarUrl: user.profileImageUrl,
     followerCount: user.followerCount,
     followingCount: user.followingCount,
-    pets,
-    posts,
+    pets: [...localContent.pets, ...pets],
+    posts: [...localPosts, ...posts],
   }
 }
 
@@ -189,6 +206,7 @@ const growthByPetId: Record<string, PetGrowth> = {
 }
 
 export function getPetGrowth(petId: PetId): PetGrowth {
+  if (petId.startsWith("pet_local_")) return { petId, weights: [], events: [] }
   const growth = growthByPetId[petId]
 
   if (growth !== undefined) {

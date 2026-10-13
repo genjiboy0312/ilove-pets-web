@@ -71,6 +71,13 @@ export default [
   },
   {
     ...tseslint.configs.disableTypeChecked,
+    files: ["**/*.mjs"],
+    languageOptions: {
+      globals: { ...globals.node, ...globals.browser },
+    },
+  },
+  {
+    ...tseslint.configs.disableTypeChecked,
     files: ["public/**/*.js"],
     languageOptions: {
       globals: {

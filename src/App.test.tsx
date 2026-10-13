@@ -158,7 +158,13 @@ describe("App Stage 5 runtime shell", () => {
     const links = within(navigation).getAllByRole("link")
 
     // Then: exactly five accessible route links are exposed in product order.
-    expect(links.map((link) => link.textContent)).toEqual(["홈", "탐색", "작성", "커뮤니티", "내 계정"])
+    expect(links.map((link) => link.textContent)).toEqual([
+      "홈",
+      "탐색",
+      "작성",
+      "커뮤니티",
+      "내 계정",
+    ])
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
       "/",
       "/explore",

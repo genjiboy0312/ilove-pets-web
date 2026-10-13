@@ -88,10 +88,7 @@ export function ReelsFeed() {
               <button
                 aria-label={t(($) => $.home.actions.like)}
                 aria-pressed={isLiked}
-                className={[
-                  "reels-feed__like",
-                  isLiked ? "reels-feed__like--active" : "",
-                ]
+                className={["reels-feed__like", isLiked ? "reels-feed__like--active" : ""]
                   .filter(Boolean)
                   .join(" ")}
                 onClick={() => {

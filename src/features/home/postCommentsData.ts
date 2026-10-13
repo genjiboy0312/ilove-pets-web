@@ -1,3 +1,5 @@
+import { readMetadata } from "../local/localContentMetadata"
+
 import {
   CURRENT_USER_ID,
   mockCommentIds,
@@ -15,6 +17,16 @@ export interface PostCommentView {
 }
 
 export function getPostComments(postId: PostId): readonly PostCommentView[] {
+  if (postId.startsWith("post_local_")) {
+    const post = readMetadata().posts.find((item) => item.id === postId)
+    return (post?.comments ?? []).map((comment) => ({
+      commentId: `comment_local_${comment.id}`,
+      content: comment.content,
+      createdAt: comment.createdAt,
+      authorName: getCurrentCommenter().name,
+      authorAvatarUrl: getCurrentCommenter().avatarUrl,
+    }))
+  }
   const comments = mockCommentIds.flatMap((commentId) => {
     const comment = mockCommentsById[commentId]
 

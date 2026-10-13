@@ -27,15 +27,6 @@ export class RootElementMissingError extends Error {
 
 if (import.meta.env.DEV) {
   void import("./devtools/reactDevTools").then(({ loadReactDevTools }) => loadReactDevTools())
-} else if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    void navigator.serviceWorker
-      .register("/sw.js")
-      .then((registration) => registration.update())
-      .catch(() => {
-        // Service worker registration is best-effort; the app works without it.
-      })
-  })
 }
 const rootElement = document.getElementById("root")
 
