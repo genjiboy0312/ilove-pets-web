@@ -19,6 +19,14 @@ export function CreateRoute() {
           {t(($) => $.create.heading)}
         </h1>
       </div>
+      {localContent.status === "ready" && localContent.content.pets.length === 0 ? (
+        <div className="create-form__hint">
+          <p>{t(($) => $.storage.startHint)}</p>
+          <a className="local-button" href="/myaccount#pet-registration">
+            {t(($) => $.storage.start)}
+          </a>
+        </div>
+      ) : null}
       <CreatePostForm form={form} localErrorMessage={localContent.errorMessage} profile={profile} />
     </section>
   )

@@ -327,7 +327,7 @@ for (const language of ["ko", "en", "ja"]) {
         await page.evaluate(() => {
           window.scrollTo(0, document.documentElement.scrollHeight)
         })
-        const backupPanel = page.locator(".local-backup")
+        const backupPanel = page.locator('.local-backup[aria-labelledby="local-backup-title"]')
         expect(
           await backupPanel.evaluate((element) => element.scrollWidth - element.clientWidth),
         ).toBeLessThanOrEqual(1)
@@ -453,7 +453,7 @@ test("backs up photos and records, restores in a fresh browser and preserves dat
       window.scrollTo(0, document.documentElement.scrollHeight)
     })
     await target
-      .locator(".local-backup")
+      .locator('.local-backup[aria-labelledby="local-backup-title"]')
       .screenshot({ path: "test-results/local-backup-panel.png" })
   } finally {
     await targetContext.close()

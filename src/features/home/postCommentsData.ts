@@ -16,8 +16,16 @@ export interface PostCommentView {
   readonly createdAt: IsoDateTimeString
 }
 
+export function isLocalPostId(postId: PostId): boolean {
+  try {
+    return readMetadata().posts.some((post) => post.id === postId)
+  } catch {
+    return false
+  }
+}
+
 export function getPostComments(postId: PostId): readonly PostCommentView[] {
-  if (postId.startsWith("post_local_")) {
+  if (isLocalPostId(postId)) {
     const post = readMetadata().posts.find((item) => item.id === postId)
     return (post?.comments ?? []).map((comment) => ({
       commentId: `comment_local_${comment.id}`,

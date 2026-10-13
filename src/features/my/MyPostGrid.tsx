@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next"
 
 import { ThumbImage } from "../../components/ThumbImage"
+import { ContentOriginLabel } from "../../components/ContentOriginLabel"
 import type { ImageSourceUrl, PostId } from "../../types/domain"
 import type { MyPost } from "./myData"
 
@@ -13,9 +14,10 @@ interface MyPostGridProps {
   readonly onEdit?: (postId: PostId) => void
   readonly onPostClick: (post: ActivePost) => void
   readonly posts: readonly MyPost[]
+  readonly localPostIds?: ReadonlySet<PostId>
 }
 
-export function MyPostGrid({ onPostClick, onEdit, posts }: MyPostGridProps) {
+export function MyPostGrid({ onPostClick, onEdit, posts, localPostIds }: MyPostGridProps) {
   const { t } = useTranslation()
 
   if (posts.length === 0) {
@@ -36,7 +38,8 @@ export function MyPostGrid({ onPostClick, onEdit, posts }: MyPostGridProps) {
           >
             <ThumbImage alt={post.petName} className="my-post-grid__image" src={post.imageUrl} />
           </button>
-          {post.postId.startsWith("post_local_") && onEdit !== undefined ? (
+          <ContentOriginLabel local={localPostIds?.has(post.postId) ?? false} />
+          {localPostIds?.has(post.postId) === true && onEdit !== undefined ? (
             <button
               className="local-button my-post-grid__edit"
               type="button"

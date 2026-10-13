@@ -131,6 +131,69 @@ export async function putPhotos(photos: ReadonlyMap<string, Blob>): Promise<void
   }
 }
 
+export async function getPhotos(keys: ReadonlySet<string>): Promise<ReadonlyMap<string, Blob>> {
+  if (keys.size === 0) return new Map()
+  const database = await openDatabase()
+  try {
+    return await new Promise((resolve, reject) => {
+      const photos = new Map<string, Blob>()
+      const transaction = database.transaction(photoStoreName, "readonly")
+      const store = transaction.objectStore(photoStoreName)
+      for (const key of keys) {
+        const request = store.get(key)
+        request.onsuccess = () => {
+          const value: unknown = request.result
+          if (value instanceof Blob) photos.set(key, value)
+        }
+      }
+      transaction.oncomplete = () => {
+        resolve(photos)
+      }
+      transaction.onabort = () => {
+        reject(new LocalContentStorageError("Photo snapshot failed."))
+      }
+      transaction.onerror = () => {
+        reject(new LocalContentStorageError("Photo snapshot failed."))
+      }
+    })
+  } finally {
+    database.close()
+  }
+}
+
+export async function getPhotoStats(): Promise<{ count: number; bytes: number }> {
+  const database = await openDatabase()
+  try {
+    return await new Promise((resolve, reject) => {
+      let count = 0
+      let bytes = 0
+      const transaction = database.transaction(photoStoreName, "readonly")
+      const cursor = transaction.objectStore(photoStoreName).openCursor()
+      cursor.onsuccess = () => {
+        const item = cursor.result
+        if (item === null) return
+        const blob: unknown = item.value
+        if (blob instanceof Blob) {
+          count += 1
+          bytes += blob.size
+        }
+        item.continue()
+      }
+      transaction.oncomplete = () => {
+        resolve({ count, bytes })
+      }
+      transaction.onabort = () => {
+        reject(new LocalContentStorageError("Photo statistics unavailable."))
+      }
+      transaction.onerror = () => {
+        reject(new LocalContentStorageError("Photo statistics unavailable."))
+      }
+    })
+  } finally {
+    database.close()
+  }
+}
+
 export async function prunePhotos(referencedKeys: ReadonlySet<string>): Promise<void> {
   const database = await openDatabase()
   try {

@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react"
 import { memo, useMemo, useRef, useState } from "react"
 import type { MouseEventHandler, ReactEventHandler } from "react"
 import { useTranslation } from "react-i18next"
+import { ContentOriginLabel } from "../../components/ContentOriginLabel"
 
 import { setLocalPostLiked } from "../local/localContentActions"
 import type { HomeFeedPost } from "./homeFeedData"
@@ -112,7 +113,7 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
   ]
 
   return (
-    <article className="post-card">
+    <article className="post-card" data-origin={post.isLocalOnly ? "local" : "demo"}>
       <header className="post-card__header">
         <span className="post-card__avatar-frame" data-image-state={avatarLoadState}>
           <img
@@ -147,6 +148,7 @@ export const PostCard = memo(function PostCard({ post }: PostCardProps) {
       </div>
 
       <div className="post-card__body">
+        <ContentOriginLabel local={post.isLocalOnly} />
         <p className="post-card__content">{post.content}</p>
         <ul className="post-card__tags" aria-label="Post tags">
           {post.tags.map((tag) => (

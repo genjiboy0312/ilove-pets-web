@@ -11,6 +11,7 @@ import { SettingsSheet } from "../settings/SettingsSheet"
 import { LocalPostEditor } from "./LocalPostEditor"
 import { LocalDataControls } from "./LocalDataControls"
 import { LocalBackupControls } from "./LocalBackupControls"
+import { LocalStorageSummary } from "./LocalStorageSummary"
 import { GrowthSheet } from "./GrowthSheet"
 import { MyCollapsibleSection } from "./MyCollapsibleSection"
 import { MyPetList } from "./MyPetList"
@@ -130,7 +131,11 @@ export function MyRoute() {
         title={t(($) => $.my.petsLabel)}
         titleId="my-pets-title"
       >
-        <MyPetList onPetClick={setActiveGrowthPetId} pets={profile.pets} />
+        <MyPetList
+          onPetClick={setActiveGrowthPetId}
+          pets={profile.pets}
+          localPetIds={new Set(localContent.content.pets.map((pet) => pet.petId))}
+        />
       </MyCollapsibleSection>
 
       <MyCollapsibleSection
@@ -142,10 +147,16 @@ export function MyRoute() {
         title={t(($) => $.my.gridLabel)}
         titleId="my-posts-title"
       >
-        <MyPostGrid onPostClick={setActivePost} onEdit={setEditingPostId} posts={profile.posts} />
+        <MyPostGrid
+          onPostClick={setActivePost}
+          onEdit={setEditingPostId}
+          posts={profile.posts}
+          localPostIds={new Set(localContent.content.posts.map((post) => post.postId))}
+        />
       </MyCollapsibleSection>
 
       <LocalBackupControls />
+      <LocalStorageSummary snapshot={localContent} />
       <LocalDataControls />
       {editingPost === undefined ? null : (
         <LocalPostEditor

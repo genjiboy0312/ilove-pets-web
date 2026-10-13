@@ -12,7 +12,11 @@ export function PetRegistrationForm({ form }: PetRegistrationFormProps) {
   const { t } = useTranslation()
 
   return (
-    <form className="my-pet-form" onSubmit={(event) => void form.handleSubmit(event)}>
+    <form
+      id="pet-registration"
+      className="my-pet-form"
+      onSubmit={(event) => void form.handleSubmit(event)}
+    >
       <h2 className="my-section__title">{t(($) => $.my.petForm.heading)}</h2>
       <p className="my-pet-form__hint">{t(($) => $.local.limitation)}</p>
       <label className="my-pet-form__field">

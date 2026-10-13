@@ -3,11 +3,12 @@ import type { SyntheticEvent } from "react"
 import { createPortal } from "react-dom"
 import { useDialogFocus } from "../../components/useDialogFocus"
 import { useTranslation } from "react-i18next"
+import { ContentOriginLabel } from "../../components/ContentOriginLabel"
 
 import { addLocalComment } from "../local/localContentActions"
 import { localContentChangedEvent } from "../local/localContentTypes"
 import type { ImageSourceUrl, IsoDateTimeString, PostId } from "../../types/domain"
-import { getCurrentCommenter, getPostComments } from "./postCommentsData"
+import { getCurrentCommenter, getPostComments, isLocalPostId } from "./postCommentsData"
 import type { PostCommentView } from "./postCommentsData"
 
 function toIsoDateTimeString(date: Date): IsoDateTimeString {
@@ -28,6 +29,7 @@ export function CommentDialog({
   postImageUrl,
 }: CommentDialogProps) {
   const { t } = useTranslation()
+  const local = isLocalPostId(postId)
   const titleId = useId()
   const dialogRef = useDialogFocus()
   const [busy, setBusy] = useState(false)
@@ -55,7 +57,7 @@ export function CommentDialog({
   }, [onClose])
 
   useEffect(() => {
-    if (!postId.startsWith("post_local_")) return undefined
+    if (!local) return undefined
     const refresh = () => {
       try {
         setComments(getPostComments(postId))
@@ -69,7 +71,7 @@ export function CommentDialog({
       window.removeEventListener(localContentChangedEvent, refresh)
       window.removeEventListener("storage", refresh)
     }
-  }, [postId])
+  }, [postId, local])
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -79,7 +81,7 @@ export function CommentDialog({
       return
     }
 
-    if (postId.startsWith("post_local_")) {
+    if (local) {
       pending.current = true
       setBusy(true)
       setSaveError(false)
@@ -124,6 +126,7 @@ export function CommentDialog({
         role="dialog"
       >
         <header className="comment-dialog__header">
+          <ContentOriginLabel local={local} />
           <h2 className="comment-dialog__title" id={titleId}>
             {t(($) => $.home.comments.heading)}
           </h2>

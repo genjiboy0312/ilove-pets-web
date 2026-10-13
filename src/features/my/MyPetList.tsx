@@ -1,13 +1,15 @@
 import { ThumbImage } from "../../components/ThumbImage"
+import { ContentOriginLabel } from "../../components/ContentOriginLabel"
 import type { PetId } from "../../types/domain"
 import type { MyPet } from "./myData"
 
 interface MyPetListProps {
   readonly onPetClick: (petId: PetId) => void
   readonly pets: readonly MyPet[]
+  readonly localPetIds?: ReadonlySet<PetId>
 }
 
-export function MyPetList({ onPetClick, pets }: MyPetListProps) {
+export function MyPetList({ onPetClick, pets, localPetIds }: MyPetListProps) {
   return (
     <ul className="my-pet-list">
       {pets.map((pet) => (
@@ -30,6 +32,7 @@ export function MyPetList({ onPetClick, pets }: MyPetListProps) {
             <div className="my-pet-card__identity">
               <h3 className="my-pet-card__name">{pet.name}</h3>
               <p className="my-pet-card__breed">{pet.breed}</p>
+              <ContentOriginLabel local={localPetIds?.has(pet.petId) ?? false} />
             </div>
           </button>
         </li>

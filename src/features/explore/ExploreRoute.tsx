@@ -229,6 +229,7 @@ export function ExploreRoute() {
             <h2 className="explore-section__title" id="explore-posts-title">
               {t(($) => $.explore.popularPosts)}
             </h2>
+            <p className="my-pet-form__hint">{t(($) => $.storage.demo)}</p>
             <ul className="explore-grid">
               {gridItems.map((item) => (
                 <li className="explore-grid__item" key={item.itemKey}>
