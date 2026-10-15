@@ -1,4 +1,14 @@
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import {
+  Bird,
+  Cat,
+  ChevronLeft,
+  ChevronRight,
+  Dog,
+  LayoutGrid,
+  Rabbit,
+  Shapes,
+  Turtle,
+} from "lucide-react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -23,6 +33,15 @@ const categoryLabelKeys = {
 } as const satisfies Record<PetCategoryFilter, CategoryLabelKey>
 
 type CategoryLabelKey = keyof (typeof resources)["ko"]["translation"]["home"]["categories"]
+const categoryIcons = {
+  ALL: LayoutGrid,
+  DOG: Dog,
+  CAT: Cat,
+  REPTILE: Turtle,
+  BIRD: Bird,
+  SMALL_ANIMAL: Rabbit,
+  ETC: Shapes,
+}
 
 function getCategoryButtonClassName(isSelected: boolean): string {
   return isSelected
@@ -94,6 +113,7 @@ export function CategoryTabs({ ariaLabel, selectedFilter, onSelectFilter }: Cate
         >
           {PET_FILTER_IDS.map((filterId) => {
             const isSelected = selectedFilter === filterId
+            const Icon = categoryIcons[filterId]
 
             return (
               <button
@@ -105,7 +125,8 @@ export function CategoryTabs({ ariaLabel, selectedFilter, onSelectFilter }: Cate
                 }}
                 type="button"
               >
-                {t(($) => $.home.categories[categoryLabelKeys[filterId]])}
+                <Icon aria-hidden="true" size={17} strokeWidth={1.8} />
+                <span>{t(($) => $.home.categories[categoryLabelKeys[filterId]])}</span>
               </button>
             )
           })}
