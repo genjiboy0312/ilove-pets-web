@@ -10,6 +10,8 @@
 
 `operations-*`는 실제 서버 적용 전인 S5 작업본의 production 미리보기에서 모의 API로 캡처했습니다. 실제 계정을 삭제하거나 신고한 결과가 아닙니다.
 
+`account-new-cloud.png`와 `cloud-retry.png`는 포트폴리오 마무리 점검에서 추가한 새 계정의 빈 기록·503 오류 화면입니다. 375 × 812px 로컬 production 미리보기와 모의 API이며, 실제 신규 계정을 생성하거나 서버 장애를 일으키지 않았습니다. [시연·검증 가이드](../portfolio-guide.md)에서 조건을 확인할 수 있습니다.
+
 | 이미지                                                     | 화면 및 사용 흐름                                       |
 | ---------------------------------------------------------- | ------------------------------------------------------- |
 | [home.png](home.png)                                       | 홈 카테고리·스토리·피드                                 |
@@ -32,5 +34,7 @@
 | [settings-dark.png](settings-dark.png)                     | 다크 모드 설정                                          |
 | [operations-deletion.png](operations-deletion.png)         | S5 삭제 확인·백업·최근 로그인 안내                      |
 | [operations-report-block.png](operations-report-block.png) | S5 모의 신고 접수와 차단 확인                           |
+| [account-new-cloud.png](account-new-cloud.png)             | 새 계정의 빈 클라우드 기록과 첫 펫 등록 안내            |
+| [cloud-retry.png](cloud-retry.png)                         | 초기 요청 실패와 명시적 새로고침 안내                   |
 
 [프로젝트 설명으로 돌아가기](../../README.md)

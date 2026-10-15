@@ -1,0 +1,38 @@
+{
+  "measured_on": "2026-10-16",
+  "node": "v20.20.2",
+  "package_lock_sha256": "097a4b626ebbbaea051dfd65208654fbcada5e2325252e649f8930913bc019d4",
+  "baseline_commit": "498637954d7d25776e2c34b7fdbd9eb884e476d3",
+  "current_base_commit": "ae53b64877c66aa3677322d39b35a8bb48d5042a",
+  "source_note": "Current includes S5 and portfolio working changes; baseline is main archived into a temporary folder. Both use the current installed dependencies and same public VITE auth values. This is not an isolated lazy-loading-only experiment.",
+  "method": "Vite production build. Exact file bytes and Node gzipSync default. Asset sizes exclude HTML/CSS/photos and are not initial request totals, LCP or real-device timings.",
+  "baseline": {
+    "entry": {
+      "file": "assets/index-WIx0K5WK.js",
+      "bytes": 898901,
+      "gzip_bytes": 258643
+    },
+    "largest_chunk": {
+      "file": "assets/index-WIx0K5WK.js",
+      "bytes": 898901,
+      "gzip_bytes": 258643
+    },
+    "all_route_js_file_count": 1,
+    "all_route_js_bytes": 898901
+  },
+  "current": {
+    "entry": {
+      "file": "assets/index-B6WheQfr.js",
+      "bytes": 197697,
+      "gzip_bytes": 62010
+    },
+    "largest_chunk": {
+      "file": "assets/supabaseClient-DLQZda_j.js",
+      "bytes": 257143,
+      "gzip_bytes": 70414
+    },
+    "all_route_js_file_count": 43,
+    "all_route_js_bytes": 928032
+  },
+  "entry_file_reduction_percent": 78.01
+}
