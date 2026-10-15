@@ -14,7 +14,7 @@ describe("MyRoute", () => {
 
   it("names the route with a level-one Korean heading", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -24,7 +24,7 @@ describe("MyRoute", () => {
 
   it("links to the settings route from the header", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -35,7 +35,7 @@ describe("MyRoute", () => {
 
   it("renders the current user's profile identity", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -47,7 +47,7 @@ describe("MyRoute", () => {
 
   it("renders the post, follower, and following statistics", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -59,7 +59,7 @@ describe("MyRoute", () => {
 
   it("lists the registered pets with translated section heading", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -71,7 +71,7 @@ describe("MyRoute", () => {
 
   it("renders the post grid with one tile per my post", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -85,7 +85,7 @@ describe("MyRoute", () => {
 
   it("shows the local-only pet registration form", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -99,7 +99,7 @@ describe("MyRoute", () => {
 
   it("collapses and expands the pets and posts sections", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -130,7 +130,7 @@ describe("MyRoute", () => {
 
   it("opens follower and following sheets from the stat buttons", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )
@@ -153,7 +153,7 @@ describe("MyRoute", () => {
 
   it("opens the growth sheet from a pet card", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={["/myaccount?destination=local"]}>
         <MyRoute />
       </MemoryRouter>,
     )

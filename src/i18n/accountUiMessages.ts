@@ -1,6 +1,14 @@
 export const accountUiMessages = {
   ko: {
     accountUi: {
+      welcomeTitle: "우리 아이의 기록을 한곳에",
+      welcomeDescription:
+        "로그인하면 내 계정에서 반려동물의 기록과 사진을 관리하고 이웃과 소통할 수 있어요.",
+      emailSignIn: "이메일로 로그인",
+      useDevice: "로그인 없이 기기 기록 사용하기",
+      deviceHint: "기기 기록은 현재 브라우저에만 저장돼요.",
+      devicePreserved: "이 기기에 저장된 기록은 그대로 보관되어 있어요.",
+      backToSignIn: "로그인 안내로 돌아가기",
       noStories: "아직 등록한 스토리가 없어요. 오늘의 순간을 남겨보세요.",
       write: "게시물 작성",
       writeHint: "새로운 순간 기록하기",
@@ -13,6 +21,14 @@ export const accountUiMessages = {
   },
   en: {
     accountUi: {
+      welcomeTitle: "Their little moments, together",
+      welcomeDescription:
+        "Sign in to manage your pets’ records and photos in your account and connect with others.",
+      emailSignIn: "Sign in with email",
+      useDevice: "Use device records without signing in",
+      deviceHint: "Device records are saved only in this browser.",
+      devicePreserved: "Your records on this device are still safely stored.",
+      backToSignIn: "Back to sign-in options",
       noStories: "No stories yet. Share a moment from today.",
       write: "Create a post",
       writeHint: "Save a new moment",
@@ -25,6 +41,14 @@ export const accountUiMessages = {
   },
   ja: {
     accountUi: {
+      welcomeTitle: "うちの子の記録をひとつに",
+      welcomeDescription:
+        "ログインすると、ペットの記録や写真をアカウントで管理して、仲間と交流できます。",
+      emailSignIn: "メールでログイン",
+      useDevice: "ログインせずに端末の記録を使う",
+      deviceHint: "端末の記録は、このブラウザにのみ保存されます。",
+      devicePreserved: "この端末に保存した記録は、そのまま残っています。",
+      backToSignIn: "ログイン案内に戻る",
       noStories: "まだストーリーはありません。今日の瞬間を残しましょう。",
       write: "投稿を作成",
       writeHint: "新しい瞬間を記録",

@@ -186,7 +186,7 @@ describe("App Stage 5 runtime shell", () => {
     expect(createLink).toHaveClass("bottom-navigation__link--active")
   })
 
-  it("renders the real stage 6 screens for every non-home route", () => {
+  it("renders the real stage 6 screens for every non-home route", async () => {
     // Given: each non-home Stage 6 route is opened directly.
     const routes = [
       { path: "/explore", heading: "탐색" },
@@ -202,7 +202,11 @@ describe("App Stage 5 runtime shell", () => {
 
       // Then: the real route heading is translated and no home status region is duplicated.
       expect(screen.getByRole("heading", { level: 1, name: route.heading })).toBeInTheDocument()
-      expect(screen.queryByRole("status")).not.toBeInTheDocument()
+      if (route.path === "/myaccount") {
+        expect(
+          await screen.findByRole("button", { name: "로그인 없이 기기 기록 사용하기" }),
+        ).toBeInTheDocument()
+      } else expect(screen.queryByRole("status")).not.toBeInTheDocument()
       unmount()
     }
   })

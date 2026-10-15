@@ -125,6 +125,7 @@ test("renders Korean My screen acceptance at 375px", async ({ page }) => {
 
   // When: the My route is opened.
   await page.goto("/myaccount")
+  await page.getByRole("button", { name: "로그인 없이 기기 기록 사용하기" }).click()
 
   // Then: profile, stats, registered pets, post grid, and settings link are observable.
   await expect(page.getByRole("heading", { level: 1, name: "내 계정" })).toBeVisible()

@@ -32,7 +32,7 @@ function LocalCreateRoute() {
       {localContent.status === "ready" && localContent.content.pets.length === 0 ? (
         <div className="create-form__hint">
           <p>{t(($) => $.storage.startHint)}</p>
-          <a className="local-button" href="/myaccount#pet-registration">
+          <a className="local-button" href="/myaccount?destination=local#pet-registration">
             {t(($) => $.storage.start)}
           </a>
         </div>

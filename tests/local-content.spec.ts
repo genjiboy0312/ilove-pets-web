@@ -23,7 +23,7 @@ async function photo(page: Page) {
 }
 
 async function register(page: Page, withPhoto = false) {
-  await page.goto("/myaccount")
+  await page.goto("/myaccount?destination=local")
   await page.getByLabel("펫 이름", { exact: true }).fill("QA Mochi")
   await page.getByRole("combobox", { name: "카테고리", exact: true }).selectOption("CAT")
   await page.getByLabel("품종", { exact: true }).fill("Mix")
@@ -120,7 +120,7 @@ test("registers, publishes, persists interactions, edits, records growth and del
   await seedLanguage(otherTab)
   await otherTab.goto("/")
   await expect(otherTab.getByText("QA first photo", { exact: true })).toBeVisible()
-  await page.goto("/myaccount")
+  await page.goto("/myaccount?destination=local")
   await page.getByRole("button", { name: "수정 QA Mochi", exact: true }).click()
   let dialog = page.getByRole("dialog")
   await dialog.getByRole("textbox", { name: "내용", exact: true }).fill("QA revised photo")
@@ -183,7 +183,7 @@ test("registers, publishes, persists interactions, edits, records growth and del
   await expect(page.getByRole("dialog").getByText("QA saved comment")).toBeVisible()
   await page.keyboard.press("Escape")
 
-  await page.goto("/myaccount")
+  await page.goto("/myaccount?destination=local")
   await page.getByRole("button", { name: "수정 QA Updated", exact: true }).click()
   dialog = page.getByRole("dialog")
   await dialog.getByRole("button", { name: "삭제", exact: true }).click()
@@ -257,7 +257,7 @@ test("recovers corrupt metadata with explicit reset and clears IndexedDB photos"
     localStorage.setItem("ilove-pets-web:local-content:v1", "{broken")
     localStorage.setItem("ilove-pets-web:create-draft:v1", "{broken")
   })
-  await page.goto("/myaccount")
+  await page.goto("/myaccount?destination=local")
   await expect(page.getByRole("alert")).toContainText("로컬 데이터")
   await page.getByRole("button", { name: "로컬 데이터 초기화", exact: true }).click()
   await page.getByRole("button", { name: "취소", exact: true }).click()
@@ -301,7 +301,7 @@ for (const language of ["ko", "en", "ja"]) {
         })
         await page.setViewportSize({ width, height: 900 })
         await page.emulateMedia({ colorScheme })
-        await page.goto("/myaccount")
+        await page.goto("/myaccount?destination=local")
         await page
           .locator(".my-pet-list")
           .getByRole("button", { name: "QA Layout", exact: true })
@@ -347,7 +347,7 @@ test("backs up photos and records, restores in a fresh browser and preserves dat
   await seedLanguage(page)
   await register(page, true)
   await publish(page)
-  await page.goto("/myaccount")
+  await page.goto("/myaccount?destination=local")
   await page
     .getByRole("region", { name: "등록 펫", exact: true })
     .getByRole("button", { name: "QA Mochi", exact: true })
@@ -368,7 +368,7 @@ test("backs up photos and records, restores in a fresh browser and preserves dat
   await page.getByRole("dialog").getByRole("button", { name: "등록", exact: true }).click()
   await expect(page.getByRole("dialog")).toContainText("Backup comment")
   await page.keyboard.press("Escape")
-  await page.goto("/myaccount")
+  await page.goto("/myaccount?destination=local")
   const downloadEvent = page.waitForEvent("download")
   await page.getByRole("button", { name: "백업 다운로드", exact: true }).click()
   const download = await downloadEvent
@@ -378,7 +378,7 @@ test("backs up photos and records, restores in a fresh browser and preserves dat
   try {
     const target = await targetContext.newPage()
     await seedLanguage(target)
-    await target.goto("/myaccount")
+    await target.goto("/myaccount?destination=local")
     const fileInput = target.getByLabel("백업 파일 선택", { exact: true })
     await fileInput.setInputFiles({
       name: "backup.json",
@@ -413,7 +413,7 @@ test("backs up photos and records, restores in a fresh browser and preserves dat
     await restoredCard.getByRole("button", { name: "댓글", exact: true }).click()
     await expect(target.getByRole("dialog")).toContainText("Backup comment")
     await target.keyboard.press("Escape")
-    await target.goto("/myaccount")
+    await target.goto("/myaccount?destination=local")
     const before = await metadata(target)
     await fileInput.setInputFiles({
       name: "bad.json",
@@ -468,7 +468,7 @@ test("serializes actual concurrent registration from two tabs without losing eit
   const second = await context.newPage()
   await seedLanguage(second)
   for (const target of [page, second]) {
-    await target.goto("/myaccount")
+    await target.goto("/myaccount?destination=local")
     await target
       .getByLabel("펫 이름", { exact: true })
       .fill(target === page ? "Tab One" : "Tab Two")

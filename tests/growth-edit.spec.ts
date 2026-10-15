@@ -33,7 +33,7 @@ test("edits growth records, cancels changes and keeps calendar, chart and saved 
     )
   })
   await page.setViewportSize({ width: 375, height: 812 })
-  await page.goto("/myaccount")
+  await page.goto("/myaccount?destination=local")
   await page.getByRole("button", { name: "Edit Pet", exact: true }).click()
   const dialog = page.getByRole("dialog", { name: "Edit Pet", exact: true })
   await dialog.getByRole("button", { name: "기록 수정 2024-02-29 Original", exact: true }).click()

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { ArrowDownToLine, ArrowUpRight, Cloud, HardDrive, Plus, Settings } from "lucide-react"
 import type { ReactNode } from "react"
-import { Link } from "react-router"
+import { Link, useSearchParams } from "react-router"
 import { useTranslation } from "react-i18next"
 import { useAuth } from "../auth/AuthContext"
 import { AuthAccountCard } from "../auth/AuthAccountCard"
@@ -11,6 +11,26 @@ import { useCloudWorkspace } from "../cloud/useCloudWorkspace"
 import { OwnProfile } from "./ProfilePanel"
 import { Stories } from "./Stories"
 import { ImportHistory } from "../import/ImportHistory"
+import { AccountWelcome } from "../auth/AccountWelcome"
+
+function AccountHeading() {
+  const { t } = useTranslation()
+  return (
+    <header className="my-screen__header">
+      <div className="my-screen__heading-group">
+        <p className="my-screen__eyebrow">iLove Pets</p>
+        <h1 className="my-screen__title">{t(($) => $.my.heading)}</h1>
+      </div>
+      <Link
+        className="my-screen__settings-link"
+        to="/settings"
+        aria-label={t(($) => $.my.settings)}
+      >
+        <Settings size={18} aria-hidden="true" />
+      </Link>
+    </header>
+  )
+}
 
 function Destinations({
   mode,
@@ -53,10 +73,42 @@ function AccountSession({
   readonly children: ReactNode
 }) {
   const { t } = useTranslation()
-  const [mode, setMode] = useState<"local" | "cloud">(owner ? "cloud" : "local")
+  const [params, setParams] = useSearchParams()
+  const mode = params.get("destination") === "local" ? "local" : "cloud"
+  const setMode = (next: "local" | "cloud") => {
+    setParams((previous) => {
+      const updated = new URLSearchParams(previous)
+      if (next === "local") updated.set("destination", "local")
+      else updated.delete("destination")
+      return updated
+    })
+  }
+  if (owner === null && mode !== "local")
+    return (
+      <section className="my-screen account-welcome-screen">
+        <AccountHeading />
+        <AccountWelcome
+          onUseDevice={() => {
+            setMode("local")
+          }}
+        />
+      </section>
+    )
   return (
     <div className="account-page">
-      <Destinations mode={mode} change={setMode} />
+      {owner ? (
+        <Destinations mode={mode} change={setMode} />
+      ) : (
+        <button
+          className="account-device-back"
+          type="button"
+          onClick={() => {
+            setMode("cloud")
+          }}
+        >
+          {t(($) => $.accountUi.backToSignIn)}
+        </button>
+      )}
       {mode === "local" ? (
         children
       ) : (
@@ -135,6 +187,16 @@ function AccountSession({
 }
 export function AccountDestinations({ children }: { readonly children: ReactNode }) {
   const auth = useAuth()
+  const { t } = useTranslation()
+  if (auth.status === "loading")
+    return (
+      <section className="my-screen" aria-busy="true">
+        <AccountHeading />
+        <p className="account-loading" role="status">
+          {t(($) => $.auth.loading)}
+        </p>
+      </section>
+    )
   const owner = auth.user?.id ?? null
   return (
     <AccountSession key={owner ?? "anonymous"} owner={owner}>

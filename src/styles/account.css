@@ -402,3 +402,99 @@
   border-radius: 14px;
   background: var(--color-surface);
 }
+
+.account-welcome-screen {
+  gap: 28px;
+}
+.account-welcome {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 36px 24px 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 26px;
+  background: var(--color-surface);
+  text-align: center;
+}
+.account-welcome__mark {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 24px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+.account-welcome h2 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
+}
+.account-welcome p {
+  margin: 0;
+  max-width: 32ch;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+.account-welcome__actions {
+  display: grid;
+  width: 100%;
+  gap: 10px;
+  margin-top: 10px;
+}
+.account-welcome__actions .local-button {
+  min-height: 48px;
+  justify-content: center;
+  text-align: center;
+}
+.account-welcome__actions .account-welcome__google {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary);
+}
+.account-welcome__google:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.account-device-entry {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 0 12px;
+}
+.account-device-entry button,
+.account-device-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 13px;
+  min-height: 44px;
+  padding: 8px;
+  cursor: pointer;
+}
+.account-device-entry p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.account-device-back {
+  justify-self: start;
+}
+.account-loading {
+  padding: 40px 20px;
+  background: var(--color-surface-subtle);
+  border-radius: 24px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
