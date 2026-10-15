@@ -1,3 +1,4 @@
+import { nextMessages } from "./nextMessages"
 import { growthMessages } from "./growthMessages"
 import { authMessages } from "./authMessages"
 import { cloudMessages } from "./cloudMessages"
@@ -13,6 +14,7 @@ export const resources = {
       ...cloudMessages.en,
       ...socialMessages.en,
       ...profileMessages.en,
+      ...nextMessages.en,
       ...storageMessages.en,
       backup: {
         title: "Backup and restore",
@@ -329,6 +331,7 @@ export const resources = {
       ...cloudMessages.ja,
       ...socialMessages.ja,
       ...profileMessages.ja,
+      ...nextMessages.ja,
       ...storageMessages.ja,
       backup: {
         title: "バックアップと復元",
@@ -643,6 +646,7 @@ export const resources = {
       ...cloudMessages.ko,
       ...socialMessages.ko,
       ...profileMessages.ko,
+      ...nextMessages.ko,
       ...storageMessages.ko,
       backup: {
         title: "백업과 복원",

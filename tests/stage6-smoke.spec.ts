@@ -107,11 +107,12 @@ test("renders Korean Activity screen acceptance at 375px", async ({ page }) => {
   // When: the Activity route is opened.
   await page.goto("/activity")
 
-  // Then: all three mock notifications render newest first without shell overflow.
+  // Guests see the sign-in destination rather than fabricated account activity.
   await expect(page.getByRole("heading", { level: 1, name: "활동" })).toBeVisible()
-  await expect(page.getByRole("list", { name: "알림" }).getByRole("listitem")).toHaveCount(3)
-  await expect(page.getByText(/Arden Lee님이 팔로우하기 시작했습니다/)).toBeVisible()
-  await expect(page.getByText('"That color is perfect."')).toBeVisible()
+  await expect(
+    page.getByRole("main").getByRole("link", { name: "로그인하고 참여하기", exact: true }),
+  ).toBeVisible()
+  await expect(page.getByText(/Arden Lee님이 팔로우하기 시작했습니다/)).toHaveCount(0)
   await expectNoShellOverflow(page)
 
   await page.screenshot({ path: "test-results/stage6-activity-ko-375.png", fullPage: false })

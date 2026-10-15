@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 
-import { ActivityList } from "./ActivityList"
+import { Notifications } from "./Notifications"
 
 export function ActivityRoute() {
   const { t } = useTranslation()
@@ -14,7 +14,7 @@ export function ActivityRoute() {
         </h1>
       </div>
 
-      <ActivityList />
+      <Notifications />
     </section>
   )
 }

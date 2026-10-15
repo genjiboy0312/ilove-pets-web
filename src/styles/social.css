@@ -429,3 +429,130 @@
   justify-content: space-between;
   padding: 4px 12px 12px;
 }
+
+.activity-button {
+  position: relative;
+}
+.notification-badge {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  background: #b3473b;
+  color: white;
+  border-radius: 20px;
+  padding: 2px 5px;
+  font-size: 10px;
+  min-width: 16px;
+}
+.notification-panel {
+  width: 100%;
+  min-width: 0;
+}
+.notification-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.notification-list li {
+  padding: 14px;
+  border: 1px solid var(--color-border, #d7ded6);
+  border-radius: 16px;
+  overflow-wrap: anywhere;
+}
+.notification-list .notification-unread {
+  border-inline-start: 4px solid #5f7561;
+}
+.notification-list time {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.import-screen fieldset {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.import-screen label {
+  display: grid;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+.import-screen select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+}
+.import-screen input[type="file"] {
+  max-width: 100%;
+}
+.import-results {
+  padding-left: 22px;
+}
+.import-results li {
+  padding: 10px 0;
+  overflow-wrap: anywhere;
+}
+.import-results span {
+  display: block;
+  max-height: 4.5em;
+  overflow: auto;
+}
+.import-results strong {
+  display: block;
+  font-size: 13px;
+}
+
+.import-screen h1 {
+  margin: 0;
+  font-size: var(--font-size-heading);
+  line-height: 1.4;
+  word-break: keep-all;
+}
+.import-screen p {
+  margin: 0;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+.import-screen a {
+  color: var(--color-primary);
+}
+.import-screen fieldset {
+  border: 1px solid var(--color-border-strong);
+  border-radius: 16px;
+  padding: 16px;
+}
+.import-screen select {
+  border: 1px solid var(--color-border-strong);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+.import-screen label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.6;
+}
+.import-screen input[type="checkbox"] {
+  flex: none;
+  margin: 5px 0 0;
+  accent-color: var(--color-primary);
+}
+.import-results {
+  margin: 0;
+}
+.import-results li {
+  border-bottom: 1px solid var(--color-border);
+}
+.import-results strong {
+  margin-top: 6px;
+  color: var(--color-primary);
+}
+.notification-list p {
+  margin: 0 0 8px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+.notification-list time {
+  color: var(--color-text-secondary);
+}
