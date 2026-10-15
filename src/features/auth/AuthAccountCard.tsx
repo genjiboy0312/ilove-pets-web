@@ -11,7 +11,7 @@ export function AuthAccountCard() {
   const [busy, setBusy] = useState(false)
   const pending = useRef(false)
   return (
-    <section className="local-backup" aria-label={t(($) => $.auth.account)}>
+    <section className="local-backup auth-account-card" aria-label={t(($) => $.auth.account)}>
       <h2>{t(($) => $.auth.account)}</h2>
       <p>{t(($) => $.auth.localNotice)}</p>
       {auth.user === null ? (

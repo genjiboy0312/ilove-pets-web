@@ -418,7 +418,9 @@ export function Stories({
         })}
       </div>
       {ordered.length === 0 ? (
-        <p className="stories-empty">{t(($) => $.social.emptyStories)}</p>
+        <p className="stories-empty">
+          {t(onlyOwn ? ($) => $.accountUi.noStories : ($) => $.social.emptyStories)}
+        </p>
       ) : null}
       {error ? (
         <p role="alert">

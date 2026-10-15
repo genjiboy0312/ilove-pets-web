@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { ArrowDownToLine, ArrowUpRight, Cloud, HardDrive, Plus, Settings } from "lucide-react"
 import type { ReactNode } from "react"
 import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
@@ -28,6 +29,7 @@ function Destinations({
           change("local")
         }}
       >
+        <HardDrive size={16} aria-hidden="true" />
         {t(($) => $.profile.local)}
       </button>
       <button
@@ -37,6 +39,7 @@ function Destinations({
           change("cloud")
         }}
       >
+        <Cloud size={16} aria-hidden="true" />
         {t(($) => $.profile.cloud)}
       </button>
     </div>
@@ -52,35 +55,82 @@ function AccountSession({
   const { t } = useTranslation()
   const [mode, setMode] = useState<"local" | "cloud">(owner ? "cloud" : "local")
   return (
-    <>
+    <div className="account-page">
       <Destinations mode={mode} change={setMode} />
       {mode === "local" ? (
         children
       ) : (
-        <section className="my-screen">
-          <h1>{t(($) => $.my.heading)}</h1>
-          <AuthAccountCard />
+        <section className="my-screen account-dashboard">
+          <header className="my-screen__header">
+            <div className="my-screen__heading-group">
+              <p className="my-screen__eyebrow">iLove Pets</p>
+              <h1 className="my-screen__title">{t(($) => $.my.heading)}</h1>
+            </div>
+            <Link
+              className="my-screen__settings-link"
+              to="/settings"
+              aria-label={t(($) => $.my.settings)}
+            >
+              <Settings size={18} aria-hidden="true" />
+            </Link>
+          </header>
           {owner ? (
             <>
               <OwnProfile key={owner} owner={owner} />
-              <Link className="local-button" to="/myaccount/import">
-                {t(($) => $.migration.title)}
-              </Link>
-              <ImportHistory key={`imports:${owner}`} owner={owner} />
-              <Link className="local-button" to="/create?destination=cloud">
-                {t(($) => $.profile.create)}
-              </Link>
-              <h2>{t(($) => $.profile.myStories)}</h2>
-              <Stories key={owner} owner={owner} onlyOwn />
+              <div className="account-quick-actions">
+                <Link
+                  className="account-quick-action account-quick-action--primary"
+                  to="/create?destination=cloud"
+                  aria-label={t(($) => $.profile.create)}
+                >
+                  <span className="account-quick-action__icon">
+                    <Plus size={22} aria-hidden="true" />
+                  </span>
+                  <strong>{t(($) => $.accountUi.write)}</strong>
+                  <span>{t(($) => $.accountUi.writeHint)}</span>
+                  <ArrowUpRight
+                    className="account-quick-action__arrow"
+                    size={16}
+                    aria-hidden="true"
+                  />
+                </Link>
+                <Link
+                  className="account-quick-action"
+                  to="/myaccount/import"
+                  aria-label={t(($) => $.migration.title)}
+                >
+                  <span className="account-quick-action__icon">
+                    <ArrowDownToLine size={21} aria-hidden="true" />
+                  </span>
+                  <strong>{t(($) => $.accountUi.import)}</strong>
+                  <span>{t(($) => $.accountUi.importHint)}</span>
+                  <ArrowUpRight
+                    className="account-quick-action__arrow"
+                    size={16}
+                    aria-hidden="true"
+                  />
+                </Link>
+              </div>
+              <section className="account-story-card" aria-labelledby="account-stories-title">
+                <h2 id="account-stories-title">{t(($) => $.profile.myStories)}</h2>
+                <Stories key={owner} owner={owner} onlyOwn />
+              </section>
               <details className="account-records">
                 <summary>{t(($) => $.profile.myRecords)}</summary>
                 <CloudWorkspace owner={owner} embedded />
               </details>
+              <ImportHistory key={`imports:${owner}`} owner={owner} />
+              <details className="account-records account-session">
+                <summary>{t(($) => $.auth.account)}</summary>
+                <AuthAccountCard />
+              </details>
             </>
-          ) : null}
+          ) : (
+            <AuthAccountCard />
+          )}
         </section>
       )}
-    </>
+    </div>
   )
 }
 export function AccountDestinations({ children }: { readonly children: ReactNode }) {

@@ -278,7 +278,7 @@ test("cloud My edits profile/photo, links to public profile and creates a privat
     page.getByRole("status").filter({ hasText: "저장 후 서버 데이터를 갱신했습니다." }),
   ).toBeVisible()
   await page.goto("/myaccount")
-  await page.locator("summary").filter({ hasText: "내 서버 게시물·펫·성장 기록" }).click()
+  await page.locator("summary").filter({ hasText: "게시물 · 펫 · 성장 기록" }).click()
   await expect(page.getByText("새 클라우드 글", { exact: true })).toBeVisible()
   await expect(
     page.locator(".social-publish p").filter({ hasText: /^비공개 게시물$/ }),

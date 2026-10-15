@@ -20,7 +20,7 @@ export const profileMessages = {
       destination: "저장 위치",
       local: "이 기기",
       cloud: "클라우드",
-      myRecords: "내 서버 게시물·펫·성장 기록",
+      myRecords: "게시물 · 펫 · 성장 기록",
       myStories: "내 스토리 관리",
       create: "클라우드 게시글 작성",
       privateNotice:
@@ -62,7 +62,7 @@ export const profileMessages = {
       destination: "Save to",
       local: "This device",
       cloud: "Cloud",
-      myRecords: "My server posts, pets and growth records",
+      myRecords: "Posts, pets & growth records",
       myStories: "Manage my stories",
       create: "Create cloud post",
       privateNotice:

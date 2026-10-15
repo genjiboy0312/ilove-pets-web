@@ -1,3 +1,4 @@
+import { accountUiMessages } from "./accountUiMessages"
 import { nextMessages } from "./nextMessages"
 import { growthMessages } from "./growthMessages"
 import { authMessages } from "./authMessages"
@@ -14,6 +15,7 @@ export const resources = {
       ...cloudMessages.en,
       ...socialMessages.en,
       ...profileMessages.en,
+      ...accountUiMessages.en,
       ...nextMessages.en,
       ...storageMessages.en,
       backup: {
@@ -331,6 +333,7 @@ export const resources = {
       ...cloudMessages.ja,
       ...socialMessages.ja,
       ...profileMessages.ja,
+      ...accountUiMessages.ja,
       ...nextMessages.ja,
       ...storageMessages.ja,
       backup: {
@@ -646,6 +649,7 @@ export const resources = {
       ...cloudMessages.ko,
       ...socialMessages.ko,
       ...profileMessages.ko,
+      ...accountUiMessages.ko,
       ...nextMessages.ko,
       ...storageMessages.ko,
       backup: {

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { ArrowUpRight, Pencil, RefreshCw } from "lucide-react"
 import { Link, useParams } from "react-router"
 import { useTranslation } from "react-i18next"
 import { useAuth } from "../auth/AuthContext"
@@ -49,9 +50,18 @@ export function ProfileHeader({
       </div>
       <p className="social-content">{profile.bio}</p>
       <ul className="account-profile__stats">
-        <li>{t(($) => $.profile.posts, { count: profile.posts })}</li>
-        <li>{t(($) => $.profile.followers, { count: profile.followers })}</li>
-        <li>{t(($) => $.profile.following, { count: profile.followingCount })}</li>
+        <li aria-label={t(($) => $.profile.posts, { count: profile.posts })}>
+          <strong>{profile.posts}</strong>
+          <span>{t(($) => $.accountUi.posts)}</span>
+        </li>
+        <li aria-label={t(($) => $.profile.followers, { count: profile.followers })}>
+          <strong>{profile.followers}</strong>
+          <span>{t(($) => $.accountUi.followers)}</span>
+        </li>
+        <li aria-label={t(($) => $.profile.following, { count: profile.followingCount })}>
+          <strong>{profile.followingCount}</strong>
+          <span>{t(($) => $.accountUi.following)}</span>
+        </li>
       </ul>
     </section>
   )
@@ -212,17 +222,29 @@ export function OwnProfile({ owner }: { readonly owner: string }) {
     <section className="account-profile-panel">
       {error ? <p role="alert">{t(($) => $.social.error)}</p> : null}
       {!profile && !error ? <p role="status">{t(($) => $.social.loading)}</p> : null}
-      <button className="local-button" type="button" onClick={refresh}>
-        {t(($) => $.social.retry)}
+      <button
+        className="account-profile__refresh"
+        type="button"
+        onClick={refresh}
+        aria-label={t(($) => $.social.retry)}
+      >
+        <RefreshCw size={16} aria-hidden="true" />
       </button>
       {profile ? (
         <>
           <ProfileHeader profile={profile} owner={owner} refresh={refresh} />
-          <Link className="local-button" to={`/users/${profile.username}`}>
+          <Link
+            className="local-button account-profile__public-link"
+            to={`/users/${profile.username}`}
+          >
             {t(($) => $.profile.open)}
+            <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
-          <details>
-            <summary>{t(($) => $.profile.edit)}</summary>
+          <details className="account-profile__edit">
+            <summary>
+              <Pencil size={15} aria-hidden="true" />
+              <span>{t(($) => $.profile.edit)}</span>
+            </summary>
             <ProfileEditor
               key={profile.version}
               profile={profile}
