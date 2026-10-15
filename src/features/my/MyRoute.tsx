@@ -12,6 +12,7 @@ import { LocalPostEditor } from "./LocalPostEditor"
 import { LocalDataControls } from "./LocalDataControls"
 import { LocalBackupControls } from "./LocalBackupControls"
 import { LocalStorageSummary } from "./LocalStorageSummary"
+import { AuthAccountCard } from "../auth/AuthAccountCard"
 import { GrowthSheet } from "./GrowthSheet"
 import { MyCollapsibleSection } from "./MyCollapsibleSection"
 import { MyPetList } from "./MyPetList"
@@ -63,6 +64,7 @@ export function MyRoute() {
         </Link>
       </header>
 
+      <AuthAccountCard />
       <div className="my-profile">
         <ThumbImage
           alt={profile.displayName}

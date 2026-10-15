@@ -1,10 +1,14 @@
 import { growthMessages } from "./growthMessages"
+import { authMessages } from "./authMessages"
+import { cloudMessages } from "./cloudMessages"
 import { storageMessages } from "./storageMessages"
 
 export const resources = {
   en: {
     translation: {
       ...growthMessages.en,
+      ...authMessages.en,
+      ...cloudMessages.en,
       ...storageMessages.en,
       backup: {
         title: "Backup and restore",
@@ -317,6 +321,8 @@ export const resources = {
   ja: {
     translation: {
       ...growthMessages.ja,
+      ...authMessages.ja,
+      ...cloudMessages.ja,
       ...storageMessages.ja,
       backup: {
         title: "バックアップと復元",
@@ -627,6 +633,8 @@ export const resources = {
   ko: {
     translation: {
       ...growthMessages.ko,
+      ...authMessages.ko,
+      ...cloudMessages.ko,
       ...storageMessages.ko,
       backup: {
         title: "백업과 복원",

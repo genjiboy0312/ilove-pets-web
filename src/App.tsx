@@ -11,23 +11,36 @@ import { HomeRoute } from "./features/home/HomeRoute"
 import { MyRoute } from "./features/my/MyRoute"
 import { SettingsRoute } from "./features/settings/SettingsRoute"
 import { useThemePreference } from "./theme/useThemePreference"
+import { AuthProvider } from "./features/auth/AuthProvider"
+import { AuthRoute } from "./features/auth/AuthRoute"
+import { AuthCallback } from "./features/auth/AuthCallback"
+import { CloudRoute } from "./features/cloud/CloudRoute"
 
 export function App() {
   const { t } = useTranslation()
   useThemePreference()
   return (
-    <MobileAppShell bottomNavigation={<BottomNavigation />} mainLabel={t(($) => $.shell.mainLabel)}>
-      <Routes>
-        <Route index element={<HomeRoute />} />
-        <Route path="explore" element={<ExploreRoute />} />
-        <Route path="community" element={<CommunityRoute />} />
-        <Route path="create" element={<CreateRoute />} />
-        <Route path="activity" element={<ActivityRoute />} />
-        <Route path="myaccount" element={<MyRoute />} />
-        <Route path="settings" element={<SettingsRoute />} />
-        <Route path="my" element={<Navigate replace to="/myaccount" />} />
-        <Route path="*" element={<Navigate replace to="/" />} />
-      </Routes>
-    </MobileAppShell>
+    <AuthProvider>
+      <MobileAppShell
+        bottomNavigation={<BottomNavigation />}
+        mainLabel={t(($) => $.shell.mainLabel)}
+      >
+        <Routes>
+          <Route path="cloud" element={<CloudRoute />} />
+          <Route path="auth" element={<AuthRoute />} />
+          <Route path="auth/callback" element={<AuthCallback />} />
+          <Route path="auth/reset-password" element={<AuthCallback recovery />} />
+          <Route index element={<HomeRoute />} />
+          <Route path="explore" element={<ExploreRoute />} />
+          <Route path="community" element={<CommunityRoute />} />
+          <Route path="create" element={<CreateRoute />} />
+          <Route path="activity" element={<ActivityRoute />} />
+          <Route path="myaccount" element={<MyRoute />} />
+          <Route path="settings" element={<SettingsRoute />} />
+          <Route path="my" element={<Navigate replace to="/myaccount" />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
+        </Routes>
+      </MobileAppShell>
+    </AuthProvider>
   )
 }

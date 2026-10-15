@@ -29,6 +29,13 @@ body {
   overflow-wrap: anywhere;
 }
 
+.auth-screen {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+  overflow-wrap: anywhere;
+}
+
 body,
 button,
 input,
@@ -247,4 +254,37 @@ select {
 
 .thumb-frame[data-image-state="failed"] .thumb-frame__image {
   opacity: 0;
+}
+.cloud-screen {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.cloud-section {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.cloud-list {
+  display: grid;
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+.cloud-list > li {
+  border: 1px solid var(--border-color, #808080);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  min-width: 0;
+}
+.cloud-post__image {
+  width: 100%;
+  max-height: 28rem;
+  object-fit: contain;
+  border-radius: 0.5rem;
+}
+.cloud-post__text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

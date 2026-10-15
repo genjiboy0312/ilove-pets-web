@@ -521,7 +521,7 @@ test("loads the cached app offline and never substitutes HTML for a missing scri
   await expect
     .poll(() =>
       page.evaluate(async () => {
-        const cache = await caches.open("ilove-pets-cache-v3")
+        const cache = await caches.open("ilove-pets-cache-v4")
         const keys = await cache.keys()
         return keys.some((key) => key.url.includes("/assets/") && key.url.endsWith(".js"))
       }),

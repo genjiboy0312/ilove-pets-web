@@ -1,6 +1,6 @@
 // Service worker for the iLove Pets demo PWA.
 // Strategy: network-first with cache fallback so users always get the latest shell.
-const CACHE_NAME = "ilove-pets-cache-v3"
+const CACHE_NAME = "ilove-pets-cache-v4"
 const APP_SHELL_URLS = ["/", "/index.html", "/startup.js", "/manifest.webmanifest", "/icon.svg"]
 
 self.addEventListener("install", (event) => {
@@ -32,6 +32,18 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const request = event.request
+  const url = new URL(request.url)
+  // Auth codes and private API responses must never reach caches or the offline shell fallback.
+  if (
+    url.origin !== self.location.origin ||
+    url.pathname === "/auth" ||
+    url.pathname.startsWith("/auth/") ||
+    request.headers.has("Authorization") ||
+    ["code", "token", "token_hash", "access_token", "refresh_token", "error", "otp"].some((key) =>
+      url.searchParams.has(key),
+    )
+  )
+    return
 
   if (request.method !== "GET") {
     return

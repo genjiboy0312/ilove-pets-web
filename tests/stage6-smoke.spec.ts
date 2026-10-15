@@ -149,7 +149,7 @@ test("renders Korean Settings screen acceptance at 375px", async ({ page }) => {
   const settingsRegion = page.getByRole("region", { name: "설정" })
   await expect(page.getByRole("link", { name: "뒤로" })).toHaveAttribute("href", "/myaccount")
   await expect(page.getByRole("heading", { level: 1, name: "설정" })).toBeVisible()
-  await expect(settingsRegion.getByRole("heading", { name: "계정" })).toBeVisible()
+  await expect(settingsRegion.getByRole("heading", { name: "계정", exact: true })).toBeVisible()
   await expect(settingsRegion.getByRole("heading", { name: "화면 및 언어" })).toBeVisible()
 
   // Then: theme and language rows open listbox sheets and show their current values.

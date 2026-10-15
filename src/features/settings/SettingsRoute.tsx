@@ -1,5 +1,6 @@
 import { ArrowLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
+import { AuthAccountCard } from "../auth/AuthAccountCard"
 import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
 
@@ -56,6 +57,7 @@ export function SettingsRoute() {
           {t(($) => $.settings.heading)}
         </h1>
       </header>
+      <AuthAccountCard />
 
       <section className="settings-section" aria-labelledby="settings-account-title">
         <h2 className="settings-section__title" id="settings-account-title">
