@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { PawPrint, HardDrive } from "lucide-react"
+import { HardDrive } from "lucide-react"
 import { Link } from "react-router"
 import { useTranslation } from "react-i18next"
 import { startGoogleSignIn } from "../../services/authActions"
@@ -54,9 +54,14 @@ export function AccountWelcome({ onUseDevice }: { readonly onUseDevice: () => vo
   return (
     <>
       <section className="account-welcome" aria-labelledby="account-welcome-title">
-        <span className="account-welcome__mark" aria-hidden="true">
-          <PawPrint size={30} strokeWidth={1.6} />
-        </span>
+        <img
+          className="account-welcome__illustration"
+          src="/images/pet-family-welcome-v1.webp"
+          alt=""
+          width={768}
+          height={512}
+          decoding="async"
+        />
         <h2 id="account-welcome-title">{t(($) => $.accountUi.welcomeTitle)}</h2>
         <p>{t(($) => $.accountUi.welcomeDescription)}</p>
         <div className="account-welcome__actions">

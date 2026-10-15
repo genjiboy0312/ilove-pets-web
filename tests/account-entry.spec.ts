@@ -62,7 +62,18 @@ for (const language of ["ko", "en", "ja"])
         for (const path of ["/myaccount", "/"]) {
           await page.goto(path)
           await expect(page.locator("h1")).toBeVisible()
-          if (path === "/myaccount") await expect(page.locator(".account-welcome")).toBeVisible()
+          if (path === "/myaccount") {
+            await expect(page.locator(".account-welcome")).toBeVisible()
+            await expect
+              .poll(() =>
+                page
+                  .locator(".account-welcome__illustration")
+                  .evaluate(
+                    (el) => el instanceof HTMLImageElement && el.complete && el.naturalWidth > 0,
+                  ),
+              )
+              .toBe(true)
+          }
           expect(
             await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
           ).toBe(true)

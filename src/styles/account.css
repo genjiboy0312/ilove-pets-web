@@ -410,21 +410,18 @@
   display: grid;
   justify-items: center;
   gap: 16px;
-  padding: 36px 24px 28px;
+  padding: 24px 24px 28px;
   border: 1px solid var(--color-border);
   border-radius: 26px;
   background: var(--color-surface);
   text-align: center;
 }
-.account-welcome__mark {
-  display: grid;
-  place-items: center;
-  width: 68px;
-  height: 68px;
-  border-radius: 24px;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-  margin-bottom: 8px;
+.account-welcome__illustration {
+  display: block;
+  width: 100%;
+  max-width: 272px;
+  height: 168px;
+  object-fit: contain;
 }
 .account-welcome h2 {
   margin: 0;
