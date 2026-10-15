@@ -83,12 +83,12 @@ describe("App Stage 5 runtime shell", () => {
     expect(screen.queryByText("프론트엔드 기반 준비 완료")).not.toBeInTheDocument()
   })
 
-  it("renders accessible Korean theme preference controls", () => {
+  it("renders accessible Korean theme preference controls", async () => {
     // Given: the settings route renders the theme preference row.
     renderAppAt("/settings")
 
     // When: the user opens the theme selection sheet.
-    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
+    fireEvent.click(await screen.findByRole("button", { name: "테마시스템" }))
 
     // Then: the sheet presents a listbox with the system option selected by default.
     const themeDialog = screen.getByRole("dialog", { name: "테마" })
@@ -102,12 +102,12 @@ describe("App Stage 5 runtime shell", () => {
     )
   })
 
-  it("persists dark preference and applies the dark root theme", () => {
+  it("persists dark preference and applies the dark root theme", async () => {
     // Given: the settings route renders the theme preference row.
     renderAppAt("/settings")
 
     // When: the user opens the theme sheet and chooses dark mode.
-    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
+    fireEvent.click(await screen.findByRole("button", { name: "테마시스템" }))
     const themeDialog = screen.getByRole("dialog", { name: "테마" })
     fireEvent.click(within(themeDialog).getByRole("option", { name: "다크" }))
 
@@ -118,10 +118,10 @@ describe("App Stage 5 runtime shell", () => {
     expect(screen.getByRole("button", { name: "테마다크" })).toBeInTheDocument()
   })
 
-  it("persists system preference when returning from an explicit theme", () => {
+  it("persists system preference when returning from an explicit theme", async () => {
     // Given: the settings route renders the theme preference row.
     renderAppAt("/settings")
-    fireEvent.click(screen.getByRole("button", { name: "테마시스템" }))
+    fireEvent.click(await screen.findByRole("button", { name: "테마시스템" }))
     const themeDialog = screen.getByRole("dialog", { name: "테마" })
     fireEvent.click(within(themeDialog).getByRole("option", { name: "다크" }))
 
@@ -201,7 +201,9 @@ describe("App Stage 5 runtime shell", () => {
       const { unmount } = renderAppAt(route.path)
 
       // Then: the real route heading is translated and no home status region is duplicated.
-      expect(screen.getByRole("heading", { level: 1, name: route.heading })).toBeInTheDocument()
+      expect(
+        await screen.findByRole("heading", { level: 1, name: route.heading }),
+      ).toBeInTheDocument()
       if (route.path === "/myaccount") {
         expect(
           await screen.findByRole("button", { name: "로그인 없이 기기 기록 사용하기" }),
