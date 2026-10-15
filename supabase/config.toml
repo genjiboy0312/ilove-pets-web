@@ -1,3 +1,7 @@
 [functions.cloud-media]
 # Custom auth: getUser() verifies every user JWT before any privileged client is created.
 verify_jwt = false
+
+[functions.social-media]
+# Public posts are anonymous; follower stories verify identity and visibility per request.
+verify_jwt = false

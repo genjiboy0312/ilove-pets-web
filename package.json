@@ -15,7 +15,7 @@
     "format:check": "prettier --check .",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:server": "node --test --test-concurrency=1 tests/server/foundation.test.mjs tests/server/private-cloud.test.mjs tests/server/image-validation.test.mjs tests/server/media-handler.test.mjs tests/server/runtime-asset.test.mjs",
+    "test:server": "node --test --test-concurrency=1 tests/server/foundation.test.mjs tests/server/private-cloud.test.mjs tests/server/image-validation.test.mjs tests/server/media-handler.test.mjs tests/server/runtime-asset.test.mjs tests/server/social.test.mjs tests/server/social-media.test.mjs",
     "prepare:edge": "node scripts/prepare-edge-wasm.mjs",
     "publish:edge-runtime": "node scripts/prepare-edge-wasm.mjs && node scripts/publish-edge-runtime.mjs",
     "react-doctor": "npx --yes react-doctor@latest --json",
