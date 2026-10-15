@@ -17,6 +17,7 @@ import { AuthCallback } from "./features/auth/AuthCallback"
 import { CloudRoute } from "./features/cloud/CloudRoute"
 import { SocialPostRoute } from "./features/social/SocialFeed"
 import { PublicProfileRoute } from "./features/social/ProfilePanel"
+import { ImportRoute } from "./features/import/ImportRoute"
 
 export function App() {
   const { t } = useTranslation()
@@ -40,6 +41,7 @@ export function App() {
           <Route path="create" element={<CreateRoute />} />
           <Route path="activity" element={<ActivityRoute />} />
           <Route path="myaccount" element={<MyRoute />} />
+          <Route path="myaccount/import" element={<ImportRoute />} />
           <Route path="settings" element={<SettingsRoute />} />
           <Route path="my" element={<Navigate replace to="/myaccount" />} />
           <Route path="*" element={<Navigate replace to="/" />} />

@@ -70,7 +70,7 @@ describe("cloud workspace", () => {
     render(<View id="A" />)
     await screen.findByText("Cloud Cat A", { selector: "strong" })
     expect(
-      within(screen.getByRole("region", { name: "비공개 게시물" })).getByRole("button", {
+      within(screen.getByRole("region", { name: "클라우드 게시물" })).getByRole("button", {
         name: "클라우드에 저장",
       }),
     ).toBeDisabled()
@@ -127,7 +127,7 @@ describe("cloud workspace", () => {
     api.cloudMutation.mockRejectedValueOnce(new Error("post response lost"))
     render(<View id="A" />)
     await screen.findByText("Cloud Cat A", { selector: "strong" })
-    const region = screen.getByRole("region", { name: "비공개 게시물" })
+    const region = screen.getByRole("region", { name: "클라우드 게시물" })
     fireEvent.change(within(region).getByLabelText(/사진 \(/), {
       target: { files: [new File(["bytes"], "photo.png", { type: "image/png" })] },
     })

@@ -178,7 +178,7 @@ export async function cleanupCloudMedia(owner: string): Promise<void> {
 export async function uploadCloudImage(
   owner: string,
   file: File,
-  purpose: "post_photo" | "profile_avatar" = "post_photo",
+  purpose: "post_photo" | "profile_avatar" | "pet_avatar" = "post_photo",
 ): Promise<string> {
   if (
     file.size < 1 ||

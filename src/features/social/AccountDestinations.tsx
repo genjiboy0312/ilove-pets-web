@@ -9,6 +9,7 @@ import { CloudPetForm, CloudPostForm } from "../cloud/CloudForms"
 import { useCloudWorkspace } from "../cloud/useCloudWorkspace"
 import { OwnProfile } from "./ProfilePanel"
 import { Stories } from "./Stories"
+import { ImportHistory } from "../import/ImportHistory"
 
 function Destinations({
   mode,
@@ -62,6 +63,10 @@ function AccountSession({
           {owner ? (
             <>
               <OwnProfile key={owner} owner={owner} />
+              <Link className="local-button" to="/myaccount/import">
+                {t(($) => $.migration.title)}
+              </Link>
+              <ImportHistory key={`imports:${owner}`} owner={owner} />
               <Link className="local-button" to="/create?destination=cloud">
                 {t(($) => $.profile.create)}
               </Link>
