@@ -18,6 +18,8 @@ import "./styles/my.css"
 import "./styles/settings.css"
 import "./styles/settings-sheet.css"
 import "./styles/social.css"
+import "./styles/discovery.css"
+import "./styles/workspace.css"
 import "./styles/account.css"
 
 export class RootElementMissingError extends Error {
