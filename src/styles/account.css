@@ -187,7 +187,7 @@
   border: 1px dashed var(--color-border-strong);
   border-radius: 12px;
   width: 100%;
-  font-size: 12px;
+  font-size: 16px;
 }
 .account-profile__editor .local-button[type="submit"] {
   color: var(--color-text-inverse);
@@ -395,7 +395,7 @@
 .account-dashboard .local-editor input[type="file"] {
   width: 100%;
   max-width: 100%;
-  font-size: 12px;
+  font-size: 16px;
 }
 .account-dashboard .cloud-list > li {
   border-color: var(--color-border);

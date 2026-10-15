@@ -41,7 +41,7 @@ input[type="file"] {
   max-width: 100%;
   min-width: 0;
   color: var(--color-text-secondary);
-  font-size: 12px;
+  font-size: 16px;
 }
 input[type="file"]::file-selector-button {
   padding: 9px 12px;

@@ -112,10 +112,25 @@ test("measures a large local feed and verifies Blob URLs are released when leavi
   const started = Date.now()
   await expect(page.locator("article[data-origin=local]")).toHaveCount(200)
   const feedReadyMs = Date.now() - started
+  // Wait for actual Blob allocation before measuring its release.
+  await expect
+    .poll(() =>
+      page.evaluate(() => (Reflect.get(window, "qaBlobCounts") as { created: number }).created),
+    )
+    .toBeGreaterThanOrEqual(200)
   await page.evaluate(() => {
     window.scrollTo(0, document.documentElement.scrollHeight)
   })
   await page.getByRole("link", { name: "커뮤니티", exact: true }).click()
+  await expect(page.getByRole("heading", { level: 1, name: "커뮤니티", exact: true })).toBeVisible()
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const counts = Reflect.get(window, "qaBlobCounts") as { created: number; revoked: number }
+        return counts.created - counts.revoked
+      }),
+    )
+    .toBe(0)
   const counts = await page.evaluate(
     () =>
       Reflect.get(window, "qaBlobCounts") as {

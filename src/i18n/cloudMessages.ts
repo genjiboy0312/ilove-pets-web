@@ -3,7 +3,7 @@ export const cloudMessages = {
     cloud: {
       title: "My cloud records",
       notice:
-        "These records are private to your signed-in account and available on other devices. Existing local data stays on this device. Public sharing and automatic import are not enabled.",
+        "New records are private to your signed-in account and available on other devices. Only posts you choose to publish are shared. Device data stays here until you choose to copy it to the cloud.",
       signIn: "Sign in to view cloud records",
       back: "Back to My Account",
       refresh: "Refresh",
@@ -43,7 +43,8 @@ export const cloudMessages = {
         linked:
           "Delete linked posts and growth records first. Photo cleanup may also need to finish.",
         quota: "Photo quota or upload limit reached. Discard unused photos and retry cleanup.",
-        setup: "Cloud database setup is not finished. Apply the S2 migration first.",
+        setup:
+          "Cloud records are not ready yet. Please try again later. You can still use device records.",
         request: "Request failed. Your data may already be saved. Refresh before retrying.",
         image: "Photo processing failed. Check the file and server photo setup, then retry.",
       },
@@ -53,7 +54,7 @@ export const cloudMessages = {
     cloud: {
       title: "クラウド記録",
       notice:
-        "ログイン中のアカウント専用の非公開記録です。他の端末からも確認できます。既存のローカルデータはこの端末に残ります。公開共有・自動移行は未対応です。",
+        "新しい記録はアカウント専用の非公開で、他の端末からも確認できます。公開を選んだ投稿だけが共有されます。端末の資料は、クラウドへのコピーを選ぶまで端末に残ります。",
       signIn: "ログインしてクラウド記録を表示",
       back: "マイアカウントへ",
       refresh: "再読み込み",
@@ -94,7 +95,8 @@ export const cloudMessages = {
           "関連する投稿と成長記録を先に削除してください。写真の削除処理も必要な場合があります。",
         quota:
           "写真の容量または同時アップロード上限です。未使用写真を破棄して削除処理を再試行してください。",
-        setup: "DBの準備が未完了です。S2マイグレーションを適用してください。",
+        setup:
+          "クラウド記録はまだ利用できません。時間をおいて再試行してください。端末の記録は利用できます。",
         request: "処理できませんでした。保存済みの可能性があるため再読み込みしてください。",
         image: "写真を処理できません。ファイルとサーバー設定を確認してください。",
       },
@@ -104,7 +106,7 @@ export const cloudMessages = {
     cloud: {
       title: "내 클라우드 기록",
       notice:
-        "로그인한 계정만 볼 수 있는 비공개 기록입니다. 다른 기기에서도 조회할 수 있습니다. 기존 로컬 데이터는 이 기기에 유지되며 공개 공유·자동 이전은 아직 제공하지 않습니다.",
+        "새 기록은 계정 전용 비공개로 저장되며 다른 기기에서도 볼 수 있습니다. 직접 공개한 게시물만 이웃에게 공유됩니다. 기기 자료는 클라우드 복사를 선택하기 전까지 이 기기에 유지됩니다.",
       signIn: "로그인하고 클라우드 기록 보기",
       back: "내 계정으로",
       refresh: "서버에서 새로고침",
@@ -144,7 +146,8 @@ export const cloudMessages = {
         linked: "연결된 게시물·성장 기록을 먼저 삭제하세요. 사진 정리도 완료해야 할 수 있습니다.",
         quota:
           "사진 용량이나 동시 업로드 한도에 도달했습니다. 미사용 사진을 버리고 정리를 다시 시도하세요.",
-        setup: "서버 DB 준비가 끝나지 않았습니다. S2 SQL을 먼저 적용하세요.",
+        setup:
+          "클라우드 기록이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요. 기기 기록은 사용할 수 있습니다.",
         request: "요청을 완료하지 못했습니다. 이미 저장됐을 수 있으니 새로고침 후 다시 시도하세요.",
         image: "사진 처리에 실패했습니다. 파일과 서버 사진 함수 설정을 확인한 뒤 다시 시도하세요.",
       },
