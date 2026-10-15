@@ -68,45 +68,20 @@ describe("CategoryTabs", () => {
     expect(within(scroller).queryAllByRole("link")).toHaveLength(0)
   })
 
-  it("renders previous and next scroll arrows with Korean labels", () => {
-    const onSelectFilter = vi.fn()
-
-    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
-
-    expect(screen.getByRole("button", { name: "이전 카테고리" })).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: "다음 카테고리" })).toBeInTheDocument()
+  it("keeps all filters in one group without separate arrows", () => {
+    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={vi.fn()} />)
+    expect(screen.getAllByRole("button")).toHaveLength(7)
+    expect(screen.queryByRole("button", { name: "다음 카테고리" })).not.toBeInTheDocument()
   })
-
-  it("disables both arrows while the scroller has nothing to scroll", () => {
-    const onSelectFilter = vi.fn()
-
-    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
-
-    expect(screen.getByRole("button", { name: "이전 카테고리" })).toBeDisabled()
-    expect(screen.getByRole("button", { name: "다음 카테고리" })).toBeDisabled()
-  })
-
-  it("scrolls the scroller forward when the next arrow is clicked", () => {
-    const onSelectFilter = vi.fn()
-
-    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={onSelectFilter} />)
-
-    const categorySection = screen.getByRole("region", { name: "반려동물 카테고리" })
-    const scroller = within(categorySection).getByRole("group")
-    const scrollByMock = vi.fn()
-
-    scroller.scrollBy = scrollByMock
-    Object.defineProperty(scroller, "scrollWidth", { configurable: true, value: 400 })
-    Object.defineProperty(scroller, "clientWidth", { configurable: true, value: 200 })
-    Object.defineProperty(scroller, "scrollLeft", { configurable: true, value: 0 })
-
-    fireEvent.scroll(scroller)
-
-    const nextArrow = screen.getByRole("button", { name: "다음 카테고리" })
-    expect(nextArrow).toBeEnabled()
-
-    fireEvent.click(nextArrow)
-
-    expect(scrollByMock).toHaveBeenCalledWith({ behavior: "smooth", left: 120 })
+  it("moves keyboard focus to offscreen filters without changing the selection", () => {
+    const select = vi.fn()
+    render(<CategoryTabs selectedFilter="ALL" onSelectFilter={select} />)
+    const first = screen.getByRole("button", { name: "전체" })
+    first.focus()
+    fireEvent.keyDown(first, { key: "End" })
+    expect(screen.getByRole("button", { name: "기타" })).toHaveFocus()
+    fireEvent.keyDown(screen.getByRole("button", { name: "기타" }), { key: "ArrowLeft" })
+    expect(screen.getByRole("button", { name: "소동물" })).toHaveFocus()
+    expect(select).not.toHaveBeenCalled()
   })
 })
