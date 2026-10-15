@@ -22,6 +22,8 @@ pnpm-debug.log*
 .vite/
 .eslintcache
 *.tsbuildinfo
+supabase/functions/cloud-media/magick.wasm
+supabase/.temp/
 .npm-cache/
 .tmp/
 

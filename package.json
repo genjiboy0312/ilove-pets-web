@@ -15,11 +15,15 @@
     "format:check": "prettier --check .",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:server": "node --test --test-concurrency=1 tests/server/foundation.test.mjs tests/server/private-cloud.test.mjs tests/server/image-validation.test.mjs tests/server/media-handler.test.mjs tests/server/runtime-asset.test.mjs",
+    "prepare:edge": "node scripts/prepare-edge-wasm.mjs",
+    "publish:edge-runtime": "node scripts/prepare-edge-wasm.mjs && node scripts/publish-edge-runtime.mjs",
     "react-doctor": "npx --yes react-doctor@latest --json",
     "playwright:install": "cross-env PLAYWRIGHT_BROWSERS_PATH=0 playwright install chromium",
     "smoke:preview": "npm run build && cross-env PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.109.0",
     "i18next": "^26.3.6",
     "i18next-browser-languagedetector": "^8.2.1",
     "leaflet": "^1.9.4",
@@ -30,7 +34,9 @@
     "react-router": "^7.18.2"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.9",
     "@eslint/js": "^10.0.1",
+    "@imagemagick/magick-wasm": "^0.0.44",
     "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

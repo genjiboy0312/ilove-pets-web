@@ -87,4 +87,16 @@ export default [
     },
   },
   prettier,
+  {
+    ...tseslint.configs.disableTypeChecked,
+    files: ["supabase/functions/**/*.ts"],
+    languageOptions: {
+      globals: { ...globals.browser, Deno: "readonly" },
+      parserOptions: { projectService: false, project: null },
+    },
+    rules: {
+      ...tseslint.configs.disableTypeChecked.rules,
+      "@typescript-eslint/no-non-null-assertion": "off",
+    },
+  },
 ]

@@ -1,0 +1,3 @@
+[functions.cloud-media]
+# Custom auth: getUser() verifies every user JWT before any privileged client is created.
+verify_jwt = false
