@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 import { useAuth } from "../auth/AuthContext"
 import { SocialFeed } from "./SocialFeed"
 import { Stories } from "./Stories"
+import { readFeedChoice, saveFeedChoice } from "./feedPreferences"
 function SessionHome({
   owner,
   children,
@@ -12,7 +13,13 @@ function SessionHome({
   readonly children: ReactNode
 }) {
   const { t } = useTranslation()
-  const [mode, setMode] = useState<"local" | "public">("local")
+  const [mode, setMode] = useState<"local" | "public">(() =>
+    readFeedChoice(owner, "mode", "local") === "public" ? "public" : "local",
+  )
+  const choose = (value: "local" | "public") => {
+    setMode(value)
+    saveFeedChoice(owner, "mode", value)
+  }
   return (
     <>
       <Stories owner={owner} />
@@ -21,7 +28,7 @@ function SessionHome({
           type="button"
           aria-pressed={mode === "local"}
           onClick={() => {
-            setMode("local")
+            choose("local")
           }}
         >
           {t(($) => $.social.local)}
@@ -30,7 +37,7 @@ function SessionHome({
           type="button"
           aria-pressed={mode === "public"}
           onClick={() => {
-            setMode("public")
+            choose("public")
           }}
         >
           {t(($) => $.social.public)}

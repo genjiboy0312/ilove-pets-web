@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next"
+import { useSearchParams } from "react-router"
+import { CreationDestinations } from "../social/AccountDestinations"
 
 import { useLocalContent } from "../local/useLocalContent"
 import { getMyProfile } from "../my/myData"
@@ -6,6 +8,14 @@ import { CreatePostForm } from "./CreatePostForm"
 import { useCreatePostForm } from "./useCreatePostForm"
 
 export function CreateRoute() {
+  const [params] = useSearchParams()
+  return (
+    <CreationDestinations initial={params.get("destination") === "cloud" ? "cloud" : "local"}>
+      <LocalCreateRoute />
+    </CreationDestinations>
+  )
+}
+function LocalCreateRoute() {
   const { t } = useTranslation()
   const localContent = useLocalContent()
   const profile = getMyProfile(localContent.content)

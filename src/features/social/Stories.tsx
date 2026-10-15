@@ -118,7 +118,18 @@ function StoryViewer({
   const [error, setError] = useState(false)
   const [busy, setBusy] = useState(false)
   const story = stories[index]
+  const gesture = useRef<{ x: number; y: number } | null>(null)
+  useEffect(() => {
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close()
+    }
+    window.addEventListener("keydown", escape)
+    return () => {
+      window.removeEventListener("keydown", escape)
+    }
+  }, [close])
   const next = useCallback(() => {
+    setError(false)
     if (index + 1 < stories.length) setIndex(index + 1)
     else close()
   }, [index, stories.length, close])
@@ -165,7 +176,6 @@ function StoryViewer({
         aria-modal="true"
         aria-label={`${t(($) => $.social.stories)} · ${story.username}`}
         onKeyDown={(e) => {
-          if (e.key === "Escape") close()
           if (e.key === "ArrowRight") next()
           if (e.key === "ArrowLeft") setIndex(Math.max(0, index - 1))
         }}
@@ -200,13 +210,30 @@ function StoryViewer({
         </header>
         <div
           className="story-photo"
-          onPointerDown={() => {
+          onPointerDown={(event) => {
+            if (event.target instanceof Element && event.target.closest("button,a,input")) return
+            gesture.current = { x: event.clientX, y: event.clientY }
+            event.currentTarget.setPointerCapture(event.pointerId)
             setHeld(true)
           }}
-          onPointerUp={() => {
+          onPointerUp={(event) => {
+            const start = gesture.current
+            gesture.current = null
             setHeld(false)
+            if (start) {
+              const dx = event.clientX - start.x,
+                dy = event.clientY - start.y
+              if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                if (dx < 0) next()
+                else {
+                  setError(false)
+                  setIndex((v) => Math.max(0, v - 1))
+                }
+              }
+            }
           }}
           onPointerCancel={() => {
+            gesture.current = null
             setHeld(false)
           }}
           onPointerLeave={() => {
@@ -220,6 +247,8 @@ function StoryViewer({
             alt={story.caption || story.username}
             onReady={() => {
               setReady(story.id)
+              if (ref.current && !ref.current.contains(document.activeElement))
+                ref.current.querySelector("button")?.focus()
             }}
           />
         </div>
@@ -269,7 +298,13 @@ function StoryViewer({
     </div>
   )
 }
-export function Stories({ owner }: { readonly owner: string | null }) {
+export function Stories({
+  owner,
+  onlyOwn = false,
+}: {
+  readonly owner: string | null
+  readonly onlyOwn?: boolean
+}) {
   const { t } = useTranslation()
   const [rows, setRows] = useState<Story[]>([])
   const [revision, setRevision] = useState(0)
@@ -314,7 +349,9 @@ export function Stories({ owner }: { readonly owner: string | null }) {
       controller.abort()
     }
   }, [owner, revision])
-  const activeRows = rows.filter((row) => new Date(row.expires).getTime() > now)
+  const activeRows = rows.filter(
+    (row) => new Date(row.expires).getTime() > now && (!onlyOwn || row.owner === owner),
+  )
   const groups = new Map<string, Story[]>()
   for (const row of activeRows) {
     const group = groups.get(row.owner) ?? []

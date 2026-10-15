@@ -196,7 +196,7 @@ test("private cloud pet, growth and photo post survive reload, edits and deletio
   await growthRegion.getByLabel("돌봄 메모").fill("산책 완료")
   await growthRegion.getByRole("button", { name: "클라우드에 저장" }).click()
   await expect(growthRegion).toContainText("3.2 kg")
-  const postsRegion = page.getByRole("region", { name: "비공개 게시물" })
+  const postsRegion = page.getByRole("region", { name: "클라우드 게시물" })
   await postsRegion
     .getByLabel(/사진 \(/)
     .setInputFiles({ name: "photo.png", mimeType: "image/png", buffer: png })

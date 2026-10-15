@@ -3,6 +3,7 @@ import { getSupabaseClient } from "../../services/supabaseClient"
 import { accountClient, cloudMutation, CloudError } from "../cloud/cloudApi"
 
 export interface SocialPost {
+  avatar?: string | null
   id: string
   owner: string
   username: string
@@ -81,6 +82,7 @@ export async function socialPosts(
   args: Record<string, unknown> = {},
 ): Promise<SocialPost[]> {
   return (await list(owner, "social_feed", args)).map((r) => ({
+    avatar: typeof r["avatar_asset_id"] === "string" ? r["avatar_asset_id"] : null,
     id: string(r, "id"),
     owner: string(r, "owner_id"),
     username: string(r, "username"),
@@ -132,7 +134,59 @@ export async function socialStories(owner: string): Promise<Story[]> {
   }))
 }
 export async function socialWrite(owner: string, name: string, args: Record<string, unknown> = {}) {
+  if (name !== "ensure_profile") await cloudMutation(owner, "ensure_profile", {})
   await cloudMutation(owner, name, args)
+}
+
+export interface SocialProfile {
+  id: string
+  username: string
+  name: string
+  bio: string
+  avatar: string | null
+  posts: number
+  followers: number
+  followingCount: number
+  following: boolean
+  version: number | null
+}
+export async function socialProfile(
+  owner: string | null,
+  username: string | null = null,
+): Promise<SocialProfile | null> {
+  const r = (await list(owner, "social_profile", { p_username: username }))[0]
+  return r
+    ? {
+        id: string(r, "id"),
+        username: string(r, "username"),
+        name: string(r, "display_name"),
+        bio: string(r, "bio"),
+        avatar: typeof r["avatar_asset_id"] === "string" ? r["avatar_asset_id"] : null,
+        posts: count(r, "posts"),
+        followers: count(r, "followers"),
+        followingCount: count(r, "following_count"),
+        following: r["following"] === true,
+        version: r["version"] === null ? null : count(r, "version"),
+      }
+    : null
+}
+export class ProfileIssue extends Error {
+  constructor(readonly kind: "username" | "conflict" | "validation" | "request" | "image") {
+    super(kind)
+  }
+}
+export async function saveSocialProfile(owner: string, args: Record<string, unknown>) {
+  const result = await (await socialClient(owner)).rpc("save_social_profile", args)
+  if (result.error)
+    throw new ProfileIssue(
+      result.error.code === "23505"
+        ? "username"
+        : result.error.code === "PT409"
+          ? "conflict"
+          : result.error.code === "22023" || result.error.code === "23514"
+            ? "validation"
+            : "request",
+    )
 }
 export async function socialImage(
   owner: string | null,

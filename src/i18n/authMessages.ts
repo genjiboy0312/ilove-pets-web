@@ -4,7 +4,7 @@ export const authMessages = {
       title: "Sign in / Create account",
       account: "Cloud account",
       localNotice:
-        "Your existing pets, posts and records currently use local mode. Signing in does not upload or delete them.",
+        "Device and cloud records are separate. Signing in does not automatically upload or delete device data.",
       unconfigured: "Cloud sign-in is being prepared. You can continue using local features.",
       loading: "Checking sign-in…",
       email: "Email",
@@ -36,7 +36,7 @@ export const authMessages = {
       title: "ログイン・アカウント作成",
       account: "クラウドアカウント",
       localNotice:
-        "現在のペット・投稿・記録はローカルモードです。ログインしても自動送信・削除しません。",
+        "この端末とクラウドの記録は別々に保存されます。ログインしても端末のデータを自動送信・削除しません。",
       unconfigured: "クラウドログインは準備中です。ローカル機能は引き続き使えます。",
       loading: "ログインを確認中…",
       email: "メールアドレス",
@@ -68,7 +68,7 @@ export const authMessages = {
       title: "로그인 · 회원가입",
       account: "클라우드 계정",
       localNotice:
-        "현재 펫·게시물·기록은 로컬 모드입니다. 로그인만으로 업로드하거나 삭제하지 않습니다.",
+        "이 기기와 클라우드 기록은 별도로 저장됩니다. 로그인만으로 기기 데이터를 업로드하거나 삭제하지 않습니다.",
       unconfigured: "클라우드 로그인을 준비 중입니다. 로컬 기능은 계속 사용할 수 있습니다.",
       loading: "로그인 상태 확인 중…",
       email: "이메일",

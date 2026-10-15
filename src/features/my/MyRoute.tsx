@@ -20,6 +20,7 @@ import { MyPostGrid } from "./MyPostGrid"
 import { PetRegistrationForm } from "./PetRegistrationForm"
 import { getFollowers, getFollowing, getMyProfile } from "./myData"
 import { usePetRegistrationForm } from "./usePetRegistrationForm"
+import { AccountDestinations } from "../social/AccountDestinations"
 
 interface ActivePost {
   readonly postId: PostId
@@ -27,6 +28,13 @@ interface ActivePost {
 }
 
 export function MyRoute() {
+  return (
+    <AccountDestinations>
+      <LocalMyRoute />
+    </AccountDestinations>
+  )
+}
+function LocalMyRoute() {
   const { t } = useTranslation()
   const [isPetsOpen, setIsPetsOpen] = useState(true)
   const [isPostsOpen, setIsPostsOpen] = useState(true)

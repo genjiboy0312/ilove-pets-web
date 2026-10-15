@@ -102,7 +102,11 @@ export function CreatePostForm({ form, localErrorMessage, profile }: CreatePostF
           value={form.draft.content}
         />
         {form.aiState === "done" ? (
-          <div className="create-form__suggestions" role="group">
+          <div
+            className="create-form__suggestions"
+            role="group"
+            aria-label={t(($) => $.create.aiButton)}
+          >
             {form.suggestions.map((suggestion) => (
               <button
                 className="create-form__suggestion"

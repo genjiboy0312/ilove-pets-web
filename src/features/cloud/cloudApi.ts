@@ -175,7 +175,11 @@ async function invoke(client: SupabaseClient, body: Record<string, unknown>): Pr
 export async function cleanupCloudMedia(owner: string): Promise<void> {
   await invoke(await accountClient(owner), { action: "cleanup" })
 }
-export async function uploadCloudImage(owner: string, file: File): Promise<string> {
+export async function uploadCloudImage(
+  owner: string,
+  file: File,
+  purpose: "post_photo" | "profile_avatar" = "post_photo",
+): Promise<string> {
   if (
     file.size < 1 ||
     file.size > 5242880 ||
@@ -193,7 +197,7 @@ export async function uploadCloudImage(owner: string, file: File): Promise<strin
     await rpc(client, "reserve_media", {
       p_bytes: upload.size,
       p_mime_type: upload.type,
-      p_purpose: "post_photo",
+      p_purpose: purpose,
     }),
   )
   const id = text(asset, "id")

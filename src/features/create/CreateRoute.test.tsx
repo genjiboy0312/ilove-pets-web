@@ -4,6 +4,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from "vitest"
 import { i18n, initializeI18n } from "../../i18n/i18n"
 import type * as LocalContentStoreModule from "../local/localContentStore"
 import { CreateRoute } from "./CreateRoute"
+import { MemoryRouter } from "react-router"
 
 vi.mock("../local/localContentStore", async (importOriginal) => {
   const actual = await importOriginal<typeof LocalContentStoreModule>()
@@ -33,20 +34,32 @@ describe("CreateRoute", () => {
   })
 
   it("names the route with a level-one Korean heading", () => {
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByRole("heading", { level: 1, name: "작성" })).toBeInTheDocument()
   })
 
   it("renders a photo picker with translated hint", () => {
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByText("사진 추가")).toBeInTheDocument()
     expect(screen.getByLabelText("사진")).toHaveAttribute("type", "file")
   })
 
   it("lists the current user's pets in the pet selector", () => {
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     const petSelect = screen.getByRole("combobox", { name: "펫" })
     const options = withinSelectOptions(petSelect)
@@ -55,7 +68,11 @@ describe("CreateRoute", () => {
   })
 
   it("renders content and tag fields with translated placeholders", () => {
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByRole("textbox", { name: "내용" })).toHaveAttribute(
       "placeholder",
@@ -68,7 +85,11 @@ describe("CreateRoute", () => {
   })
 
   it("renders the post submit button and upload hint", () => {
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByRole("button", { name: "게시" })).toBeInTheDocument()
     expect(
@@ -80,7 +101,11 @@ describe("CreateRoute", () => {
 
   it("suggests AI captions and fills the content on pick", () => {
     vi.useFakeTimers()
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     // When: the AI caption button is activated.
     fireEvent.click(screen.getByRole("button", { name: /AI 캡션 추천/ }))
@@ -94,7 +119,9 @@ describe("CreateRoute", () => {
     })
 
     // Then: three suggestion chips appear and picking one fills the content.
-    const suggestions = within(screen.getByRole("group")).getAllByRole("button")
+    const suggestions = within(screen.getByRole("group", { name: "AI 캡션 추천" })).getAllByRole(
+      "button",
+    )
     expect(suggestions).toHaveLength(3)
 
     const firstSuggestion = suggestions[0]
@@ -108,7 +135,11 @@ describe("CreateRoute", () => {
   })
 
   it("restores text, selected pet, and tags draft after remount", () => {
-    const { unmount } = render(<CreateRoute />)
+    const { unmount } = render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     fireEvent.change(screen.getByRole("combobox", { name: "펫" }), {
       target: { value: "pet_bori" },
@@ -121,7 +152,11 @@ describe("CreateRoute", () => {
     })
 
     unmount()
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     expect(screen.getByRole("combobox", { name: "펫" })).toHaveValue("pet_bori")
     expect(screen.getByRole("textbox", { name: "내용" })).toHaveValue("Bori local draft")
@@ -135,7 +170,11 @@ describe("CreateRoute", () => {
     })
 
     // When: the user edits the draft content.
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
     fireEvent.change(screen.getByRole("textbox", { name: "내용" }), {
       target: { value: "Bori local draft" },
     })
@@ -150,7 +189,11 @@ describe("CreateRoute", () => {
     vi.spyOn(Storage.prototype, "removeItem").mockImplementation(() => {
       throw new DOMException("Draft clear blocked", "SecurityError")
     })
-    render(<CreateRoute />)
+    render(
+      <MemoryRouter>
+        <CreateRoute />
+      </MemoryRouter>,
+    )
 
     // When: the user completes and submits the form.
     fireEvent.change(screen.getByRole("combobox", { name: "펫" }), {

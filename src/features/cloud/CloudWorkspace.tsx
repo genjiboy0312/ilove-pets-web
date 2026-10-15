@@ -51,7 +51,13 @@ function DeleteControl({
     </span>
   )
 }
-export function CloudWorkspace({ owner }: { readonly owner: string }) {
+export function CloudWorkspace({
+  owner,
+  embedded = false,
+}: {
+  readonly owner: string
+  readonly embedded?: boolean
+}) {
   const { t } = useTranslation()
   const cloud = useCloudWorkspace(owner)
   const { snapshot, busy, run } = cloud
@@ -70,11 +76,17 @@ export function CloudWorkspace({ owner }: { readonly owner: string }) {
     snapshot.pets.find((pet) => pet.id === id)?.name ?? t(($) => $.cloud.pet)
   return (
     <section className="cloud-screen" aria-labelledby="cloud-title">
-      <h1 id="cloud-title">{t(($) => $.cloud.title)}</h1>
+      {embedded ? (
+        <h2 id="cloud-title">{t(($) => $.cloud.title)}</h2>
+      ) : (
+        <h1 id="cloud-title">{t(($) => $.cloud.title)}</h1>
+      )}
       <p>{t(($) => $.cloud.notice)}</p>
-      <Link className="local-button" to="/myaccount">
-        {t(($) => $.cloud.back)}
-      </Link>
+      {!embedded ? (
+        <Link className="local-button" to="/myaccount">
+          {t(($) => $.cloud.back)}
+        </Link>
+      ) : null}
       <button
         className="local-button"
         type="button"

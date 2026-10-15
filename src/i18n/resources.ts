@@ -3,6 +3,7 @@ import { authMessages } from "./authMessages"
 import { cloudMessages } from "./cloudMessages"
 import { storageMessages } from "./storageMessages"
 import { socialMessages } from "./socialMessages"
+import { profileMessages } from "./profileMessages"
 
 export const resources = {
   en: {
@@ -11,6 +12,7 @@ export const resources = {
       ...authMessages.en,
       ...cloudMessages.en,
       ...socialMessages.en,
+      ...profileMessages.en,
       ...storageMessages.en,
       backup: {
         title: "Backup and restore",
@@ -326,6 +328,7 @@ export const resources = {
       ...authMessages.ja,
       ...cloudMessages.ja,
       ...socialMessages.ja,
+      ...profileMessages.ja,
       ...storageMessages.ja,
       backup: {
         title: "バックアップと復元",
@@ -639,6 +642,7 @@ export const resources = {
       ...authMessages.ko,
       ...cloudMessages.ko,
       ...socialMessages.ko,
+      ...profileMessages.ko,
       ...storageMessages.ko,
       backup: {
         title: "백업과 복원",

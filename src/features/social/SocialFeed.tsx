@@ -6,6 +6,7 @@ import { useAuth } from "../auth/AuthContext"
 import { socialComments, socialPeople, socialPosts, socialWrite } from "./socialApi"
 import type { SocialComment, SocialPerson, SocialPost } from "./socialApi"
 import { SocialImage } from "./SocialImage"
+import { readFeedChoice, saveFeedChoice } from "./feedPreferences"
 
 export function FollowButton({
   owner,
@@ -69,12 +70,24 @@ export function SocialCard({
   return (
     <article className="social-card">
       <header className="social-card__header">
-        <span className="social-avatar" aria-hidden="true">
-          {post.pet.slice(0, 1)}
-        </span>
+        <Link className="social-avatar" to={`/users/${post.username}`} aria-label={post.name}>
+          {post.avatar ? (
+            <SocialImage
+              key={post.avatar}
+              owner={owner}
+              asset={post.avatar}
+              alt=""
+              placeholder={post.name.slice(0, 1)}
+            />
+          ) : (
+            post.name.slice(0, 1)
+          )}
+        </Link>
         <div>
           <strong>{post.pet}</strong>
-          <small>@{post.username}</small>
+          <Link to={`/users/${post.username}`}>
+            <small>@{post.username}</small>
+          </Link>
         </div>
         {owner ? (
           <FollowButton
@@ -203,7 +216,9 @@ function Comments({
       <ul>
         {rows.map((row) => (
           <li key={row.id}>
-            <strong>@{row.username}</strong>
+            <Link to={`/users/${row.username}`}>
+              <strong>@{row.username}</strong>
+            </Link>
             <p>{row.content}</p>
             {owner && (owner === row.owner || owner === post.owner) ? (
               <button
@@ -302,7 +317,15 @@ function Comments({
     </section>
   )
 }
-export function SocialFeed({ owner }: { readonly owner: string | null }) {
+export function SocialFeed({
+  owner,
+  author,
+  showPeople = true,
+}: {
+  readonly owner: string | null
+  readonly author?: string
+  readonly showPeople?: boolean
+}) {
   const { t } = useTranslation()
   const [posts, setPosts] = useState<SocialPost[]>([])
   const [people, setPeople] = useState<SocialPerson[]>([])
@@ -313,19 +336,29 @@ export function SocialFeed({ owner }: { readonly owner: string | null }) {
   const [more, setMore] = useState(false)
   const [busy, setBusy] = useState(false)
   const [revision, setRevision] = useState(0)
+  const [filter, setFilter] = useState<"all" | "following">(() =>
+    owner && !author && readFeedChoice(owner, "filter", "all") === "following"
+      ? "following"
+      : "all",
+  )
+  const [loadedFilter, setLoadedFilter] = useState(filter)
   const refresh = () => {
     setRevision((v) => v + 1)
   }
   useEffect(() => {
     let active = true
     setLoading(true)
-    void Promise.all([socialPosts(owner), socialPeople(owner, query)])
+    void Promise.all([
+      socialPosts(owner, { p_author: author ?? null, p_following: filter === "following" }),
+      showPeople ? socialPeople(owner, query) : Promise.resolve([]),
+    ])
       .then(([items, users]) => {
         if (active) {
           setPosts(items)
           setPeople(users)
           setMore(items.length === 20)
           setError(false)
+          setLoadedFilter(filter)
         }
       })
       .catch(() => {
@@ -337,7 +370,18 @@ export function SocialFeed({ owner }: { readonly owner: string | null }) {
     return () => {
       active = false
     }
-  }, [owner, query, revision])
+  }, [owner, query, revision, filter, author, showPeople])
+  useEffect(() => {
+    const changed = () => {
+      setRevision((v) => v + 1)
+    }
+    window.addEventListener("social-follow-changed", changed)
+    window.addEventListener("social-profile-changed", changed)
+    return () => {
+      window.removeEventListener("social-follow-changed", changed)
+      window.removeEventListener("social-profile-changed", changed)
+    }
+  }, [])
   return (
     <section className="social-feed">
       <div className="social-toolbar">
@@ -347,13 +391,41 @@ export function SocialFeed({ owner }: { readonly owner: string | null }) {
         </button>
         <Link to="/cloud">{t(($) => $.social.cloud)}</Link>
       </div>
+      {owner && !author ? (
+        <div className="social-tabs" role="group" aria-label={t(($) => $.profile.followingFeed)}>
+          <button
+            type="button"
+            disabled={busy}
+            aria-pressed={filter === "all"}
+            onClick={() => {
+              setFilter("all")
+              saveFeedChoice(owner, "filter", "all")
+            }}
+          >
+            {t(($) => $.profile.all)}
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            aria-pressed={filter === "following"}
+            onClick={() => {
+              setFilter("following")
+              saveFeedChoice(owner, "filter", "following")
+            }}
+          >
+            {t(($) => $.profile.followingFeed)}
+          </button>
+        </div>
+      ) : null}
       {loading ? <p role="status">{t(($) => $.social.loading)}</p> : null}
       {error ? <p role="alert">{t(($) => $.social.error)}</p> : null}
-      {!loading && !error && posts.length === 0 ? <p>{t(($) => $.social.empty)}</p> : null}
-      {posts.map((post) => (
+      {!loading && !error && posts.length === 0 ? (
+        <p>{t(filter === "following" ? ($) => $.profile.emptyFollowing : ($) => $.social.empty)}</p>
+      ) : null}
+      {(filter === loadedFilter ? posts : []).map((post) => (
         <SocialCard key={post.id} owner={owner} post={post} refresh={refresh} />
       ))}
-      {more ? (
+      {more && filter === loadedFilter ? (
         <button
           className="local-button"
           type="button"
@@ -362,7 +434,12 @@ export function SocialFeed({ owner }: { readonly owner: string | null }) {
             const last = posts.at(-1)
             if (!last) return
             setBusy(true)
-            void socialPosts(owner, { p_before: last.created, p_before_id: last.id })
+            void socialPosts(owner, {
+              p_before: last.created,
+              p_before_id: last.id,
+              p_author: author ?? null,
+              p_following: filter === "following",
+            })
               .then((data) => {
                 setPosts((current) => [...current, ...data])
                 setMore(data.length === 20)
@@ -378,7 +455,7 @@ export function SocialFeed({ owner }: { readonly owner: string | null }) {
           {t(($) => $.social.more)}
         </button>
       ) : null}
-      {owner ? (
+      {owner && showPeople ? (
         <section className="social-people">
           <h2>{t(($) => $.social.people)}</h2>
           <form
@@ -404,10 +481,10 @@ export function SocialFeed({ owner }: { readonly owner: string | null }) {
           </form>
           {people.map((person) => (
             <div className="social-person" key={person.id}>
-              <span>
+              <Link to={`/users/${person.username}`}>
                 {person.name}
                 <small>@{person.username}</small>
-              </span>
+              </Link>
               <FollowButton
                 owner={owner}
                 target={person.id}

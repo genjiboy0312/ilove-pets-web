@@ -17,6 +17,7 @@ export function SocialImage({
   const { t } = useTranslation()
   const [image, setImage] = useState<string | null>(null)
   const [failed, setFailed] = useState(false)
+  const [attempt, setAttempt] = useState(0)
   useEffect(() => {
     const controller = new AbortController()
     let objectUrl: string | undefined
@@ -34,10 +35,11 @@ export function SocialImage({
       controller.abort()
       if (objectUrl) URL.revokeObjectURL(objectUrl)
     }
-  }, [owner, asset])
+  }, [owner, asset, attempt])
   return image ? (
     <img
       className="social-image"
+      draggable={false}
       src={image}
       alt={alt}
       onLoad={onReady}
@@ -50,6 +52,22 @@ export function SocialImage({
   ) : placeholder ? (
     <span>{placeholder}</span>
   ) : (
-    <p role="status">{t(failed ? ($) => $.social.storyEmpty : ($) => $.social.loading)}</p>
+    <div>
+      <p role="status">{t(failed ? ($) => $.social.storyEmpty : ($) => $.social.loading)}</p>
+      {failed ? (
+        <button
+          className="local-button"
+          type="button"
+          onClick={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+            setFailed(false)
+            setAttempt((v) => v + 1)
+          }}
+        >
+          {t(($) => $.profile.retryImage)}
+        </button>
+      ) : null}
+    </div>
   )
 }
