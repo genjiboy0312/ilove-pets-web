@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Bell } from "lucide-react"
 import { Link, useNavigate } from "react-router"
 import { useTranslation } from "react-i18next"
 import { useAuth } from "../auth/AuthContext"
@@ -12,11 +13,14 @@ export function Notifications({ onOpen = () => undefined }: { readonly onOpen?: 
   return owner ? (
     <NotificationList key={owner} owner={owner} onOpen={onOpen} />
   ) : (
-    <p>
-      <Link to="/auth" onClick={onOpen}>
+    <div className="notification-empty">
+      <span className="notification-empty__icon" aria-hidden="true">
+        <Bell size={27} strokeWidth={1.6} />
+      </span>
+      <Link className="local-button" to="/auth" onClick={onOpen}>
         {t(($) => $.social.signIn)}
       </Link>
-    </p>
+    </div>
   )
 }
 function NotificationList({
@@ -95,7 +99,14 @@ function NotificationList({
       </div>
       {error ? <p role="alert">{t(($) => $.notifications.error)}</p> : null}
       {busy ? <p role="status">{t(($) => $.social.loading)}</p> : null}
-      {rows.length === 0 && !error && !busy ? <p>{t(($) => $.notifications.empty)}</p> : null}
+      {rows.length === 0 && !error && !busy ? (
+        <div className="notification-empty">
+          <span className="notification-empty__icon" aria-hidden="true">
+            <Bell size={27} strokeWidth={1.6} />
+          </span>
+          <p>{t(($) => $.notifications.empty)}</p>
+        </div>
+      ) : null}
       <ul className="notification-list">
         {rows.map((row) => (
           <li key={row.id} className={row.read ? "" : "notification-unread"}>

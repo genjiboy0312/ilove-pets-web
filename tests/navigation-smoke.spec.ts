@@ -199,6 +199,11 @@ test("renders Japanese bottom navigation labels", async ({ page }) => {
   await page.goto("/community")
   const communityLink = page.getByRole("link", { name: "コミュニティ" })
   const communityBox = await communityLink.boundingBox()
+  // The card list can exceed the viewport. At the end of the scroll, its last
+  // content must remain above the fixed navigation instead of being covered.
+  await page.evaluate(() => {
+    window.scrollTo(0, document.documentElement.scrollHeight)
+  })
   const metrics = await getNavigationMetrics(page)
 
   // Then: Japanese navigation labels are visible, active, touch-safe, and unclipped at 375px.

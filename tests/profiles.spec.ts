@@ -263,7 +263,14 @@ test("cloud My edits profile/photo, links to public profile and creates a privat
   await expect(page.getByRole("heading", { name: "새로운 가족", exact: true })).toBeVisible()
   await page.getByRole("link", { name: "내 공개 프로필 보기", exact: true }).click()
   await expect(page).toHaveURL(/\/users\/new_family$/)
-  await expect(page.getByText("공개 소개", { exact: true })).toBeVisible()
+  await expect(
+    page.getByRole("heading", { level: 1, name: "계정 프로필", exact: true }),
+  ).toBeVisible()
+  await expect(
+    page
+      .getByRole("region", { name: "계정 프로필", exact: true })
+      .getByText("공개 소개", { exact: true }),
+  ).toBeVisible()
   await expect(page.locator(".account-profile__avatar img")).toBeVisible()
   await page.goto("/create?destination=cloud")
   await expect(

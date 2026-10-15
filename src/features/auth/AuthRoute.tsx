@@ -1,4 +1,5 @@
 import { useRef, useState } from "react"
+import { PawPrint } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router"
 import { submitEmailAuth, startGoogleSignIn } from "../../services/authActions"
@@ -42,6 +43,12 @@ export function AuthRoute({ recovery = false }: { readonly recovery?: boolean })
     auth.status === "ready" && (!recovery || (auth.user !== null && auth.recovering))
   return (
     <section className="auth-screen" aria-labelledby="auth-title">
+      <div className="auth-brand" aria-hidden="true">
+        <span>
+          <PawPrint size={27} strokeWidth={1.7} />
+        </span>
+        <p>iLove Pets</p>
+      </div>
       <h1 id="auth-title">{t(($) => $.auth.title)}</h1>
       <p>{t(($) => $.auth.localNotice)}</p>
       {auth.status === "unconfigured" ? <p role="status">{t(($) => $.auth.unconfigured)}</p> : null}

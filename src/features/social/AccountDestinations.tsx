@@ -199,7 +199,7 @@ function CreateSession({
   const [mode, setMode] = useState(initial)
   const { t } = useTranslation()
   return (
-    <>
+    <div className="creation-page">
       <Destinations mode={mode} change={setMode} />
       {mode === "local" ? (
         children
@@ -214,7 +214,7 @@ function CreateSession({
           </Link>
         </section>
       )}
-    </>
+    </div>
   )
 }
 export function CreationDestinations({

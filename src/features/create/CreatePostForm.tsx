@@ -31,7 +31,7 @@ export function CreatePostForm({ form, localErrorMessage, profile }: CreatePostF
         >
           {form.previewUrl === null ? (
             <span className="create-form__image-placeholder">
-              <ImagePlus aria-hidden="true" size={22} strokeWidth={2.1} />
+              <ImagePlus aria-hidden="true" size={32} strokeWidth={1.5} />
               {t(($) => $.create.imageHint)}
             </span>
           ) : (

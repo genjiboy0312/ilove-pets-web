@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, MapPin, MessagesSquare } from "lucide-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -56,6 +56,7 @@ export function CommunityRoute() {
           }}
           type="button"
         >
+          <MessagesSquare size={17} aria-hidden="true" />
           {t(($) => $.community.boardTab)}
         </button>
         <button
@@ -66,6 +67,7 @@ export function CommunityRoute() {
           }}
           type="button"
         >
+          <MapPin size={17} aria-hidden="true" />
           {t(($) => $.community.hospitalMapTab)}
         </button>
       </div>

@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Search } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -95,6 +95,7 @@ export function ExploreRoute() {
           {t(($) => $.explore.searchLabel)}
         </label>
         <div className="explore-search__row">
+          <Search className="explore-search__icon" size={18} aria-hidden="true" />
           <input
             className="explore-search__input"
             id="explore-search-input"
