@@ -45,3 +45,5 @@ Thumbs.db
 .omo/migration-backup-*/
 .omo/*.bak.*
 .sisyphus/tasks/
+# Operational exports can contain private records, password hashes and photos.
+.backups/
