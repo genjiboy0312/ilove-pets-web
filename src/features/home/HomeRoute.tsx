@@ -8,6 +8,7 @@ import { useLocalContent } from "../local/useLocalContent"
 import { CategoryTabs } from "./CategoryTabs"
 import { getHomeFeedPosts } from "./homeFeedData"
 import { PostCard } from "./PostCard"
+import { SocialHome } from "../social/SocialHome"
 
 export function HomeRoute() {
   const { t } = useTranslation()
@@ -29,20 +30,22 @@ export function HomeRoute() {
         </div>
         <ActivityButton />
       </header>
-      <CategoryTabs selectedFilter={selectedFilter} onSelectFilter={setSelectedFilter} />
-      {localContent.errorMessage === null ? null : (
-        <p className="home-feed__empty" role="alert">
-          {t(($) => $.manage.storageProblem)}
-        </p>
-      )}
-
-      <div className="home-feed" role="feed" aria-label={t(($) => $.home.feedLabel)}>
-        {posts.length === 0 ? (
-          <p className="home-feed__empty">{t(($) => $.home.empty)}</p>
-        ) : (
-          posts.map((post) => <PostCard key={post.postId} post={post} />)
+      <SocialHome>
+        <CategoryTabs selectedFilter={selectedFilter} onSelectFilter={setSelectedFilter} />
+        {localContent.errorMessage === null ? null : (
+          <p className="home-feed__empty" role="alert">
+            {t(($) => $.manage.storageProblem)}
+          </p>
         )}
-      </div>
+
+        <div className="home-feed" role="feed" aria-label={t(($) => $.home.feedLabel)}>
+          {posts.length === 0 ? (
+            <p className="home-feed__empty">{t(($) => $.home.empty)}</p>
+          ) : (
+            posts.map((post) => <PostCard key={post.postId} post={post} />)
+          )}
+        </div>
+      </SocialHome>
     </section>
   )
 }

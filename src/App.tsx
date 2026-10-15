@@ -15,6 +15,7 @@ import { AuthProvider } from "./features/auth/AuthProvider"
 import { AuthRoute } from "./features/auth/AuthRoute"
 import { AuthCallback } from "./features/auth/AuthCallback"
 import { CloudRoute } from "./features/cloud/CloudRoute"
+import { SocialPostRoute } from "./features/social/SocialFeed"
 
 export function App() {
   const { t } = useTranslation()
@@ -27,6 +28,7 @@ export function App() {
       >
         <Routes>
           <Route path="cloud" element={<CloudRoute />} />
+          <Route path="posts/:postId" element={<SocialPostRoute />} />
           <Route path="auth" element={<AuthRoute />} />
           <Route path="auth/callback" element={<AuthCallback />} />
           <Route path="auth/reset-password" element={<AuthCallback recovery />} />

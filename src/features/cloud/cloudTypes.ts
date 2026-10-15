@@ -16,6 +16,7 @@ export interface CloudGrowth {
   readonly version: number
 }
 export interface CloudPost {
+  readonly visibility?: "private" | "public"
   readonly id: string
   readonly petId: string
   readonly assetId: string
@@ -29,6 +30,7 @@ export interface CloudAsset {
   readonly bytes: number
 }
 export interface CloudSnapshot {
+  readonly storyAssets?: readonly string[]
   readonly mediaReady: boolean
   readonly pets: readonly CloudPet[]
   readonly growth: readonly CloudGrowth[]

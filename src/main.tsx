@@ -17,6 +17,7 @@ import "./styles/activity.css"
 import "./styles/my.css"
 import "./styles/settings.css"
 import "./styles/settings-sheet.css"
+import "./styles/social.css"
 
 export class RootElementMissingError extends Error {
   constructor() {

@@ -12,7 +12,7 @@ export class CloudError extends Error {
     super(kind)
   }
 }
-async function accountClient(owner: string): Promise<SupabaseClient> {
+export async function accountClient(owner: string): Promise<SupabaseClient> {
   const client = getSupabaseClient()
   if (!client) throw new CloudError("setup")
   const { data, error } = await client.auth.getSession()
@@ -110,7 +110,13 @@ export async function loadCloud(owner: string): Promise<CloudSnapshot> {
     ["pets", "growth_records", "posts", "media_assets"].map((table) => rows(client, table, owner)),
   )
   if (!pets || !growth || !posts || !assets) throw new CloudError("request")
+  const ownStories = await client.rpc("own_story_assets")
+  const storyAssets: unknown = ownStories.data
   return {
+    storyAssets:
+      !ownStories.error && Array.isArray(storyAssets)
+        ? storyAssets.filter((value: unknown): value is string => typeof value === "string")
+        : [],
     mediaReady,
     pets: pets.map((row): CloudPet => {
       const category = PET_CATEGORY_IDS.find((value) => value === row["category"])
@@ -132,6 +138,7 @@ export async function loadCloud(owner: string): Promise<CloudSnapshot> {
       version: number(row, "version"),
     })),
     posts: posts.map((row): CloudPost => ({
+      visibility: row["visibility"] === "public" ? "public" : "private",
       id: text(row, "id"),
       petId: text(row, "pet_id"),
       assetId: text(row, "asset_id"),

@@ -7,6 +7,7 @@ import type { CloudRun } from "./CloudForms"
 import { CloudImage } from "./CloudImage"
 import type { CloudGrowth, CloudPet, CloudPost } from "./cloudTypes"
 import { useCloudWorkspace } from "./useCloudWorkspace"
+import { PublishControl } from "../social/PublishControl"
 
 function DeleteControl({
   busy,
@@ -60,7 +61,10 @@ export function CloudWorkspace({ owner }: { readonly owner: string }) {
   const [postLimit, setPostLimit] = useState(20)
   const used = new Set(snapshot.posts.map((post) => post.assetId))
   const unused = snapshot.assets.filter(
-    (asset) => !used.has(asset.id) && asset.status !== "deleted",
+    (asset) =>
+      !used.has(asset.id) &&
+      !snapshot.storyAssets?.includes(asset.id) &&
+      asset.status !== "deleted",
   )
   const petName = (id: string) =>
     snapshot.pets.find((pet) => pet.id === id)?.name ?? t(($) => $.cloud.pet)
@@ -174,6 +178,15 @@ export function CloudWorkspace({ owner }: { readonly owner: string }) {
                             />
                           ) : null}
                           <p className="cloud-post__text">{post.content}</p>
+                          <PublishControl
+                            key={post.version}
+                            owner={owner}
+                            id={post.id}
+                            version={post.version}
+                            visibility={post.visibility ?? "private"}
+                            run={run}
+                            busy={busy}
+                          />
                           <button
                             type="button"
                             className="local-button"
