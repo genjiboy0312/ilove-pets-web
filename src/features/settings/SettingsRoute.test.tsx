@@ -122,16 +122,16 @@ describe("SettingsRoute", () => {
     expect(screen.getByRole("button", { name: "테마다크" })).toBeInTheDocument()
   })
 
-  it("renders logout and delete account buttons with the UI-only hint", () => {
+  it("hides account deletion and logout when signed out", () => {
     render(
       <MemoryRouter>
         <SettingsRoute />
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole("button", { name: "로그아웃" })).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: "계정 삭제" })).toBeInTheDocument()
-    expect(screen.getByText("지금은 UI만 제공됩니다.")).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "로그아웃" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "계정 삭제" })).not.toBeInTheDocument()
+    expect(screen.queryByText("지금은 UI만 제공됩니다.")).not.toBeInTheDocument()
   })
 
   it("toggles notification preferences and persists them to storage", () => {
@@ -175,7 +175,7 @@ describe("SettingsRoute", () => {
     const dialog = screen.getByRole("dialog", { name: "개인정보 처리방침" })
 
     expect(dialog).toBeInTheDocument()
-    expect(within(dialog).getByText(/개인정보 처리방침은/)).toBeInTheDocument()
+    expect(within(dialog).getByText(/Supabase에 저장/)).toHaveTextContent("기기 기록은 유지")
   })
 
   it("opens the terms and about sheets from the service section", () => {

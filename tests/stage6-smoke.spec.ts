@@ -160,9 +160,9 @@ test("renders Korean Settings screen acceptance at 375px", async ({ page }) => {
 
   await expect(settingsRegion.getByRole("heading", { name: "알림" })).toBeVisible()
   await expect(settingsRegion.getByRole("switch", { name: "좋아요 켜짐" })).toBeVisible()
-  await expect(settingsRegion.getByRole("button", { name: "로그아웃" })).toBeVisible()
-  await expect(settingsRegion.getByRole("button", { name: "계정 삭제" })).toBeVisible()
-  await expect(settingsRegion.getByText("지금은 UI만 제공됩니다.")).toBeVisible()
+  await expect(settingsRegion.getByRole("button", { name: "로그아웃" })).toHaveCount(0)
+  await expect(settingsRegion.getByRole("button", { name: "계정 삭제" })).toHaveCount(0)
+  await expect(settingsRegion.getByText("지금은 UI만 제공됩니다.")).toHaveCount(0)
 
   await page.screenshot({ path: "test-results/stage6-settings-ko-375.png", fullPage: false })
 })

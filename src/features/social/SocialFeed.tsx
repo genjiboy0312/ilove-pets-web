@@ -6,6 +6,7 @@ import { useAuth } from "../auth/AuthContext"
 import { socialComments, socialPeople, socialPosts, socialWrite } from "./socialApi"
 import type { SocialComment, SocialPerson, SocialPost } from "./socialApi"
 import { SocialImage } from "./SocialImage"
+import { SafetyActions } from "../operations/SafetyActions"
 import { readFeedChoice, saveFeedChoice } from "./feedPreferences"
 
 export function FollowButton({
@@ -168,6 +169,13 @@ export function SocialCard({
           }}
         />
       ) : null}
+      <SafetyActions
+        owner={owner}
+        targetOwner={post.owner}
+        kind="post"
+        target={post.id}
+        changed={refresh}
+      />
       {detail ? <Comments owner={owner} post={post} changed={refresh} /> : null}
     </article>
   )
@@ -220,6 +228,13 @@ function Comments({
               <strong>@{row.username}</strong>
             </Link>
             <p>{row.content}</p>
+            <SafetyActions
+              owner={owner}
+              targetOwner={row.owner}
+              kind="comment"
+              target={row.id}
+              changed={reload}
+            />
             {owner && (owner === row.owner || owner === post.owner) ? (
               <button
                 className="local-button"

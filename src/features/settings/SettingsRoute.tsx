@@ -1,3 +1,4 @@
+import { AccountSafety } from "../operations/AccountSafety"
 import { ArrowLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
 import { AuthAccountCard } from "../auth/AuthAccountCard"
@@ -183,15 +184,7 @@ export function SettingsRoute() {
         </ul>
       </section>
 
-      <div className="settings-actions">
-        <button className="settings-actions__button" type="button">
-          {t(($) => $.settings.logout)}
-        </button>
-        <button className="settings-actions__button settings-actions__button--danger" type="button">
-          {t(($) => $.settings.deleteAccount)}
-        </button>
-        <p className="settings-actions__hint">{t(($) => $.settings.uiOnly)}</p>
-      </div>
+      <AccountSafety />
 
       {openSheet === null ? null : openSheet === "theme" ? (
         <SettingsSheet onClose={closeSheet} title={t(($) => $.settings.theme)}>

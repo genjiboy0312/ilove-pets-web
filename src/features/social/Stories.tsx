@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { SafetyActions } from "../operations/SafetyActions"
 import { Link } from "react-router"
 import { Plus, X, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react"
 import { useDialogFocus } from "../../components/useDialogFocus"
@@ -253,6 +254,17 @@ function StoryViewer({
           />
         </div>
         <p className="story-caption">{story.caption}</p>
+        <SafetyActions
+          key={story.id}
+          owner={owner}
+          targetOwner={story.owner}
+          kind="story"
+          target={story.id}
+          changed={close}
+          interact={() => {
+            setPaused(true)
+          }}
+        />
         <div className="story-controls">
           <button
             type="button"

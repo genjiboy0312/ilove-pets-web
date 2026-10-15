@@ -495,3 +495,71 @@
   color: var(--color-text-secondary);
   text-align: center;
 }
+
+.safety-actions,
+.account-safety details {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+.safety-actions summary,
+.account-safety summary {
+  cursor: pointer;
+  min-height: 32px;
+}
+.safety-actions form,
+.account-deletion-form {
+  display: grid;
+  gap: 14px;
+  margin-block: 12px;
+}
+.safety-actions label,
+.account-deletion-form label {
+  display: grid;
+  gap: 8px;
+}
+.safety-actions select,
+.safety-actions textarea,
+.account-deletion-form input:not([type="checkbox"]) {
+  width: 100%;
+  max-width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 10px;
+  font: inherit;
+  font-size: 16px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+.account-safety ul {
+  padding: 0;
+  list-style: none;
+}
+.account-safety li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding-block: 8px;
+}
+.account-safety__delete {
+  margin-block: 12px;
+  color: var(--color-error);
+  border-color: currentColor;
+}
+.account-deletion-form label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: start;
+}
+.account-deletion-form input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+.story-viewer .safety-actions {
+  max-height: 35vh;
+  overflow-y: auto;
+}

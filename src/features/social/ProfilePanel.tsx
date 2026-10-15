@@ -6,6 +6,7 @@ import { useAuth } from "../auth/AuthContext"
 import { cleanupCloudMedia, uploadCloudImage } from "../cloud/cloudApi"
 import { FollowButton, SocialFeed } from "./SocialFeed"
 import { SocialImage } from "./SocialImage"
+import { SafetyActions } from "../operations/SafetyActions"
 import { ProfileIssue, saveSocialProfile, socialProfile, socialWrite } from "./socialApi"
 import type { SocialProfile } from "./socialApi"
 
@@ -49,6 +50,13 @@ export function ProfileHeader({
         </div>
       </div>
       <p className="social-content">{profile.bio}</p>
+      <SafetyActions
+        owner={owner}
+        targetOwner={profile.id}
+        kind="profile"
+        target={profile.id}
+        changed={refresh}
+      />
       <ul className="account-profile__stats">
         <li aria-label={t(($) => $.profile.posts, { count: profile.posts })}>
           <strong>{profile.posts}</strong>
