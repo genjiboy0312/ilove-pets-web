@@ -1,0 +1,24 @@
+{
+  "checked_on": "2026-10-16",
+  "decoder": "Playwright bundled FFmpeg decoded each VP8/WebM at 8 seconds into the companion 390x844 PNG poster.",
+  "videos": [
+    {
+      "source": "01-device-journal.webm",
+      "width": 390,
+      "height": 844,
+      "duration_seconds": 25.96
+    },
+    {
+      "source": "02-public-social.webm",
+      "width": 390,
+      "height": 844,
+      "duration_seconds": 18.48
+    },
+    {
+      "source": "03-safety-recovery.webm",
+      "width": 390,
+      "height": 844,
+      "duration_seconds": 19.64
+    }
+  ]
+}

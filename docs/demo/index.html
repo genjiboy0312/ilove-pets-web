@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>iLove Pets · 3가지 시연</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f4f7f4;
+        color: #20392e;
+        font:
+          16px/1.7 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 48px 24px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(28px, 5vw, 44px);
+        letter-spacing: -0.04em;
+      }
+      .intro {
+        max-width: 760px;
+        color: #52665a;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+        gap: 24px;
+        margin-top: 32px;
+      }
+      article {
+        padding: 18px;
+        background: white;
+        border: 1px solid #dce6dc;
+        border-radius: 24px;
+      }
+      h2 {
+        margin: 4px 0;
+        font-size: 21px;
+      }
+      article p {
+        color: #52665a;
+        font-size: 14px;
+      }
+      video {
+        width: 100%;
+        aspect-ratio: 390/844;
+        background: #e8eee8;
+        border-radius: 16px;
+      }
+      a {
+        color: #216440;
+      }
+      .tag {
+        font-size: 12px;
+        color: #216440;
+        font-weight: 700;
+      }
+      footer {
+        margin-top: 32px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="tag">iLove Pets · 포트폴리오</p>
+      <h1>기록에서 소통까지, 세 가지 흐름</h1>
+      <p class="intro">
+        로컬 production 빌드를 모바일 크기로 촬영했습니다. 첫 영상은 실제 기기 저장, 나머지는 테스트
+        계정과 모의 API입니다. S5 안전 기능은 공개 서비스 적용 전입니다. 음성 없이 자막으로
+        안내합니다.
+      </p>
+      <div class="grid">
+        <article>
+          <span class="tag">01 · 실제 브라우저 저장</span>
+          <h2>우리 가족의 첫 기록</h2>
+          <p>펫을 등록하고 사진 일기를 남깁니다. 새로고침 후에도 기록을 확인합니다.</p>
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            poster="01-device-journal.png"
+            aria-label="기기 기록 시연"
+          >
+            <source src="01-device-journal.webm" type="video/webm" />
+            <a href="01-device-journal.webm">영상 내려받기</a>
+          </video>
+        </article>
+        <article>
+          <span class="tag">02 · 모의 API 화면 시연</span>
+          <h2>공개한 순간으로 소통</h2>
+          <p>좋아요와 댓글을 남기고 공개 프로필을 확인합니다. 서버에 실제 글을 쓰지 않습니다.</p>
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            poster="02-public-social.png"
+            aria-label="공개 소통 시연"
+          >
+            <source src="02-public-social.webm" type="video/webm" />
+            <a href="02-public-social.webm">영상 내려받기</a>
+          </video>
+        </article>
+        <article>
+          <span class="tag">03 · S5 작업본 · 모의 API</span>
+          <h2>실패를 알리고 다시 확인</h2>
+          <p>요청 제한을 안내하고 신고를 재시도합니다. 차단 전 영향을 설명하고 확인합니다.</p>
+          <video
+            controls
+            playsinline
+            preload="metadata"
+            poster="03-safety-recovery.png"
+            aria-label="신고와 차단 복구 시연"
+          >
+            <source src="03-safety-recovery.webm" type="video/webm" />
+            <a href="03-safety-recovery.webm">영상 내려받기</a>
+          </video>
+        </article>
+      </div>
+      <footer>
+        <a href="README.md">촬영 조건·재현 방법</a> ·
+        <a href="../portfolio-guide.md">전체 시나리오·실물 모바일 체크리스트</a>
+        <p>
+          2026-10-15 · Chromium 390 × 844px 에뮬레이션 · 실물 모바일/실제 서버 검증과 구분합니다.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

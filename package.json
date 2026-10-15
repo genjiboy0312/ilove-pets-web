@@ -20,7 +20,8 @@
     "publish:edge-runtime": "node scripts/prepare-edge-wasm.mjs && node scripts/publish-edge-runtime.mjs",
     "react-doctor": "npx --yes react-doctor@latest --json",
     "playwright:install": "cross-env PLAYWRIGHT_BROWSERS_PATH=0 playwright install chromium",
-    "smoke:preview": "npm run build && cross-env PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
+    "smoke:preview": "npm run build && cross-env PLAYWRIGHT_BROWSERS_PATH=0 playwright test",
+    "demo:record": "cross-env PLAYWRIGHT_BROWSERS_PATH=0 playwright test --config playwright.portfolio.config.ts && node scripts/finalize-demo.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.109.0",
