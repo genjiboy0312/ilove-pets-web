@@ -1,6 +1,6 @@
 # iLove Pets 진행 현황 보드
 
-마지막 업데이트: 2026-10-14
+마지막 업데이트: 2026-10-15
 출처 계획: [MyAIAgent/ilove-pets-planning.md](./ilove-pets-planning.md)
 후속 계획: [MyAIAgent/ilove-pets-next-plan.md](./ilove-pets-next-plan.md)
 
@@ -15,7 +15,57 @@
 
 ## 현재 마일스톤
 
-현재 마일스톤은 frontend-only mobile web MVP다. React, TypeScript, Vite 기반의 모바일 웹 앱을 현재 루트 안에 직접 구성한다. 백엔드, 실제 API, 데이터베이스 연결은 이번 마일스톤에 넣지 않는다.
+frontend-only mobile web MVP(P0~P3)는 완료했다. S1의 실제 Google 로그인과 세션 유지·재로그인을 사용자 확인으로 검증했고, S2 비공개 클라우드 기록은 실제 DB/Storage HTTP 검사까지 통과했다. 이메일/복구·SMTP, 공개 프런트엔드 반영과 다른 기기 확인은 남아 있다.
+
+## 서버 마일스톤 (2026-10-14)
+
+설계: [ilove-pets-server-design.md](./ilove-pets-server-design.md)
+
+- [x] S0: 현재 도메인·로컬 저장·백업과 대조한 서버 설계 초안 작성. Cloudflare Pages + Supabase 우선안, DB/RLS/사진/API/이전/운영 계약 정의.
+- [x] 첫 로그인 방식: 사용자 선택으로 Google OAuth와 이메일·비밀번호를 모두 지원한다. 이메일 확인·비밀번호 복구·운영용 SMTP를 S1에 포함한다.
+- [ ] S1: Google 로그인·세션 및 실제 A/B/익명 DB/Storage 통합 검증 완료. 이메일/복구·SMTP 대기.
+- [>] S2: `/cloud` 계정 전용 CRUD·사진 함수·추가 SQL 구현 및 실제 두 계정/익명 HTTP 검증 완료. 공개 프런트엔드 반영·다른 기기 조회는 대기.
+- [ ] S3: 공개 피드·상세 URL·서버 댓글/좋아요.
+- [ ] S4: 로컬 데이터 이전·펫 매핑·중복 방지·부분 실패 재개.
+- [ ] S5: 계정 삭제·사진 정리·신고 대응·DB와 사진 백업/복원·운영 출시.
+
+앱 주소는 `https://ilove-pets-web.pages.dev/`를 기준으로 한다. [서버 설정 안내](./ilove-pets-server-setup.md)에 URL·환경 변수·Google/SMTP·DB 적용 절차와 로컬 검증 범위를 기록했다. 2026-10-15 사용자가 Supabase 프로젝트를 생성했다. 실제 DB 적용·로그인 통합 검증과 이번 변경의 공개 배포는 아직 수행하지 않았다.
+
+- [x] Google·이메일/비밀번호·가입·복구·로그아웃 UI, PKCE 코드 교환 및 세션 전환 구현. 미설정 시 로컬 모드 유지.
+- [x] 프로필·펫·게시물·성장·사진 예약 마이그레이션, 소유자 RLS 및 비공개 Storage 경계 구현.
+- [x] PGlite PostgreSQL에서 A/B/익명·소유권 위조·버전 충돌·용량·추가 Storage 정책 우회 차단 테스트 6개 통과.
+- [x] Node WASM에서 이미지 실제 디코딩·재인코딩·MIME/크기/화소 제한 테스트 3개 통과. Edge 배포 검증은 별도.
+- [x] 운영 npm 의존성 audit 취약점 0건 확인. 개발 의존성까지 포함한 전체 audit의 결과와 구분한다.
+- [x] 2026-10-15 개발 프로젝트 URL/공개 키를 `.env.local`에 저장하고 Git 제외 확인. Auth settings 200 응답, 이메일 활성·Google 비활성, DB profiles 미생성(PGRST205) 확인.
+- [x] 개발 서버 Chromium 375px에서 연결된 로그인 화면의 이메일 입력 활성화·준비 중 안내 제거·가로 넘침 없음·앱 오류 없음 확인. 실제 가입/로그인은 아직 실행하지 않았다.
+- [x] 2026-10-15 사용자 SQL Editor 성공 화면 확인 후 6개 테이블의 REST 비로그인 조회가 401/42501로 차단됨을 확인. 마이그레이션 전체의 로그인 권한·Storage 통합 검증과 구분한다.
+- [!] SMTP 설정과 실제 로그인·Storage HTTP 통합 검증 대기.
+- [x] 사용자 Auth URL 설정 화면·Google client 입력·테스트 사용자 추가 확인. API에서 Google 활성 및 authorize의 302 → Google, 프로젝트 callback 확인.
+- [x] 2026-10-15 사용자 보고로 실제 Google 계정 인증·로그인 완료 확인. 자동화에서 실제 계정 로그인까지 수행한 결과와 구분한다.
+- [x] 2026-10-15 사용자 보고로 새로고침 후 세션 유지·로그아웃·Google 재로그인 확인.
+- [ ] 다른 계정으로 전환 시 격리, 이메일 가입·복구·SMTP, 인증 사용자 간 DB/Storage HTTP 권한 통합 검증 대기.
+
+2026-10-14 검증: 전체 Vitest 34개 파일/182개 통과 후 세션 테스트 3개 추가 통과, 최종 인증 관련 12개 재검사 통과. TypeScript·전체 ESLint·Prettier·production build 통과. Chromium 전체 62개 중 61개 통과 후 새 제목과 충돌한 기존 선택자를 정확 일치로 수정하고 인증/Stage 6 관련 10개 재검사 통과. 실제 Google/이메일 서버 인증 성공으로 간주하지 않는다. 현재 빌드는 JS 약 801kB(압축 약 235kB)이며 500kB 청크 경고가 남아 있다. SDK 로딩 분리는 후속 성능 작업이다. 변경은 아직 커밋·푸시하지 않았다.
+
+## S2 로컬 구현 검증 (2026-10-15)
+
+적용 절차: [클라우드 설정 안내](./ilove-pets-cloud-setup.md). 추가 SQL 두 건과 `cloud-media` 함수는 개발 프로젝트에 적용을 마쳤다. 아래 항목은 구현부터 실제 검증까지의 기록이다.
+
+- [x] `/cloud` 계정 전용 펫·성장 기록·비공개 사진 게시물 CRUD, 중복 요청 ID·버전 충돌, 미사용 사진 정리·삭제 재시도 구현. 기존 로컬 자료 유지.
+- [x] 작업별 JWT 고정, 계정 전환 시 화면 재생성·이전 비동기 응답 폐기, 60초 사진 서명 URL 구현.
+- [x] 사진 브라우저 1280px 축소, Edge 별도 1600px/200만 화소 검증·메타데이터 제거·WebP 재인코딩, 예약→실제 사용량 정산 구현. 함수 준비 전에는 사진 작성을 비활성화한다.
+- [x] 전체 Vitest 36개 파일/190개, 서버 Node 검사 22개, TypeScript·전체 ESLint·Prettier 통과. 실제 Deno에서 함수 타입 검사와 WASM 표본 실행 통과.
+- [x] Chromium 전체 63개 중 기존 기능 62개 통과. 클라우드 테스트 표본을 실제 canvas PNG로 보완한 후 인증/클라우드 관련 3개 재검사 통과. 응답을 모의한 브라우저 검증이며 실제 Supabase CRUD 성공과 구분한다.
+- [x] 최종 소스 production build는 `.tmp/s2-final-dist`에서 통과. 기존 dist의 icon/manifest에 Windows 접근·잠금 오류가 남아 일반 출력 폴더 초기화는 미해결이다. 약 825kB JS 번들 크기 경고도 남아 있다.
+- [!] Supabase CLI 인증이 없어 원격 SQL 적용·Edge 배포·실제 다른 기기 조회는 대기. 공개 배포·Git 푸시도 수행하지 않았다.
+- [x] 이후 사용자 S2 SQL 성공 화면 확인. 실제 REST의 `cloud_version` 함수가 존재하고 비로그인 호출이 401/42501로 차단됨을 확인했다. Edge 배포와 로그인 사용자 CRUD·다른 기기 조회는 아직 대기다.
+- [x] 이후 Supabase CLI 인증 완료. Docker VHD 연결 권한 오류로 로컬 번들링이 막혀, 동일 프로젝트 비공개 실행 모듈 + SHA-256 검증 방식으로 변경하고 함수 API 배포 성공. Docker 데이터는 초기화하지 않았다.
+- [x] 실제 HTTP에서 충돌용 `40001`이 자동 재시도를 일으키는 문제를 발견했다. 추가 SQL `202610150002_conflict_http_status.sql`로 `PT409`를 적용하고 즉시 409 응답을 검증했다. 관련 PostgreSQL 회귀 검사 5개·타입 검사 통과.
+- [x] 실제 임시 A/B 계정·익명으로 펫/성장 중복 방지·버전 충돌·위조 차단·세션 갱신 후 조회 검증. 32×24 PNG 업로드→서버 WebP 변환→본인 서명 조회→비공개 게시물 생성/수정/삭제→파일 정리·예약 용량 0 검증. 다른 계정·익명 및 ready 원본 서명 차단 확인. 임시 파일과 계정 모두 정리.
+- [x] 실행 모듈 무결성 검사 포함 서버 테스트 총 24개 통과. 실제 함수 로그인 status 200/ready 및 비로그인/잘못된 JWT 401 확인.
+- [ ] 공개 프런트엔드 반영·다른 기기와 휴대전화 사진 확인. 서버·앱·문서를 기능별 커밋으로 나누어 main 반영을 진행한다.
+- [x] 공개 반영 전 최종 소스 빌드 `.tmp/release-dist` 통과. 일반 `npm run build`의 기존 dist 파일 잠금은 여전히 남아 있으며 깨끗한 Cloudflare 빌드 환경과 구분한다.
+- [x] 최종 Vitest 32개 파일/150개 통과 후 Windows fork 워커 시작 시간 초과가 난 4개 파일을 threads 모드로 재실행해 40개 통과. 합계 36개 파일/190개이며 최초 실행 전체 통과로 표시하지 않는다.
 
 ## 현재 저장소 상태
 
