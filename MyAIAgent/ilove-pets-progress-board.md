@@ -19,6 +19,8 @@ frontend-only mobile web MVP(P0~P3)와 S2 핵심 저장 흐름은 완료했다. 
 
 ## 서버 마일스톤 (2026-10-14)
 
+2026-10-15 추가: 1차 공개 프로필·사진·작성 목적지·My 서버 기록과 2차 팔로잉 필터·계정별 피드 선택 기억·스토리 스와이프/이미지 재시도를 구현했다. 실제 두 계정 권한 검사 및 앱 193개·서버 34개 검사 통과. 공개 반영과 최종 브라우저 결과는 [프로필/피드 연결 기록](./ilove-pets-profiles-feeds.md)을 따른다.
+
 설계: [ilove-pets-server-design.md](./ilove-pets-server-design.md)
 
 - [x] S0: 현재 도메인·로컬 저장·백업과 대조한 서버 설계 초안 작성. Cloudflare Pages + Supabase 우선안, DB/RLS/사진/API/이전/운영 계약 정의.

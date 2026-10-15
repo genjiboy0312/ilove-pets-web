@@ -221,6 +221,8 @@ ilove-pets-web/
 
 ## 🗺 로드맵 & 진행 현황
 
+프로필 사진·닉네임·소개 편집과 `/users/:username` 공개 프로필, My의 서버 기록·스토리 관리, 작성 화면의 로컬/클라우드 목적지, 계정별로 기억하는 팔로잉 피드, 스토리 스와이프·이미지 재시도를 지원합니다. [사용법과 검증 범위](./MyAIAgent/ilove-pets-profiles-feeds.md).
+
 로컬 MVP에 **Supabase 인증·클라우드 기록·공개 소셜 피드와 팔로워 스토리**를 추가했습니다. 홈에서 이 기기/공개 피드를 선택하고, 상단 원형 목록에서 팔로우한 계정의 24시간 사진 스토리를 봅니다. `/cloud`에서 계정 전용 기록을 관리하고 게시물을 명시적으로 공개할 수 있습니다. 상세 URL·좋아요·댓글·팔로우를 지원합니다. 로컬 자료의 자동 이전은 후속 단계입니다. [사용 방법과 검증 범위](./MyAIAgent/ilove-pets-social-stories.md).
 세부 진행 현황과 남은 과제는 [MyAIAgent/ilove-pets-progress-board.md](./MyAIAgent/ilove-pets-progress-board.md)에서 관리합니다.
 
