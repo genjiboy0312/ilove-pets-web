@@ -6,6 +6,8 @@
 
 React · TypeScript · Vite · Supabase · Cloudflare Pages
 
+현재 공개 사이트는 S4와 UI 개선까지 반영되어 있습니다. **S5 작업본은 계정 삭제·신고/차단·자동 정리·백업/복원 코드를 준비한 상태이며, 실제 Supabase 적용과 전체 데이터 백업 승인을 기다립니다.** [S5 적용 안내](MyAIAgent/ilove-pets-operations.md) · [S5 이후 계획](MyAIAgent/ilove-pets-after-s5-plan.md)
+
 ## 프로젝트 소개
 
 iLove Pets는 **펫 등록 → 사진 일기 → 성장 기록 → 선택적 공유**를 하나의 흐름으로 연결합니다. 강아지·고양이뿐 아니라 파충류·조류·소동물 등 다양한 반려동물을 대상으로 합니다.
@@ -139,7 +141,22 @@ flowchart LR
 | 병원 지도     | Leaflet 지도, 지역·야간 필터, 전화 링크                               | 샘플 정보. 실제 진료·영업 확인 및 예약 기능 없음                       |
 | 설정·PWA      | 시스템·라이트·다크, ko/en/ja, 앱 셸·로컬 자료 접근                    | 알림 설정은 기기/UI 설정. 오프라인 클라우드 쓰기는 미지원              |
 
-약관·개인정보·소개 화면은 포트폴리오용 문구입니다. 계정 삭제·신고·차단과 운영 정책은 후속 과제입니다.
+약관·개인정보·소개 화면은 포트폴리오용 안내이며 실제 운영 문의처·보관 정책 보완이 필요합니다. 계정 삭제·신고·차단은 아래 S5 작업본에 구현했고 공개 서비스 적용은 대기 중입니다.
+
+### S5 운영 준비 작업본
+
+- 설정에서 삭제 범위·백업을 확인하고 체크와 `DELETE` 입력을 거쳐 삭제를 요청합니다. 최근 로그인 검증 후 접근을 먼저 제한하고 파일 정리·Auth 삭제를 재시도합니다. 기기 기록은 유지합니다.
+- 공개 프로필·글·댓글과 접근 가능한 스토리에 신고/차단을 제공합니다. 신고는 운영자 검토 후 숨김/기각하며, 차단은 양방향 팔로우와 로그인 상태의 조회·상호작용을 제한합니다.
+- 만료 사진 정리·실패 재시도·상태 확인, 운영자 암호화 백업과 별도 빈 프로젝트 복원 도구를 제공합니다. 실제 예약 실행·전체 데이터 백업·호스팅 복원은 미실행 상태입니다.
+- 페이지를 지연 로딩으로 분리하고, 로딩 실패 시 빈 화면 대신 홈 이동·재시도 안내를 표시합니다. 일반 production 빌드도 현재 통과합니다.
+
+<details>
+<summary>S5 작업본 · 모의 API로 확인한 삭제와 신고 화면</summary>
+
+<img src="docs/screenshots/operations-deletion.png" width="240" alt="S5 작업본의 계정 삭제 범위와 백업 및 재인증 안내" />
+<img src="docs/screenshots/operations-report-block.png" width="240" alt="S5 작업본의 신고 접수와 차단 확인" />
+
+</details>
 
 ## 데이터는 어디에 저장되나요?
 
@@ -190,6 +207,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_YOUR_PUBLIC_KEY
 5. [프로필과 피드](supabase/migrations/202610150004_profiles_feeds.sql)
 6. [활동 알림](supabase/migrations/202610150005_notifications.sql)
 7. [기기 자료 이전](supabase/migrations/202610150006_local_import.sql)
+8. [S5 운영 준비](supabase/migrations/202610150007_operations.sql) — S5 작업본을 실행할 때 추가 적용
 
 Supabase Authentication의 Site URL은 배포 주소로 설정하고, Redirect URLs에는 사용하는 배포·개발 주소의 `/auth/callback`, `/auth/reset-password`를 등록합니다. Google 제공자에는 Google Cloud에서 발급한 OAuth 정보를 설정합니다. Google의 승인된 리디렉션 URI는 `https://YOUR_PROJECT.supabase.co/auth/v1/callback`입니다.
 
@@ -203,6 +221,8 @@ npx supabase functions deploy social-media --project-ref YOUR_PROJECT_REF --use-
 ```
 
 위 방식에는 로컬 Docker가 필요하지 않습니다. 사용자 지정 도메인을 추가하면 Auth 리디렉션과 함수의 `APP_ORIGINS` 허용 출처도 맞춥니다. 상세 절차는 [클라우드 안내](MyAIAgent/ilove-pets-cloud-setup.md), [소셜·스토리 안내](MyAIAgent/ilove-pets-social-stories.md), [알림·이전 안내](MyAIAgent/ilove-pets-notifications-import.md)를 참고하세요. 해당 문서들은 개발 당시의 단계별 이력도 포함합니다.
+
+S5 작업본에는 `account-operations`·`maintenance` 함수 배포와 서버 예약 설정이 추가로 필요합니다. 민감한 전체 계정/사진 백업과 실제 서비스 변경은 [S5 적용 순서](MyAIAgent/ilove-pets-operations.md)를 확인한 뒤 실행합니다.
 
 ### 빌드와 배포
 
@@ -285,20 +305,19 @@ npm run playwright:install
 npm run smoke:preview
 ```
 
-2026-10-15 UI 변경 기준 검증 기록:
+2026-10-15 S5 작업본 기준 검증 기록:
 
-| 구분                    | 확인한 내용                                                                                                        |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| 앱 단위 검사            | 로그인 진입·카테고리 변경 후 39개 파일·194개 통과                                                                  |
-| 서버 검사               | 알림·자료 이전 단계까지 41개 통과. UI 변경과 별도 수행                                                             |
-| Chromium · 이번 변경    | 로그인 진입·카테고리·인증·기기 기록·백업·성장·프로필·화면 검사 47개 통과                                           |
-| Chromium · 이전 UI 전체 | 전체 70개 중 69개 통과 후 프로필 이동 대기 선택자를 보완하고 관련 19개 재검사 통과                                 |
-| 추가 UI 검사            | 11개 화면 라이트·다크, ko/en/ja와 375·768·1280px 및 지도 너비를 5개 검사로 확인. 모의 API 사용                     |
-| 실제 연동               | Google 로그인·세션 유지·사진 등록을 사용자 확인. 임시 계정 간 권한·공개 취소·알림·자료 이전은 원격 API로 별도 검증 |
+| 구분           | 확인한 내용                                                                                                |
+| -------------- | ---------------------------------------------------------------------------------------------------------- |
+| 앱 단위 검사   | 40개 파일·195개 통과                                                                                       |
+| 격리 서버 검사 | 56개 통과. 실제 PostgreSQL 엔진의 권한·복원과 모의 HTTP/Storage/Auth 오류 경계 포함                        |
+| Chromium       | 전체 79개 통과 후 S5 폼·사진 백업·기존 프로필·기기 기록·다국어/테마/너비 관련 23개 추가 통과               |
+| 빌드           | 타입·변경 파일 린트·일반 production 빌드 통과. 최대 JS 청크 약 257KB                                       |
+| 실제 연동      | 기존 S1~S4의 Google·저장·소셜·이전 원격 검증 이력과 별개. S5 실제 서버 적용·예약·전체 데이터 백업은 미실행 |
 
-로그인 진입·카테고리 변경 후 기기 기록 보존과 반응형 화면을 추가 검사하고 캡처·문서 참조를 갱신했습니다. 상세 근거는 [UI 검증 기록](MyAIAgent/ilove-pets-ui-refresh.md), [프로필·피드 기록](MyAIAgent/ilove-pets-profiles-feeds.md), [알림·자료 이전 기록](MyAIAgent/ilove-pets-notifications-import.md)에 남겨 두었습니다.
+S5 모의 검사와 실제 서비스 확인을 구분합니다. 현재 증거·적용 순서는 [운영 안내](MyAIAgent/ilove-pets-operations.md)에, 기존 화면과 원격 연동 이력은 [UI 검증 기록](MyAIAgent/ilove-pets-ui-refresh.md), [프로필·피드 기록](MyAIAgent/ilove-pets-profiles-feeds.md), [알림·자료 이전 기록](MyAIAgent/ilove-pets-notifications-import.md)에 남겼습니다.
 
-남은 과제는 이메일 발송·복구 실전 검증, 실물 모바일에서 계정 간 전체 시나리오, 신고·차단·계정 삭제, 실제 커뮤니티 데이터 연결입니다. 초기 JS 번들 크기 개선과 Windows에서 발생한 기존 `dist` 파일 잠금 대응도 후속 작업입니다. 샘플 병원 데이터와 포트폴리오 정책 문구를 운영 서비스 정보로 간주하지 않습니다.
+남은 과제는 S5 실제 적용 승인, 이메일 발송·복구 실전 검증, 실물 모바일의 계정 간 시나리오, 별도 호스팅 프로젝트 복원과 실제 커뮤니티 데이터 연결입니다. S5에서 지연 로딩을 적용했으며 JS 엔트리는 약 198KB, 공유 Supabase 모듈은 약 257KB로 분리됩니다. 이는 초기 페이지 전체 전송량이나 실물 모바일 성능 수치와 다릅니다. 샘플 병원 정보와 포트폴리오 정책 문구를 운영 서비스 정보로 간주하지 않습니다.
 
 ## 관련 문서
 
@@ -306,5 +325,7 @@ npm run smoke:preview
 - [프로필·피드](MyAIAgent/ilove-pets-profiles-feeds.md): 공개 범위와 소셜 흐름
 - [알림·자료 이전](MyAIAgent/ilove-pets-notifications-import.md): 이벤트·중복 방지·복구
 - [전체 UI 정리](MyAIAgent/ilove-pets-ui-refresh.md): 디자인 적용 범위와 검증
+- [S5 운영 준비](MyAIAgent/ilove-pets-operations.md): 삭제·정리·신고·차단·백업/복원과 적용 대기 사항
+- [S5 이후 계획](MyAIAgent/ilove-pets-after-s5-plan.md): 운영 확인 항목과 실제 커뮤니티 연결 우선순위
 - [진행 보드](MyAIAgent/ilove-pets-progress-board.md): 단계별 개발 이력
 - [캡처 목록·출처](docs/screenshots/README.md): 이미지별 화면 설명과 촬영 조건

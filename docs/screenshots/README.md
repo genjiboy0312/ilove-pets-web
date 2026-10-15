@@ -8,25 +8,29 @@
 
 비로그인 내 계정의 두 캡처는 발바닥 아이콘을 동물 가족 일러스트로 교체한 빌드에서 다시 촬영했습니다. 화면 안의 일러스트는 AI 생성 에셋이며, [원본과 생성 정보](../../assets/README.md)를 보관합니다. 캡처에는 실제 앱이 렌더링한 이미지를 그대로 사용했습니다.
 
-| 이미지                                           | 화면 및 사용 흐름                                       |
-| ------------------------------------------------ | ------------------------------------------------------- |
-| [home.png](home.png)                             | 홈 카테고리·스토리·피드                                 |
-| [explore.png](explore.png)                       | 인기 펫 가로 목록과 사진 그리드                         |
-| [account.png](account.png)                       | 로그인 프로필·작성·자료 가져오기                        |
-| [account-guest.png](account-guest.png)           | 비로그인 안내와 선택적 기기 기록 진입                   |
-| [account-guest-dark.png](account-guest-dark.png) | 비로그인 내 계정 다크 모드                              |
-| [create.png](create.png)                         | 사진 일기 작성                                          |
-| [community.png](community.png)                   | 샘플 게시판·카테고리                                    |
-| [auth.png](auth.png)                             | Google·이메일 로그인 UI                                 |
-| [growth.png](growth.png)                         | 샘플 펫의 성장 그래프·케어 기록 팝업                    |
-| [activity.png](activity.png)                     | 모의 좋아요·팔로우 알림과 읽음 상태                     |
-| [import-preview.png](import-preview.png)         | 테스트 백업의 펫·글·성장 기록·사진 각 1개 이전 미리보기 |
-| [import.png](import.png)                         | 자료 이전 초기 화면                                     |
-| [cloud.png](cloud.png)                           | 계정 전용 클라우드 기록 관리                            |
-| [profile.png](profile.png)                       | 공개 프로필                                             |
-| [post.png](post.png)                             | 공개 게시물 상세                                        |
-| [settings.png](settings.png)                     | 설정 그룹·테마·언어                                     |
-| [home-dark.png](home-dark.png)                   | 다크 모드 홈                                            |
-| [settings-dark.png](settings-dark.png)           | 다크 모드 설정                                          |
+`operations-*`는 실제 서버 적용 전인 S5 작업본의 production 미리보기에서 모의 API로 캡처했습니다. 실제 계정을 삭제하거나 신고한 결과가 아닙니다.
+
+| 이미지                                                     | 화면 및 사용 흐름                                       |
+| ---------------------------------------------------------- | ------------------------------------------------------- |
+| [home.png](home.png)                                       | 홈 카테고리·스토리·피드                                 |
+| [explore.png](explore.png)                                 | 인기 펫 가로 목록과 사진 그리드                         |
+| [account.png](account.png)                                 | 로그인 프로필·작성·자료 가져오기                        |
+| [account-guest.png](account-guest.png)                     | 비로그인 안내와 선택적 기기 기록 진입                   |
+| [account-guest-dark.png](account-guest-dark.png)           | 비로그인 내 계정 다크 모드                              |
+| [create.png](create.png)                                   | 사진 일기 작성                                          |
+| [community.png](community.png)                             | 샘플 게시판·카테고리                                    |
+| [auth.png](auth.png)                                       | Google·이메일 로그인 UI                                 |
+| [growth.png](growth.png)                                   | 샘플 펫의 성장 그래프·케어 기록 팝업                    |
+| [activity.png](activity.png)                               | 모의 좋아요·팔로우 알림과 읽음 상태                     |
+| [import-preview.png](import-preview.png)                   | 테스트 백업의 펫·글·성장 기록·사진 각 1개 이전 미리보기 |
+| [import.png](import.png)                                   | 자료 이전 초기 화면                                     |
+| [cloud.png](cloud.png)                                     | 계정 전용 클라우드 기록 관리                            |
+| [profile.png](profile.png)                                 | 공개 프로필                                             |
+| [post.png](post.png)                                       | 공개 게시물 상세                                        |
+| [settings.png](settings.png)                               | 설정 그룹·테마·언어                                     |
+| [home-dark.png](home-dark.png)                             | 다크 모드 홈                                            |
+| [settings-dark.png](settings-dark.png)                     | 다크 모드 설정                                          |
+| [operations-deletion.png](operations-deletion.png)         | S5 삭제 확인·백업·최근 로그인 안내                      |
+| [operations-report-block.png](operations-report-block.png) | S5 모의 신고 접수와 차단 확인                           |
 
 [프로젝트 설명으로 돌아가기](../../README.md)

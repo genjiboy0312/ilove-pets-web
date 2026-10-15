@@ -5,6 +5,10 @@
 사용자 요청으로 아래 1차·2차 구현과 검증을 진행했다. 구현·사용법·남은 실기기 확인은 [프로필/피드 연결 기록](./ilove-pets-profiles-feeds.md)을 따른다. 기존 P0~P3 실행 결과는 하단에 보존한다.
 진행 기록: [ilove-pets-progress-board.md](./ilove-pets-progress-board.md)
 
+## S5 작업본 상태
+
+S5 운영 준비를 로컬 구현·격리 검증 단계까지 진행했다. 실제 Supabase 변경·전체 계정/사진 백업 승인을 기다린다. [운영 적용 안내](./ilove-pets-operations.md)와 [S5 이후 추가 계획](./ilove-pets-after-s5-plan.md)을 최신 기준으로 사용한다. 아래 단계별 항목은 이전 기획 이력이다.
+
 ## 다음 목표
 
 1차의 공개 프로필·작성 목적지·My 연결과 2차의 팔로잉 피드·선택 기억·스토리 스와이프/오류 복구를 구현했다. 3차 앱 내부 알림과 4차 로컬 자료 이전도 구현했다. 사용 방법·권한·재시도 계약은 [알림/이전 안내](./ilove-pets-notifications-import.md)를 따른다. 다음 구현 후보는 5차 운영 준비이며 실제 기기 확인과 이메일/복구를 병행한다. S3의 기본 동작은 [소셜/스토리 안내](./ilove-pets-social-stories.md)를 따른다.
